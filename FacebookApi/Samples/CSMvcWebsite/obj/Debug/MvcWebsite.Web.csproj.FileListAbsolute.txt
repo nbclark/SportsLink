@@ -1,0 +1,1 @@
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Samples\CSMvcWebsite\obj\Debug\ResolveAssemblyReference.cache

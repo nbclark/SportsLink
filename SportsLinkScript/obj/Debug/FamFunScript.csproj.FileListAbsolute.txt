@@ -1,0 +1,4 @@
+C:\Users\nclark\Downloads\jqtouch-1.0-beta-2-r109\FamFun\FamFunScript\bin\Debug\FamFunScript.xml
+C:\Users\nclark\Downloads\jqtouch-1.0-beta-2-r109\FamFun\FamFunScript\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\nclark\Downloads\jqtouch-1.0-beta-2-r109\FamFun\FamFunScript\obj\Debug\FamFunScript.dll
+C:\Users\nclark\Downloads\jqtouch-1.0-beta-2-r109\FamFun\FamFunScript\obj\Debug\FamFunScript.pdb

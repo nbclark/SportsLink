@@ -1,0 +1,50 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "SportsLinkAzure", "SportsLinkAzure\SportsLinkAzure.ccproj", "{CDF43CD1-1764-4732-8ED8-515FC6CCA959}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsLinkWeb", "SportsLinkWeb\SportsLinkWeb.csproj", "{1698CDF9-3838-4D6E-AF6E-449DF5CF3135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportsLinkScript", "SportsLinkScript\SportsLinkScript.csproj", "{8425E459-C40C-406D-9275-4F8E645AA5B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web", "FacebookApi\Facebook.Web\Facebook.Web.csproj", "{73333465-710D-4143-BA9B-201D90EE2BAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook", "FacebookApi\Facebook\Facebook.csproj", "{857E540C-0092-4590-A279-F98A6B77AC0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "FacebookApi\Facebook.Web.Mvc\Facebook.Web.Mvc.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDF43CD1-1764-4732-8ED8-515FC6CCA959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDF43CD1-1764-4732-8ED8-515FC6CCA959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDF43CD1-1764-4732-8ED8-515FC6CCA959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDF43CD1-1764-4732-8ED8-515FC6CCA959}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1698CDF9-3838-4D6E-AF6E-449DF5CF3135}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1698CDF9-3838-4D6E-AF6E-449DF5CF3135}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1698CDF9-3838-4D6E-AF6E-449DF5CF3135}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1698CDF9-3838-4D6E-AF6E-449DF5CF3135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8425E459-C40C-406D-9275-4F8E645AA5B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8425E459-C40C-406D-9275-4F8E645AA5B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8425E459-C40C-406D-9275-4F8E645AA5B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8425E459-C40C-406D-9275-4F8E645AA5B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73333465-710D-4143-BA9B-201D90EE2BAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{857E540C-0092-4590-A279-F98A6B77AC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

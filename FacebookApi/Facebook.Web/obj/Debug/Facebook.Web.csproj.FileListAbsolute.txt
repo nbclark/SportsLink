@@ -1,0 +1,5 @@
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Debug\Net40\Facebook.Web.dll
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Debug\Net40\Facebook.Web.pdb
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Debug\Facebook.Web.dll
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Debug\Facebook.Web.pdb

@@ -1,0 +1,384 @@
+﻿/*----------------------------------------------------------
+The base color for this template is #5c87b2. If you'd like
+to use a different color start by replacing all instances of
+#5c87b2 with your new color.
+----------------------------------------------------------*/
+body
+{
+    background-color: #fff;
+    font-size: .75em;
+    font-family: Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+    color: #696969;
+}
+
+#footer
+{
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    text-align: right;
+}
+
+.page
+{
+    width:741px;
+    left: 0;
+    position: relative;
+}
+
+#header
+{
+    text-align: left;
+    color:black;
+}
+
+#main
+{
+    background-color:White;
+    padding: 10px;
+}
+
+.module
+{
+    width: 100%;
+    padding-bottom: 1em;
+}
+
+.module > div
+{
+    padding:4px;
+    padding-bottom:20px;
+}
+
+.quickmatch > div
+{
+    padding-bottom: 5px;
+}
+
+.quickmatch td
+{
+    vertical-align: middle;
+}
+
+.module h3
+{
+    margin-top:0;
+    padding:4px;
+}
+
+#content
+{
+    width:100%;
+}
+
+#content > tbody > tr > td
+{
+    vertical-align: top;
+}
+
+#content .left
+{
+    width: 100%;
+    padding-right: 1em;
+    border-right: 1px solid #eee;
+}
+
+#content .right
+{
+    padding-left: 1em;
+    width:110px;
+}
+
+.keyvaluerow
+{
+    height: 1em;
+    padding:4px;
+    margin-bottom: 4px;
+}
+
+.keyvaluerow:nth-child(2n+1)
+{
+    background-color: rgba(255,255,255,0.5);
+}
+
+.keyvaluerow .name
+{
+    float: left;
+    width: 30%;
+    font-weight: bold;
+    overflow:hidden;
+    white-space:nowrap;
+}
+.keyvaluerow .value
+{
+    float: right;
+    width: 70%;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.result
+{
+    padding: 4px;
+}
+
+.result div
+{
+    float: left;
+}
+
+.result .opponent
+{
+    width:40%;
+}
+
+.result .score
+{
+    width:30%;
+    text-align:center;
+}
+
+.result .date
+{
+    width:30%;
+    text-align:right;
+}
+
+.ui-selectmenu
+{
+    height: 21px !important;
+    vertical-align: top !important;
+    margin-top: 0px;
+    *margin-top:-1px;
+}
+
+.ui-selectmenu-status
+{
+    line-height: 21px !important;
+    padding: 0 !important;
+    padding-left: 5px !important;
+}
+
+.quickmatch .time
+{
+    width:75px;
+}
+
+.quickmatch .ampm
+{
+    width: 50px;
+}
+
+.form .cities select
+{
+    width:220px;
+}
+
+.form .label
+{
+    font-size: 11px;
+    color: #444;
+    margin: 0.5em 0;
+    padding-top: 0.5em;
+    border-top: 1px solid #ccc;
+}
+
+.form .label:first-child
+{
+    border-top: 0px solid #ccc;
+}
+
+.form .input
+{
+    margin: 0.5em 0;
+    margin-bottom: 1em;
+}
+
+.form .input.full input
+{
+    width:220px;
+}
+
+.form .submit
+{
+}
+
+.quickmatch .datepicker
+{
+    width:80px;
+}
+
+.offer
+{
+}
+
+.offer .name
+{
+    font-weight: bold;
+    display: inline;
+}
+
+.offer .rating
+{
+}
+
+.offer .location
+{
+    font-style: italic;
+}
+
+.offer .time, #results .time, #results .score
+{
+    font-weight: 400;
+    font-size: 14px;
+    padding-right: 5px;
+    white-space: nowrap;
+}
+
+.offer td
+{
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    border-top: 1px solid #ccc;
+    vertical-align: top;
+}
+
+.offer:first-child td
+{
+    padding-top: 0em;
+    border-top: 0px solid #ccc;
+}
+
+.offer .details
+{
+    width: 100%;
+}
+
+.offer .image
+{
+    padding-right: 5px;
+}
+
+.offer .accept, .offer .image
+{
+    vertical-align: top;
+    text-align: right;
+}
+
+.offer .accept a
+{
+    height: 50px;
+    width: 50px;
+    margin-bottom: 2px;
+}
+
+#results table
+{
+    width: 100%;
+}
+
+#results td
+{
+    vertical-align: middle !important;
+}
+
+#results input
+{
+    width:90%;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    padding: 2px 3px;
+    margin-top: 10px;
+}
+
+#results .comments input:focus
+{
+    background-color: White;
+    border: 1px solid #F6AF39;
+}
+
+#scoredialog td
+{
+    font-size: 11px;
+}
+
+#scoredialog .score input
+{
+    width: 40px;
+}
+
+#scoredialog .comments
+{
+    text-align: left;
+}
+
+#scoredialog .comments input
+{
+    width: 180px;
+}
+
+
+#scoredialog td
+{
+    text-align: center;
+    white-space: nowrap;
+}
+
+#playerDetails
+{
+    width: 100%;
+}
+
+#playerDetails td
+{
+    padding: 5px;
+}
+
+#playerDetails #playerRating
+{
+    font-size: 34px;
+}
+
+#userOffers table
+{
+    width:100%;
+}
+
+#userOffers table td
+{
+    vertical-align:top;
+}
+
+#userOffers table .time
+{
+    white-space: nowrap;
+    padding-right: 5px;
+    font-size: 16px;
+}
+
+#userOffers table .accept
+{
+    text-align:right;
+}
+
+#players .rating
+{
+    font-size: 24px;
+}
+
+#players .challenge
+{
+    text-align: right;
+}
+
+#players .name
+{
+    font-size: 18px;
+}
+
+#players .location
+{
+    margin-top: 0.5em;
+}
