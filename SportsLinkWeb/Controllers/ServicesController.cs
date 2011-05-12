@@ -76,22 +76,27 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
-        public ActionResult AcceptOffer(string offerId)
+        public ActionResult AcceptOffer(string id)
         {
             Guid offerGuid;
 
-            if (Guid.TryParse(offerId, out offerGuid))
+            if (Guid.TryParse(id, out offerGuid))
             {
                 Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
 
                 if (null != offer)
                 {
-                    var app = new FacebookApp();
+                    var fbContext = FacebookWebContext.Current;
 
-                    offer.AcceptedById = app.Session.UserId;
+                    offer.AcceptedById = fbContext.UserId;
                     this.DB.SubmitChanges();
 
                     ActionResult result = Index();
+
+                    if (!Request.IsAjaxRequest())
+                    {
+                        return new RedirectResult("/");
+                    }
 
                     return Json
                     (
@@ -102,6 +107,11 @@ namespace SportsLinkWeb.Controllers
                         }
                      );
                 }
+            }
+
+            if (!Request.IsAjaxRequest())
+            {
+                return new RedirectResult("/");
             }
 
             return Json("");
@@ -202,7 +212,8 @@ namespace SportsLinkWeb.Controllers
                     (u =>
                         this.DB.CoordinateDistanceMiles(u.City.Latitude, u.City.Longitude, user.City.Latitude, user.City.Longitude) < 15 &&
                         Math.Abs(tennisUser.Rating - u.Rating) <= 0.25 &&
-                        u.Gender == user.Gender
+                        u.Gender == user.Gender &&
+                        u.FacebookId != user.FacebookId
                     );
 
                     foreach (var tu in matchUsers)

@@ -219,7 +219,7 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
         /// </param>
         var button = $(e.currentTarget);
         var offerId = button.siblings('input').val();
-        $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ offerId: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ id: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
             button.parent().children('a').fadeOut('slow');
         }));
     },
