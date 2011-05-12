@@ -9,63 +9,21 @@
             Represents the base class for restricting access to controllers or actions based on Facebook permissions.
             </summary>
         </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase"/> class.
-            </summary>
-        </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.#ctor(Facebook.FacebookApp)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase"/> class.
-            </summary>
-            <param name="facebookApp">The facebook app.</param>
-        </member>
         <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.OnAuthorization(System.Web.Mvc.AuthorizationContext)">
             <summary>
             Called when authorization is required.
             </summary>
             <param name="filterContext">The filter context.</param>
         </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.AuthorizeCore(System.Web.HttpContextBase)">
-            <summary>
-            Authorizes the core.
-            </summary>
-            <param name="httpContext">The HTTP context.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.OnActionExecuting(System.Web.Mvc.ActionExecutingContext)">
-            <summary>
-            Called by the MVC framework before the action method executes.
-            </summary>
-            <param name="filterContext">The filter context.</param>
-        </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
-            <summary>
-            Handles the unauthorized request.
-            </summary>
-            <param name="filterContext">The filter context.</param>
-        </member>
-        <member name="M:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.GetCurrentPerms(System.String)">
-            <summary>
-            Gets the current user's permission using FQL.
-            </summary>
-            <remarks>
-            A better method would be to cache the permission in your local database and subscribe to 
-            real time updates of user permissions: http://developers.facebook.com/docs/api/realtime</remarks>
-            <param name="perms">The permission to check.</param>
-            <returns></returns>
-        </member>
-        <member name="P:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.FacebookApp">
-            <summary>
-            Gets the facebook app.
-            </summary>
-            <value>The facebook app.</value>
-        </member>
         <member name="P:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.Perms">
             <summary>
             Gets or sets the extended permissions.
             </summary>
-            <value>The perms.</value>
+        </member>
+        <member name="P:Facebook.Web.Mvc.FacebookAuthorizeAttributeBase.Permissions">
+            <summary>
+            Gets or sets the extended permissions.
+            </summary>
         </member>
         <member name="T:Facebook.Web.Mvc.CanvasLinkExtensions">
             <summary>
@@ -389,8 +347,9 @@
             <summary>
             Initializes a new instance of the <see cref="T:Facebook.Web.Mvc.CanvasRedirectResult"/> class.
             </summary>
-            <param name="url">The target URL.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="url"/> parameter is null.</exception>
+            <param name="url">
+            The target url.
+            </param>
         </member>
         <member name="M:Facebook.Web.Mvc.CanvasRedirectResult.ExecuteResult(System.Web.Mvc.ControllerContext)">
             <summary>
@@ -408,76 +367,34 @@
             are needed.
             </summary>
         </member>
-        <member name="T:Facebook.Web.Mvc.CanvasAuthorizeAttribute">
+        <member name="F:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute.DefaultView">
             <summary>
-            Provides funcationality for restricting access to controllers or actions based on Facebook permissions.
+            The default view.
             </summary>
         </member>
-        <member name="M:Facebook.Web.Mvc.CanvasAuthorizeAttribute.#ctor">
+        <member name="F:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute._view">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.Web.Mvc.CanvasAuthorizeAttribute"/> class.
+            The view name.
             </summary>
         </member>
-        <member name="M:Facebook.Web.Mvc.CanvasAuthorizeAttribute.#ctor(Facebook.FacebookApp)">
+        <member name="F:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute._master">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.Web.Mvc.CanvasAuthorizeAttribute"/> class.
+            The master.
             </summary>
-            <param name="facebookApp">The facebook app.</param>
-        </member>
-        <member name="M:Facebook.Web.Mvc.CanvasAuthorizeAttribute.GetLoginUrl(System.Web.Mvc.AuthorizationContext)">
-            <summary>
-            Gets the login url for the current request.
-            </summary>
-            <param name="filterContext">The current AuthorizationContext.</param>
-            <returns>The cancel url.</returns>
-        </member>
-        <member name="M:Facebook.Web.Mvc.CanvasAuthorizeAttribute.GetLoginUrl(System.Web.Mvc.AuthorizationContext,System.Boolean)">
-            <summary>
-            Gets the login url for the current request.
-            </summary>
-            <param name="filterContext">The current AuthorizationContext.</param>
-            <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
-            <returns>The cancel url.</returns>
-        </member>
-        <member name="M:Facebook.Web.Mvc.CanvasAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
-            <summary>
-            Handles the unauthorized request.
-            </summary>
-            <param name="filterContext">The filter context.</param>
-        </member>
-        <member name="P:Facebook.Web.Mvc.CanvasAuthorizeAttribute.CancelUrlPath">
-            <summary>
-            Gets or sets the cancel URL path.
-            </summary>
-            <value>The cancel URL path.</value>
-        </member>
-        <member name="P:Facebook.Web.Mvc.CanvasAuthorizeAttribute.ReturnUrlPath">
-            <summary>
-            Gets or sets the return URL path.
-            </summary>
-            <value>The return URL path.</value>
-        </member>
-        <member name="M:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute.HandleUnauthorizedRequest(System.Web.Mvc.AuthorizationContext)">
-            <summary>
-            Handles the unauthorized request.
-            </summary>
-            <param name="filterContext">The filter context.</param>
         </member>
         <member name="P:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute.View">
             <summary>
-            Gets or sets the view.
+            Gets or sets the name of the View.
             </summary>
-            <value>The view.</value>
         </member>
         <member name="P:Facebook.Web.Mvc.CanvasSoftAuthorizeAttribute.Master">
             <summary>
-            Gets or sets the master.
+            Gets or sets the Master.
             </summary>
-            <value>The master.</value>
         </member>
         <member name="T:Facebook.Web.Mvc.CanvasUrlExtensions">
             <summary>
-            Provides extension methods for buiiding canvas urls.
+            Provides extension methods for building canvas urls.
             </summary>
         </member>
         <member name="M:Facebook.Web.Mvc.CanvasUrlExtensions.CanvasAction(System.Web.Mvc.UrlHelper,System.String)">

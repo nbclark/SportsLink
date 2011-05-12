@@ -20,8 +20,8 @@
         }, 'default' : 'Either'
 }
             ]"
-            redirect-uri="<%=CanvasSettings.Current.CanvasPageUrl %>"
-            perms="user_about_me,user_birthday,user_location"
+            redirect-uri="http://localhost:57157/"
+            perms="user_about_me,user_birthday,user_location,publish_stream,email"
             >
         </fb:registration>
     </p>

@@ -89,7 +89,7 @@ namespace SportsLinkScript.Pages
         {
             LoginRow row = (LoginRow)rows[0];
 
-            jQuery.Post("/Services/AddUser", new JsonObject("member", new JsonObject()), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/Services/AddUser?signed_request=" + Utility.GetSignedRequest(), new JsonObject("member", new JsonObject()), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
                 {
                     WebServiceResponse response = (WebServiceResponse)data;
                     AddUserResponse addUser = (AddUserResponse)response.Data;

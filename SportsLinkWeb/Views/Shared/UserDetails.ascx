@@ -17,7 +17,7 @@
                 </div>
                 <div class="keyvaluerow">
                     <div class="name">Rating</div>
-                    <div class="value"><%=userModel.TennisUser.Rating%></div>
+                    <div class="value"><%=IndexModel.FormatRating(userModel.TennisUser.Rating)%></div>
                 </div>
             </div>
         </div>

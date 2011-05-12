@@ -25,12 +25,13 @@
 <% var tennisUser = (TennisUser)ViewData["TennisUser"]; %>
 
 <body onload="OnPageLoad()">
+    <%: Html.FacebookSignedRequest() %>
     <div id="fb-root"></div>
     <div class="page">
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            Hello
+            <a href="http://www.facebook.com/dialog/apprequests?app_id=197465840298266&redirect_uri=http://localhost:57157/&message=Try+out+TennisLink">Invite Users</a>
             </div>
         </div>
     </div>

@@ -92,14 +92,12 @@
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\UserModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Service.asmx.cs">
-      <DependentUpon>Service.asmx</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="SportsLinkDB.cs" />
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\MatchChallenge.htm" />
+    <Content Include="Content\MatchRequest.htm" />
     <Content Include="Content\ui-lightness\images\ui-anim_basic_16x16.gif" />
     <Content Include="Content\ui-lightness\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
     <Content Include="Content\ui-lightness\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
@@ -139,7 +137,6 @@
     <Content Include="Scripts\SportsLinkScript.debug.js" />
     <Content Include="Scripts\SportsLinkScript.js" />
     <Content Include="Scripts\ss.shared.js" />
-    <Content Include="Service.asmx" />
     <Content Include="Views\Shared\CreateMatch.ascx" />
     <Content Include="Views\Shared\PlayerDetails.ascx" />
     <Content Include="Views\Shared\Players.ascx" />
@@ -151,12 +148,16 @@
     <Content Include="Views\Home\Register.aspx" />
     <Content Include="Views\Home\Login.aspx" />
     <Content Include="Views\Shared\UserDetails.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\jquery-1.4.1.js" />

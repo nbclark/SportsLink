@@ -13,6 +13,11 @@ namespace SportsLinkScript.Shared
 {
     public static class Utility
     {
+        internal static string GetSignedRequest()
+        {
+            return (string)Document.GetElementById("signed_request").GetAttribute("value");
+        }
+
         public static void ShowPlayerDetails(string dialogContainerId, string name, long id)
         {
             jQueryUIObject container = (jQueryUIObject)jQuery.Select("#" + dialogContainerId);
@@ -24,7 +29,7 @@ namespace SportsLinkScript.Shared
 
                 JsonObject parameters = new JsonObject("id", id);
 
-                jQuery.Post("/services/PlayerDetails", Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+                jQuery.Post("/services/PlayerDetails?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
                 {
                     string html = (string)((Dictionary)data)["PlayerDetails"];
                     container.Html(html);

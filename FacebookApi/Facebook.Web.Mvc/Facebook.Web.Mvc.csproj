@@ -26,7 +26,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\Debug\Net40\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\net40\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -56,12 +56,12 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>..\..\Bin\Debug\Net40\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Debug\net40\Facebook.Web.Mvc.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\Release\Net40\</OutputPath>
+    <OutputPath>..\..\Bin\Release\net40\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -91,7 +91,7 @@
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
     <CodeContractsExtraRewriteOptions />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>..\..\Bin\Release\Net40\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Release\net40\Facebook.Web.Mvc.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -100,35 +100,37 @@
     <AssemblyOriginatorKeyFile>..\SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Tools\ASP.NET MVC2\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CanvasUrlExtensions.cs" />
-    <Compile Include="FacebookAuthorizeAttribute.cs" />
-    <Compile Include="FacebookAuthorizeAttributeBase.cs" />
     <Compile Include="CanvasAuthorizeAttribute.cs" />
-    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
+    <Compile Include="CanvasControllerExtensions.cs" />
+    <Compile Include="CanvasInputExtensions.cs" />
     <Compile Include="CanvasLinkExtensions.cs" />
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
+    <Compile Include="CanvasUrlExtensions.cs" />
+    <Compile Include="FacebookAuthorizeAttribute.cs" />
     <Compile Include="FacebookAuthorizeInfo.cs" />
-    <Compile Include="CanvasControllerExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="FacebookAuthorizeAttributeBase.cs" />
+    <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">
       <Link>Properties\GlobalAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FacebookSubscriptionReceivedAttribute.cs" />
+    <Compile Include="FacebookSubscriptionVerifiedResult.cs" />
+    <Compile Include="FacebookSubscriptionVerifyAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Facebook.Web\Facebook.Web.csproj">

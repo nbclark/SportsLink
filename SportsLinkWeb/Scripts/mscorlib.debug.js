@@ -21,10 +21,6 @@ window.ss = {
     }
 };
 
-Function.prototype.invoke = function Function$invoke() {
-    return this.apply(null, arguments);
-}
-
 (function() {
     function merge(target) {
         target = target || {};

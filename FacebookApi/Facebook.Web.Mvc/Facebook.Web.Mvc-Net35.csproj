@@ -27,7 +27,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\Bin\Debug\Net35\</OutputPath>
+    <OutputPath>..\..\Bin\Debug\net35\</OutputPath>
     <DefineConstants>DEBUG;TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -57,12 +57,12 @@
     <RunCodeAnalysis>true</RunCodeAnalysis>
     <CodeAnalysisRuleSet>..\CustomRules.ruleset</CodeAnalysisRuleSet>
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>..\..\Bin\Debug\Net35\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Debug\net35\Facebook.Web.Mvc.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\Bin\Release\Net35\</OutputPath>
+    <OutputPath>..\..\Bin\Release\net35\</OutputPath>
     <DefineConstants>TRACE;NET35</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -92,7 +92,7 @@
     <CodeContractsContainerAnalysis>True</CodeContractsContainerAnalysis>
     <CodeContractsExtraRewriteOptions />
     <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-    <DocumentationFile>..\..\Bin\Release\Net35\Facebook.Web.Mvc.XML</DocumentationFile>
+    <DocumentationFile>..\..\Bin\Release\net35\Facebook.Web.Mvc.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -102,22 +102,20 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Contracts">
-      <HintPath>..\..\Tools\CodeContracts\v3.5\Microsoft.Contracts.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.3.5.8\lib\35\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\packages\CodeContracts.Unofficial.1.0.0.2\lib\net35-client\Microsoft.Contracts.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
-    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Mvc, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\Tools\ASP.NET MVC2\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.Routing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CanvasInputExtensions.cs" />
     <Compile Include="CanvasSoftAuthorizeAttribute.cs" />
     <Compile Include="CanvasUrlExtensions.cs" />
     <Compile Include="FacebookAuthorizeAttribute.cs" />
@@ -125,9 +123,12 @@
     <Compile Include="CanvasLinkExtensions.cs" />
     <Compile Include="CanvasRedirectResult.cs" />
     <Compile Include="CanvasRedirectToRouteResult.cs" />
+    <Compile Include="CanvasControllerExtensions.cs" />
     <Compile Include="FacebookAuthorizeAttributeBase.cs" />
     <Compile Include="FacebookAuthorizeInfo.cs" />
-    <Compile Include="CanvasControllerExtensions.cs" />
+    <Compile Include="FacebookSubscriptionReceivedAttribute.cs" />
+    <Compile Include="FacebookSubscriptionVerifiedResult.cs" />
+    <Compile Include="FacebookSubscriptionVerifyAttribute.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="..\GlobalAssemblyInfo.cs">

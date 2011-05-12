@@ -65,11 +65,7 @@ C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\System.Web.Mvc.dll
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\System.Web.Mvc.xml
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Newtonsoft.Json.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Newtonsoft.Json.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Newtonsoft.Json.xml
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Newtonsoft.Json.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Newtonsoft.Json.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Newtonsoft.Json.xml
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Facebook.dll
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Facebook.pdb
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Facebook.Web.dll
@@ -89,6 +85,4 @@ C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Facebook.Web.XML
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Facebook.XML
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Microsoft.Web.Mvc.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\bin\Debug\SportsLinkAzure.csx\roles\SportsLinkWeb\approot\bin\Microsoft.Web.Mvc.pdb
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Microsoft.Web.Mvc.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkAzure\obj\Debug\SportsLinkWeb\bin\Microsoft.Web.Mvc.pdb

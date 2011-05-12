@@ -1,8 +1,8 @@
 ﻿// --------------------------------
-// <copyright file="FacebookAsyncResult.cs" company="Facebook C# SDK">
+// <copyright file="FacebookAsyncResult.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
@@ -10,7 +10,6 @@
 namespace Facebook
 {
     using System;
-    using System.Diagnostics.Contracts;
 
     /// <summary>
     /// Represents the method that handles the post-call result.
@@ -173,7 +172,7 @@ namespace Facebook
         {
             get
             {
-                if (this.Result == null)
+                if (base.Result == null)
                 {
                     return default(T);
                 }

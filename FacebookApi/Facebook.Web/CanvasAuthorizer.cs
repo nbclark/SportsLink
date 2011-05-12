@@ -1,37 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
-using System.Diagnostics.Contracts;
+﻿// --------------------------------
+// <copyright file="CanvasAuthorizer.cs" company="Thuzi LLC (www.thuzi.com)">
+//     Microsoft Public License (Ms-PL)
+// </copyright>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
+// <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
+// <website>http://facebooksdk.codeplex.com</website>
+// ---------------------------------
 
 namespace Facebook.Web
 {
-    public class CanvasAuthorizer : Authorizer
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Web;
+
+    public class CanvasAuthorizer : FacebookWebAuthorizer
     {
 
-        private ICanvasSettings canvasSettings;
-
-        public CanvasAuthorizer(FacebookAppBase facebookApp)
-            : base(facebookApp)
+        public CanvasAuthorizer()
+            : base(FacebookWebContext.Current)
         {
-            this.canvasSettings = CanvasSettings.Current;
         }
 
-        public CanvasAuthorizer(FacebookAppBase facebookApp, ICanvasSettings canvasSettings)
-            : base(facebookApp)
+        public CanvasAuthorizer(FacebookWebContext context)
+            : base(context)
         {
-            Contract.Requires(canvasSettings != null);
-
-            this.canvasSettings = canvasSettings;
         }
 
-        public override void HandleUnauthorizedRequest(HttpContextBase httpContext)
+        public CanvasAuthorizer(IFacebookApplication settings, HttpContextBase httpContext)
+            : base(settings, httpContext)
         {
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(httpContext.Request, canvasSettings);
-            var url = urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath);
-            httpContext.Response.ContentType = "text/html";
-            httpContext.Response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(url));
+        }
+
+        /// <summary>
+        /// Handle unauthorized requests.
+        /// </summary>
+        public override void HandleUnauthorizedRequest()
+        {
+            FacebookWebRequest.HttpContext.Response.ContentType = "text/html";
+            FacebookWebRequest.HttpContext.Response.Write(CanvasUrlBuilder.GetCanvasRedirectHtml(GetLoginUrl(null)));
+        }
+
+        /// <summary>
+        /// Gets the canvas login url.
+        /// </summary>
+        /// <param name="parameters">
+        /// The parameters.
+        /// </param>
+        /// <returns>
+        /// Returns the login url.
+        /// </returns>
+        public Uri GetLoginUrl(IDictionary<string, object> parameters)
+        {
+            Contract.Ensures(Contract.Result<Uri>() != null);
+
+            var defaultParameters = new Dictionary<string, object>();
+
+            if (!string.IsNullOrEmpty(LoginDisplayMode))
+            {
+                defaultParameters["display"] = LoginDisplayMode;
+            }
+
+            if (Permissions != null)
+            {
+                defaultParameters["scope"] = String.Join(",", Permissions);
+            }
+
+            var canvasUrlBuilder = new CanvasUrlBuilder(FacebookWebRequest.Settings, FacebookWebRequest.HttpContext.Request);
+            return canvasUrlBuilder.GetLoginUrl(ReturnUrlPath, CancelUrlPath, State, FacebookUtils.Merge(defaultParameters, parameters));
         }
 
     }

@@ -71,7 +71,7 @@ namespace SportsLinkScript.Controls
 
             JsonObject parameters = new JsonObject("page", this.Page - 1);
 
-            jQuery.Post("/services/Players", Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/Players?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }
@@ -85,7 +85,7 @@ namespace SportsLinkScript.Controls
 
             JsonObject parameters = new JsonObject("page", this.Page + 1);
 
-            jQuery.Post("/services/Players", Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/Players?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }

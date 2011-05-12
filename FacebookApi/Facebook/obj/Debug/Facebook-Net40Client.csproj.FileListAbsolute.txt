@@ -1,9 +1,0 @@
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Debug\Net40Client\Facebook.XML
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Debug\Net40Client\Facebook.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Debug\Net40Client\Facebook.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\Facebook.Properties.Resources.resources
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\GenerateResource.read.1.tlog
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\GenerateResource.write.1.tlog
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\Facebook.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook\obj\Debug\Facebook.pdb

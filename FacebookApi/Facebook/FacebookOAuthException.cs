@@ -1,8 +1,8 @@
 ﻿// --------------------------------
-// <copyright file="FacebookOAuthException.cs" company="Facebook C# SDK">
+// <copyright file="FacebookOAuthException.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
@@ -10,8 +10,8 @@
 namespace Facebook
 {
     using System;
+    using System.Globalization;
     using System.Runtime.Serialization;
-using System.Globalization;
 
     /// <summary>
     /// Represents errors that occur as a result of problems with the OAuth access token.
@@ -25,7 +25,6 @@ using System.Globalization;
         /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
         /// </summary>
         public FacebookOAuthException()
-            : base()
         {
         }
 
@@ -38,14 +37,10 @@ using System.Globalization;
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorType">Type of the error.</param>
         public FacebookOAuthException(string message, string errorType)
-            : this(message, errorType, null)
+            : base(message, errorType)
         {
+
         }
 
         /// <summary>
@@ -54,20 +49,8 @@ using System.Globalization;
         /// <param name="message">The message.</param>
         /// <param name="innerException">The inner exception.</param>
         public FacebookOAuthException(string message, Exception innerException)
-            : this(message, null, innerException)
+            : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookOAuthException"/> class.
-        /// </summary>
-        /// <param name="message">The error message text.</param>
-        /// <param name="errorType">Type of the facebook error.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FacebookOAuthException(string message, string errorType, Exception innerException)
-            : base(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message), innerException)
-        {
-            this.ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)

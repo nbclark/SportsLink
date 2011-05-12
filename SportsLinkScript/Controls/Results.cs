@@ -85,7 +85,7 @@ namespace SportsLinkScript.Controls
             JsonObject parameters = new JsonObject("offerId", offerId, "comments", comments, "scores", score);
 
             dialog.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQuery.Post("/services/PostScore", Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/PostScore?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
             {
                 dialog.Dialog("destroy");
                 Utility.ProcessResponse((Dictionary)data);

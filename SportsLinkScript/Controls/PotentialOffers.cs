@@ -49,7 +49,7 @@ namespace SportsLinkScript.Controls
             jQueryObject button = jQuery.FromElement(e.CurrentTarget);
             string offerId = button.Siblings("input").GetValue();
 
-            jQuery.Post("/services/AcceptOffer", Json.Stringify(new JsonObject("offerId", offerId)), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/AcceptOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(new JsonObject("offerId", offerId)), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
             {
                 button.Parent().Children("a").FadeOut(EffectDuration.Slow);
             });

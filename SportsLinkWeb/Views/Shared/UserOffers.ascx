@@ -19,8 +19,7 @@
                             <%=request.City.Name%>
                         </td>
                         <td class="accept">
-                            <input type="hidden" name="offerid" value="<%=request.OfferId %>" />
-                            <a class="cancelMatch" href="#">Cancel</a>
+                            <a class="cancelMatch" href="#" data-offerid='<%=request.OfferId %>'>Cancel</a>
                         </td>
                     </tr>
                 <% } %>

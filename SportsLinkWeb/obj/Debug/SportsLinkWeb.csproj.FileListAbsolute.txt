@@ -9,8 +9,6 @@ C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\b
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\obj\Debug\ResolveAssemblyReference.cache
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\obj\Debug\SportsLinkWeb.dll
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\obj\Debug\SportsLinkWeb.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Newtonsoft.Json.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Newtonsoft.Json.xml
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.dll
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.Web.dll
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.Web.Mvc.dll
@@ -20,4 +18,3 @@ C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\b
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.Web.xml
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.pdb
 C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Facebook.xml
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkWeb\bin\Microsoft.Web.Mvc.pdb

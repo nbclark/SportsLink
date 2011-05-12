@@ -1,8 +1,8 @@
 ﻿// --------------------------------
-// <copyright file="FacebookApiException.cs" company="Facebook C# SDK">
+// <copyright file="FacebookApiException.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
@@ -14,7 +14,7 @@ namespace Facebook
     using System.Runtime.Serialization;
 
     /// <summary>
-    /// Represent erros that occur while calling a Facebook API.
+    /// Represent errors that occur while calling a Facebook API.
     /// </summary>
 #if (!SILVERLIGHT)
     [Serializable]
@@ -27,7 +27,6 @@ namespace Facebook
         /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
         /// </summary>
         public FacebookApiException()
-            : base()
         {
         }
 
@@ -46,9 +45,9 @@ namespace Facebook
         /// <param name="message">The message.</param>
         /// <param name="errorType">Type of the error.</param>
         public FacebookApiException(string message, string errorType)
-            : base(message)
+            : this(String.Format(CultureInfo.InvariantCulture, "({0}) {1}", errorType ?? "Unknown", message))
         {
-            this.ErrorType = errorType;
+            ErrorType = errorType;
         }
 
         /// <summary>
@@ -59,18 +58,6 @@ namespace Facebook
         public FacebookApiException(string message, Exception innerException)
             : base(message, innerException)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="FacebookApiException"/> class.
-        /// </summary>
-        /// <param name="message">The message.</param>
-        /// <param name="errorType">Type of the error.</param>
-        /// <param name="innerException">The inner exception.</param>
-        public FacebookApiException(string message, string errorType, Exception innerException)
-            : base(message, innerException)
-        {
-            this.ErrorType = errorType;
         }
 
 #if (!SILVERLIGHT)
@@ -92,32 +79,5 @@ namespace Facebook
         /// </summary>
         /// <value>The type of the error.</value>
         public string ErrorType { get; set; }
-
-        /// <summary>
-        /// Gets a message that describes the current exception.
-        /// </summary>
-        /// <value></value>
-        /// <returns>The error message that explains the reason for the exception, or an empty string("").</returns>
-        public override string Message
-        {
-            get
-            {
-                return base.Message;
-            }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        /// <PermissionSet>
-        ///     <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" PathDiscovery="*AllFiles*"/>
-        /// </PermissionSet>
-        public override string ToString()
-        {
-            return string.Format(CultureInfo.InvariantCulture, "({0}) {1}", this.ErrorType ?? "Unknown", this.Message);
-        }
     }
 }

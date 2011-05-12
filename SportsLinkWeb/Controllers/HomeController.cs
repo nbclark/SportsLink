@@ -10,6 +10,7 @@ using System.Web.Script;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json.Linq;
 using Facebook;
+using Facebook.Web;
 using Facebook.Web.Mvc;
 using SportsLink;
 
@@ -39,22 +40,23 @@ namespace SportsLinkWeb.Controllers
             return this.DB.City.Where(c => c.LocationId == regInfo.Location.Id).FirstOrDefault();
         }
 
-        [CanvasAuthorize(Perms="user_birthday,user_location")]
+        [CanvasAuthorize(Permissions = "user_birthday,user_location,publish_stream,email")]
         public ActionResult Index()
         {
-            var app = new FacebookApp();
+            var app = new FacebookWebClient();
+            var fbContext = FacebookWebContext.Current;
 
-            User user = this.DB.User.Where(tu => tu.FacebookId == app.UserId).FirstOrDefault();
-            TennisUser tennisUser = this.DB.TennisUser.Where(tu => tu.FacebookId == app.UserId).FirstOrDefault();
+            User user = this.DB.User.Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+            TennisUser tennisUser = this.DB.TennisUser.Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
 
-            if (null == tennisUser && null != app.SignedRequest)
+            if (null == tennisUser && null != fbContext.SignedRequest)
             {
-                if (!app.SignedRequest.Dictionary.ContainsKey("registration"))
+                if (!fbContext.SignedRequest.Data.ContainsKey("registration"))
                 {
                     return new RedirectResult("/home/register");
                 }
 
-                var regInfo = (RegistrationJson)Serializer.Deserialize(app.SignedRequest.Dictionary["registration"], typeof(RegistrationJson));
+                var regInfo = (RegistrationJson)Serializer.Deserialize((string)fbContext.SignedRequest.Data["registration"], typeof(RegistrationJson));
 
                 City city = GetCity(regInfo);
 
@@ -62,7 +64,7 @@ namespace SportsLinkWeb.Controllers
 
                 if (null == city)
                 {
-                    JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + app.UserId);
+                    JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + fbContext.UserId);
                     JsonArray places = (JsonArray)app.Query("SELECT latitude,longitude FROM place WHERE page_id = " + regInfo.Location.Id);
 
                     if (null != users && users.Count > 0)
@@ -84,7 +86,7 @@ namespace SportsLinkWeb.Controllers
                 }
 
                 user = new User();
-                user.FacebookId = app.UserId;
+                user.FacebookId = fbContext.UserId;
                 user.Name = regInfo.Name;
                 user.Email = regInfo.Email;
                 user.Birthday = regInfo.Birthday;
@@ -93,7 +95,7 @@ namespace SportsLinkWeb.Controllers
                 user.TimeZoneOffset = timeZoneOffset;
 
                 tennisUser = new TennisUser();
-                tennisUser.FacebookId = app.UserId;
+                tennisUser.FacebookId = fbContext.UserId;
                 tennisUser.Rating = regInfo.NTRPRating;
                 tennisUser.SinglesDoubles = regInfo.SinglesDoubles;
                 tennisUser.CurrentAvailability = true;

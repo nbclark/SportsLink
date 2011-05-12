@@ -1,80 +1,72 @@
 ﻿// --------------------------------
-// <copyright file="CanvasAuthorizeAttribute.cs" company="Facebook C# SDK">
+// <copyright file="CanvasAuthorizeAttribute.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Web.Mvc;
-
 namespace Facebook.Web.Mvc
 {
-    /// <summary>
-    /// Provides funcationality for restricting access to controllers or actions based on Facebook permissions.
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true, AllowMultiple = true)]
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1813:AvoidUnsealedAttributes")]
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics.Contracts;
+    using System.Web;
+    using System.Web.Mvc;
+    using Facebook;
+    using Facebook.Web;
+
     public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
+        public string LoginDisplayMode { get; set; }
 
-        /// <summary>
-        /// Gets or sets the cancel URL path.
-        /// </summary>
-        /// <value>The cancel URL path.</value>
         public string CancelUrlPath { get; set; }
-        /// <summary>
-        /// Gets or sets the return URL path.
-        /// </summary>
-        /// <value>The return URL path.</value>
+
         public string ReturnUrlPath { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
-        /// </summary>
-        public CanvasAuthorizeAttribute() : base() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CanvasAuthorizeAttribute"/> class.
-        /// </summary>
-        /// <param name="facebookApp">The facebook app.</param>
-        public CanvasAuthorizeAttribute(FacebookApp facebookApp) :base(facebookApp) { }
-
-
-        /// <summary>
-        /// Gets the login url for the current request.
-        /// </summary>
-        /// <param name="filterContext">The current AuthorizationContext.</param>
-        /// <returns>The cancel url.</returns>
-        protected Uri GetLoginUrl(AuthorizationContext filterContext)
+        public override void OnAuthorization(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            return GetLoginUrl(filterContext, false);
+            var authorizer = new FacebookWebContext(settings, filterContext.HttpContext);
+
+            if (!string.IsNullOrEmpty(Permissions) && Permissions.IndexOf(" ") != -1)
+            {
+                throw new ArgumentException("Permissions cannot contain whitespace.");
+            }
+
+            if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
+            {
+                this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
+            }
         }
 
-        /// <summary>
-        /// Gets the login url for the current request.
-        /// </summary>
-        /// <param name="filterContext">The current AuthorizationContext.</param>
-        /// <param name="cancelToSelf">Should the cancel url return to this same action. (Only do this on soft authorize, otherwise you will get an infinate loop.)</param>
-        /// <returns>The cancel url.</returns>
-        protected virtual Uri GetLoginUrl(AuthorizationContext filterContext, bool cancelToSelf)
+        protected virtual void HandleUnauthorizedRequest(AuthorizationContext filterContext, IFacebookApplication settings)
         {
-            CanvasUrlBuilder urlBuilder = new CanvasUrlBuilder(filterContext.HttpContext.Request);
-            return urlBuilder.GetLoginUrl(this.FacebookApp, Perms, ReturnUrlPath, CancelUrlPath, cancelToSelf);
+            Contract.Requires(filterContext != null);
+            Contract.Requires(settings != null);
+
+            var loginUri = this.GetLoginUrl(settings, filterContext.HttpContext, null);
+            filterContext.Result = new CanvasRedirectResult(loginUri.ToString());
         }
 
-
-        /// <summary>
-        /// Handles the unauthorized request.
-        /// </summary>
-        /// <param name="filterContext">The filter context.</param>
-        protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
+        internal virtual protected Uri GetLoginUrl(IFacebookApplication settings, HttpContextBase httpContext, IDictionary<string, object> parameters)
         {
-            var url = GetLoginUrl(filterContext);
-            filterContext.Result = new CanvasRedirectResult(url.ToString());
-        }
+            Contract.Requires(settings != null);
+            Contract.Requires(httpContext != null);
 
+            var authorizer = new CanvasAuthorizer(settings, httpContext)
+            {
+                ReturnUrlPath = this.ReturnUrlPath,
+                CancelUrlPath = this.CancelUrlPath,
+                LoginDisplayMode = this.LoginDisplayMode
+            };
+
+            if (!String.IsNullOrEmpty(this.Permissions))
+            {
+                authorizer.Permissions = this.Permissions.Replace(" ", String.Empty).Split(',');
+            }
+
+            return authorizer.GetLoginUrl(parameters);
+        }
     }
 }

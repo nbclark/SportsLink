@@ -4,808 +4,81 @@
         <name>Facebook</name>
     </assembly>
     <members>
-        <member name="T:Facebook.FacebookAppBaseContracts">
+        <member name="T:Facebook.FacebookApiEventArgs">
             <summary>
-            Represents the inheritable contracts for the <see cref="T:Facebook.FacebookAppBase"/> class.
+            Represents the facebook api event args.
             </summary>
         </member>
-        <member name="T:Facebook.FacebookAppBase">
+        <member name="F:Facebook.FacebookApiEventArgs._isBatchResult">
             <summary>
-            Represents the core Facebook functionality.
+            Indicates whether the result is a batch result.
             </summary>
         </member>
-        <member name="M:Facebook.FacebookAppBase.InvarientObject">
+        <member name="F:Facebook.FacebookApiEventArgs._json">
             <summary>
-            The code contracts invarient object method.
+            The json string.
             </summary>
         </member>
-        <member name="M:Facebook.FacebookAppBase.GetLoginUrl">
+        <member name="M:Facebook.FacebookApiEventArgs.#ctor(System.Exception,System.Boolean,System.Object,System.String)">
             <summary>
-            Get a Login URL for use with redirects. By default, 
-            full page redirect is assumed.
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiEventArgs"/> class.
             </summary>
-            <returns>The URL for the login flow.</returns>
+            <param name="error">
+            The error.
+            </param>
+            <param name="cancelled">
+            The cancelled.
+            </param>
+            <param name="userState">
+            The user state.
+            </param>
+            <param name="json">
+            The json string.
+            </param>
         </member>
-        <member name="M:Facebook.FacebookAppBase.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Facebook.FacebookApiEventArgs.#ctor(System.Exception,System.Boolean,System.Object,System.String,System.Boolean)">
             <summary>
-            Get a Login URL for use with redirects. By default, full page redirect is
-            assumed. If you are using the generated URL with a window.open() call in
-            JavaScript, you can pass in display=popup as part of the parameters.
-            The parameters:
-                - next: the url to go to after a successful login
-                - cancel_url: the url to go to after the user cancels
-                - req_perms: comma separated list of requested extended perms
-                - display: can be "page" (default, full page) or "popup"
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiEventArgs"/> class.
             </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
+            <param name="error">
+            The error.
+            </param>
+            <param name="cancelled">
+            The cancelled.
+            </param>
+            <param name="userState">
+            The user state.
+            </param>
+            <param name="json">
+            The json string.
+            </param>
+            <param name="isBatchResult">
+            Indicates whether the result is a batch result.
+            </param>
         </member>
-        <member name="M:Facebook.FacebookAppBase.GetLogoutUrl">
+        <member name="M:Facebook.FacebookApiEventArgs.GetResultData">
             <summary>
-            Get a Logout URL suitable for use with redirects.
+            Get the json result.
             </summary>
-            <returns>The URL for the logout flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Get a Logout URL suitable for use with redirects.
-            The parameters:
-                - next: the url to go to after a successful logout
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetLoginStatusUrl">
-            <summary>
-            Get a login status URL to fetch the status from facebook.
-            </summary>
-            <returns>The URL for the logout flow</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetLoginStatusUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Get a login status URL to fetch the status from facebook.
-            The parameters:
-                - ok_session: the URL to go to if a session is found
-                - no_session: the URL to go to if the user is not connected
-                - no_user: the URL to go to if the user is not signed into facebook
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the logout flow</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.CleanUrl(System.Uri)">
-            <summary>
-            Cleans the URL or known Facebook querystring values.
-            </summary>
-            <param name="uri">The URI.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.String)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.String,Facebook.HttpMethod)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Api(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Type,Facebook.HttpMethod)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <param name="resultType">The type of the API request result to deserialize the response data.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Get(System.String)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Get(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Get(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Get``1(System.String)">
-            <summary>
-            Make an api call.
-            </summary>
-            <typeparam name="T">The result of the API call.</typeparam>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
             <returns>
-            A dynamic object with the resulting data.
+            The json result.
             </returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
         </member>
-        <member name="M:Facebook.FacebookAppBase.Get``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Facebook.FacebookApiEventArgs.GetResultData``1">
             <summary>
-            Make an api call.
+            Gets the result.
             </summary>
-            <typeparam name="T">The result of the API call.</typeparam>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">Dynamic object of the request parameters.</param>
+            <typeparam name="T">
+            Type of object to deserialize to.
+            </typeparam>
             <returns>
-            A dynamic object with the resulting data.
+            The result.
             </returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Get``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="parameters">Dynamic object of the request parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Post(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="path">The path.</param>
-            <param name="parameters">The parameters.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Post(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="parameters">The parameters.</param>
-            <returns></returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(System.String,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(System.String,Facebook.HttpMethod,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(Facebook.FacebookAsyncCallback,System.Object,System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ApiAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,Facebook.FacebookAsyncCallback{``0},System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.DeleteAsync(System.String,Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.DeleteAsync(System.String,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.String,Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.String,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="parameters">object of url parameters.</param>
-            <param name="callback">The async callback.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.String,Facebook.FacebookAsyncCallback{``0})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.String,Facebook.FacebookAsyncCallback{``0},System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback{``0})">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback{``0},System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback{``0})">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="parameters">object of url parameters.</param>
-            <param name="callback">The async callback.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetAsync``1(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback{``0},System.Object)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.PostAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.PostAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.PostAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="parameters">object of url parameters.</param>
-            <param name="callback">The async callback.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.PostAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make an API call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ValidateSessionObject(Facebook.FacebookSession)">
-            <summary>
-            Validates a session_version=3 style session object.
-            </summary>
-            <param name="session">The session to validate.</param>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GenerateSignature(Facebook.FacebookSession)">
-            <summary>
-            Generates a MD5 signature for the facebook session.
-            </summary>
-            <param name="session">The session to generate a signature.</param>
-            <returns>An MD5 signature.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.RestServer(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="parameters">The parameters for the server call.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.Graph(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Invoke the Graph API.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.OAuthRequest(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.RestServerAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">The parameters for the server call.</param>
-            <param name="httpMethod">The http method for the request.</param>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GraphAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Invoke the Graph API.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <param name="parameters">object of url parameters.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.OAuthRequestAsync(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param> 
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetApiUrl(System.String)">
-            <summary>
-            Build the URL for api given parameters.
-            </summary>
-            <param name="method">The method name.</param>
-            <returns>The Url for the given parameters.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetUrl(System.String)">
-            <summary>
-            Build the URL for given domain alias, path and parameters.
-            </summary>
-            <param name="name">The name of the domain (from the domain maps).</param>
-            <returns>The string of the url for the given parameters.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetUrl(System.String,System.String)">
-            <summary>
-            Build the URL for given domain alias, path and parameters.
-            </summary>
-            <param name="name">The name of the domain (from the domain maps).</param>
-            <param name="path">Path (without a leading slash)</param>
-            <returns>The string of the url for the given parameters.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetUrl(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Build the URL for given domain alias, path and parameters.
-            </summary>
-            <param name="name">The name of the domain (from the domain maps).</param>
-            <param name="parameters">Optional query parameters</param>
-            <returns>The string of the url for the given parameters.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.GetUrl(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Build the URL for given domain alias, path and parameters.
-            </summary>
-            <param name="name">The name of the domain (from the domain maps).</param>
-            <param name="path">Optional path (without a leading slash)</param>
-            <param name="parameters">Optional query parameters</param>
-            <returns>The string of the url for the given parameters.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBase.ParseQueryParametersToDictionary(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Removes the querystring parameters from the path value and adds them
-            to the parameters dictionary.
-            </summary>
-            <param name="path">The path to parse.</param>
-            <param name="parameters">The dictionary</param>
-            <returns></returns>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.DropQueryParameters">
-            <summary>
-            Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.DomainMaps">
-            <summary>
-            Gets the aliases to Facebook domains.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.AppId">
-            <summary>
-            Gets the Application ID.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.AppSecret">
-            <summary>
-            Gets the Application API Secret.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.Session">
-            <summary>
-            Gets or sets the active user session.
-            </summary>
-            <value>The session.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.CookieSupport">
-            <summary>
-            Gets or sets a value indicating whether cookies are supported.
-            </summary>
-            <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.SessionLoaded">
-            <summary>
-            Gets or sets a value indicating whether the session has attempted to be loaded.
-            </summary>
-            <value><c>true</c> if [session loaded]; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.BaseDomain">
-            <summary>
-            Gets or sets the base domain.
-            </summary>
-            <value>The base domain.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.CurrentUrl">
-            <summary>
-            Gets the current URL.
-            </summary>
-            <value>The current URL.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.UserId">
-            <summary>
-            Gets the user id.
-            </summary>
-            <value>The user id.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.AccessToken">
-            <summary>
-            Gets the access token.
-            </summary>
-            <value>The access token.</value>
-        </member>
-        <member name="P:Facebook.FacebookAppBase.SessionCookieName">
-            <summary>
-            Gets the name of the session cookie.
-            </summary>
-            <value>The name of the session cookie.</value>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Get a Login URL for use with redirects. By default, full page redirect is
-            assumed. If you are using the generated URL with a window.open() call in
-            JavaScript, you can pass in display=popup as part of the parameters.
-            The parameters:
-            - next: the url to go to after a successful login
-            - cancel_url: the url to go to after the user cancels
-            - req_perms: comma separated list of requested extended perms
-            - display: can be "page" (default, full page) or "popup"
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Get a Logout URL suitable for use with redirects.
-            The parameters:
-            - next: the url to go to after a successful logout
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.GetLoginStatusUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Get a login status URL to fetch the status from facebook.
-            The parameters:
-            - ok_session: the URL to go to if a session is found
-            - no_session: the URL to go to if the user is not connected
-            - no_user: the URL to go to if the user is not signed into facebook
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the logout flow</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.ValidateSessionObject(Facebook.FacebookSession)">
-            <summary>
-            Validates a session_version=3 style session object.
-            </summary>
-            <param name="session">The session to validate.</param>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.GenerateSignature(Facebook.FacebookSession)">
-            <summary>
-            Generates a MD5 signature for the facebook session.
-            </summary>
-            <param name="session">The session to generate a signature.</param>
-            <returns>An MD5 signature.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.RestServer(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="parameters">The parameters for the server call.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.Graph(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Invoke the Graph API.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>
-            A dynamic object with the resulting data.
-            </returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.OAuthRequest(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.RestServerAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">The parameters for the server call.</param>
-            <param name="httpMethod">The http method for the request.</param>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.GraphAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Invoke the Graph API.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">object of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookAppBaseContracts.OAuthRequestAsync(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
         </member>
         <member name="T:Facebook.DateTimeConvertor">
             <summary>
             Utilities to convert dates to and from unix time.
             </summary>
-        </member>
-        <member name="M:Facebook.DateTimeConvertor.ToUnixTime(System.DateTimeOffset)">
-            <summary>
-            Converts a DateTimeOffset object to unix time.
-            </summary>
-            <param name="dateTime">The date time.</param>
-            <returns>The unix date time.</returns>
-        </member>
-        <member name="M:Facebook.DateTimeConvertor.ToUnixTime(System.DateTime)">
-            <summary>
-            Converts a DateTime object to unix time.
-            </summary>
-            <param name="dateTime">The date time.</param>
-            <returns>The unix date time.</returns>
-        </member>
-        <member name="M:Facebook.DateTimeConvertor.FromUnixTime(System.String)">
-            <summary>
-            Converts a unix time string to a DateTime object.
-            </summary>
-            <param name="unixTime">The string representation of the unix time.</param>
-            <returns>The DateTime object.</returns>
         </member>
         <member name="M:Facebook.DateTimeConvertor.FromUnixTime(System.Double)">
             <summary>
@@ -814,11 +87,682 @@
             <param name="unixTime">The unix time.</param>
             <returns>The DateTime object.</returns>
         </member>
+        <member name="M:Facebook.DateTimeConvertor.FromUnixTime(System.Int64)">
+            <summary>
+            Converts a unix time string to a DateTime object.
+            </summary>
+            <param name="unixTime">The unix time.</param>
+            <returns>The DateTime object.</returns>
+        </member>
+        <member name="M:Facebook.DateTimeConvertor.FromUnixTime(System.String)">
+            <summary>
+            Converts a unix time string to a DateTime object.
+            </summary>
+            <param name="unixTime">The string representation of the unix time.</param>
+            <returns>The DateTime object.</returns>
+        </member>
+        <member name="M:Facebook.DateTimeConvertor.ToUnixTime(System.DateTime)">
+            <summary>
+            Converts a DateTime object to unix time.
+            </summary>
+            <param name="dateTime">The date time.</param>
+            <returns>The unix date time.</returns>
+        </member>
+        <member name="M:Facebook.DateTimeConvertor.ToUnixTime(System.DateTimeOffset)">
+            <summary>
+            Converts a DateTimeOffset object to unix time.
+            </summary>
+            <param name="dateTime">The date time.</param>
+            <returns>The unix date time.</returns>
+        </member>
+        <member name="M:Facebook.DateTimeConvertor.ToIso8601FormattedDateTime(System.DateTime)">
+            <summary>
+            Converts to specified <see cref="T:System.DateTime"/> to ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ).
+            </summary>
+            <param name="dateTime">
+            The date time.
+            </param>
+            <returns>
+            Returns the string representation of date time in ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ).
+            </returns>
+        </member>
+        <member name="M:Facebook.DateTimeConvertor.FromIso8601FormattedDateTime(System.String)">
+            <summary>
+            Converts ISO-8601 format (yyyy-MM-ddTHH:mm:ssZ) date time to <see cref="T:System.DateTime"/>.
+            </summary>
+            <param name="iso8601DateTime">
+            The iso 8601 formatted date time.
+            </param>
+            <returns>
+            Returns the <see cref="T:System.DateTime"/> equivalent to the ISO-8601 formatted date time. 
+            </returns>
+        </member>
         <member name="P:Facebook.DateTimeConvertor.Epoch">
             <summary>
             Gets the epoch time.
             </summary>
             <value>The epoch time.</value>
+        </member>
+        <member name="T:Facebook.FacebookClient">
+            <summary>
+            Provides access to the Facebook Platform.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookClient._useFacebookBeta">
+            <summary>
+            Indcates whether to use Facebook beta.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookClient.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookClient"/> class. 
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookClient.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookClient"/> class. 
+            </summary>
+            <param name="accessToken">
+            The Facebook access token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.#ctor(System.String,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookClient"/> class.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="appSecret">
+            The app secret.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.#ctor(Facebook.IFacebookApplication)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookClient"/> class.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.Delete(System.String)">
+            <summary>
+            Makes a DELETE request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+            <exception cref="T:Facebook.FacebookApiException"/>
+        </member>
+        <member name="M:Facebook.FacebookClient.Delete(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a DELETE request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+            <exception cref="T:Facebook.FacebookApiException"/>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get(System.String)">
+            <summary>
+            Makes a GET requst to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+            <exception cref="T:Facebook.FacebookApiException"/>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a GET request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a GET request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get``1(System.String)">
+            <summary>
+            Makes a GET request to the Facebook server.
+            </summary>
+            <typeparam name="T">
+            The result of the API call.
+            </typeparam>
+            <param name="path">
+            The resource path.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get``1(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a GET request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <typeparam name="T">
+            The result of the API call.
+            </typeparam>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Get``1(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a GET request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <typeparam name="T">
+            The result of the API call.
+            </typeparam>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Post(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The jon result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Post(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes a POST request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Post(System.Object)">
+            <summary>
+            Makes a POST request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Post(System.String,System.Object)">
+            <summary>
+            Makes a POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.DeleteAsync(System.String)">
+            <summary>
+            Makes an asynchronous DELETE request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes an asynchronous DELETE request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.DeleteAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Makes an asynchronous DELETE request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetAsync(System.String)">
+            <summary>
+            Makes an asynchronous GET request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes an asynchronous GET request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Makes an asynchronous GET request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetAsync(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes an asynchronous GET request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.String,System.Object)">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.String,System.Object,System.Object)">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.PostAsync(System.Object)">
+            <summary>
+            Makes an asynchronous POST request to the Facebook server.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.Query(System.String)">
+            <summary>
+            Executes a FQL query.
+            </summary>
+            <param name="fql">
+            The FQL query.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            The FQL query result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.Query(System.String[])">
+            <summary>
+            Executes a FQL multiquery.
+            </summary>
+            <param name="fql">
+            The FQL queries.
+            </param>
+            <exception cref="T:Facebook.FacebookApiException"/>
+            <returns>
+            A collection of the FQL query results.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.QueryAsync(System.String)">
+            <summary>
+            Executes a FQL query asynchronously.
+            </summary>
+            <param name="fql">
+            The FQL query.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.QueryAsync(System.String,System.Object)">
+            <summary>
+            Executes a FQL query asynchronously.
+            </summary>
+            <param name="fql">
+            The FQL query.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.QueryAsync(System.String[])">
+            <summary>
+            Executes a FQL multiquery asynchronously.
+            </summary>
+            <param name="fql">
+            The FQL queries.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.QueryAsync(System.String[],System.Object)">
+            <summary>
+            Executes a FQL multiquery asynchronously.
+            </summary>
+            <param name="fql">
+            The FQL queries.
+            </param>
+            <param name="userToken">
+            The user Token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.Batch(Facebook.FacebookBatchParameter[])">
+            <summary>
+            Executes a batch request.
+            </summary>
+            <param name="batchParameters">
+            The batch parameters.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.BatchAsync(Facebook.FacebookBatchParameter[],System.Object)">
+            <summary>
+            Executes a batch request asynchronously.
+            </summary>
+            <param name="batchParameters">
+            The batch parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.BatchAsync(Facebook.FacebookBatchParameter[])">
+            <summary>
+            Executes a batch request asynchronously.
+            </summary>
+            <param name="batchParameters">
+            The batch parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookClient.ToParameters(Facebook.FacebookBatchParameter)">
+            <summary>
+            Converts the facebook batch to POST parameters.
+            </summary>
+            <param name="batchParameter">
+            The batch parameter.
+            </param>
+            <returns>
+            The post parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.ProcessBatchResult(System.Object)">
+            <summary>
+            Processes the batch result.
+            </summary>
+            <param name="result">
+            The json result.
+            </param>
+            <returns>
+            Batch result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.RequestCallback(System.IAsyncResult,System.Byte[],System.Action{System.String,System.Exception},System.Object)">
+            <summary>
+            The asynchronous web request callback.
+            </summary>
+            <param name="asyncResult">The asynchronous result.</param>
+            <param name="postData">The post data.</param>
+            <param name="callback">The callback method.</param>
+            <param name="state">The asynchronous state.</param>
+        </member>
+        <member name="M:Facebook.FacebookClient.ResponseCallback(System.IAsyncResult,System.Action{System.String,System.Exception},System.Object)">
+            <summary>
+            The asynchronous web response callback.
+            </summary>
+            <param name="asyncResult">The asynchronous result.</param>
+            <param name="callback">The callback method.</param>
+            <param name="state">The asynchronous state.</param>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetApiUrl(System.String)">
+            <summary>
+            Build the URL for api given parameters.
+            </summary>
+            <param name="method">
+            The method name.
+            </param>
+            <returns>
+            The Url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetUrl(System.String)">
+            <summary>
+            Build the URL for given domain alias, path and parameters.
+            </summary>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetUrl(System.String,System.String)">
+            <summary>
+            Build the URL for given domain alias, path and parameters.
+            </summary>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <param name="path">
+            Path (without a leading slash)
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetUrl(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Build the URL for given domain alias, path and parameters.
+            </summary>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <param name="parameters">
+            Optional query parameters
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.GetUrl(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Build the URL for given domain alias, path and parameters.
+            </summary>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <param name="path">
+            Optional path (without a leading slash)
+            </param>
+            <param name="parameters">
+            Optional query parameters
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.BuildRequestData(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Uri@,System.String@)">
+            <summary>
+            Builds the request post data and request uri based on the given parameters.
+            </summary>
+            <param name="uri">
+            The request uri.
+            </param>
+            <param name="parameters">
+            The request parameters.
+            </param>
+            <param name="httpMethod">
+            The http method.
+            </param>
+            <param name="requestUrl">
+            The outputted request uri.
+            </param>
+            <param name="contentType">
+            The request content type.
+            </param>
+            <returns>
+            The request post data.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookClient.BuildMediaObjectPostData(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
+            <summary>
+            Builds the request post data if the request contains a media object
+            such as an image or video to upload.
+            </summary>
+            <param name="parameters">
+            The request parameters.
+            </param>
+            <param name="boundary">
+            The multipart form request boundary.
+            </param>
+            <returns>
+            The request post data.
+            </returns>
+        </member>
+        <member name="E:Facebook.FacebookClient.DeleteCompleted">
+            <summary>
+            Event handler for delete completion.
+            </summary>
+        </member>
+        <member name="E:Facebook.FacebookClient.PostCompleted">
+            <summary>
+            Event handler for post completion.
+            </summary>
+        </member>
+        <member name="E:Facebook.FacebookClient.GetCompleted">
+            <summary>
+            Event handler for get completion.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookClient.AccessToken">
+            <summary>
+            Gets or sets the access token.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookClient.UseFacebookBeta">
+            <summary>
+            Gets or sets a value indicating whether to use Facebook beta.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookClient.DropQueryParameters">
+            <summary>
+            Gets the list of query parameters that get automatically dropped when rebuilding the current URL.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookClient.DomainMaps">
+            <summary>
+            Gets the aliases to Facebook domains.
+            </summary>
         </member>
         <member name="T:Facebook.FacebookApiLimitException">
             <summary>
@@ -827,7 +771,7 @@
         </member>
         <member name="T:Facebook.FacebookApiException">
             <summary>
-            Represent erros that occur while calling a Facebook API.
+            Represent errors that occur while calling a Facebook API.
             </summary>
         </member>
         <member name="M:Facebook.FacebookApiException.#ctor">
@@ -855,14 +799,6 @@
             <param name="message">The message.</param>
             <param name="innerException">The inner exception.</param>
         </member>
-        <member name="M:Facebook.FacebookApiException.#ctor(System.String,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookApiException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="errorType">Type of the error.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
         <member name="M:Facebook.FacebookApiException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
             Initializes a new instance of the <see cref="T:Facebook.FacebookApiException"/> class.
@@ -872,78 +808,79 @@
             <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
         </member>
-        <member name="M:Facebook.FacebookApiException.ToString">
-            <summary>
-            Returns a <see cref="T:System.String"/> that represents this instance.
-            </summary>
-            <returns>
-            A <see cref="T:System.String"/> that represents this instance.
-            </returns>
-            <PermissionSet>
-                <IPermission class="System.Security.Permissions.FileIOPermission, mscorlib, Version=2.0.3600.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" version="1" PathDiscovery="*AllFiles*"/>
-            </PermissionSet>
-        </member>
         <member name="P:Facebook.FacebookApiException.ErrorType">
             <summary>
             Gets or sets the type of the error.
             </summary>
             <value>The type of the error.</value>
         </member>
-        <member name="P:Facebook.FacebookApiException.Message">
-            <summary>
-            Gets a message that describes the current exception.
-            </summary>
-            <value></value>
-            <returns>The error message that explains the reason for the exception, or an empty string("").</returns>
-        </member>
         <member name="M:Facebook.FacebookApiLimitException.#ctor">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiLimitException"/> class. 
             </summary>
         </member>
         <member name="M:Facebook.FacebookApiLimitException.#ctor(System.String)">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiLimitException"/> class. 
             </summary>
-            <param name="message">The message.</param>
-        </member>
-        <member name="M:Facebook.FacebookApiLimitException.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="errorType">Type of the error.</param>
+            <param name="message">
+            The message.
+            </param>
         </member>
         <member name="M:Facebook.FacebookApiLimitException.#ctor(System.String,System.Exception)">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiLimitException"/> class. 
             </summary>
-            <param name="message">The message.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="M:Facebook.FacebookApiLimitException.#ctor(System.String,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
-            </summary>
-            <param name="message">The error message text.</param>
-            <param name="errorType">Type of the facebook error.</param>
-            <param name="innerException">The inner exception.</param>
+            <param name="message">
+            The message.
+            </param>
+            <param name="innerException">
+            The inner exception.
+            </param>
         </member>
         <member name="M:Facebook.FacebookApiLimitException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
+            Initializes a new instance of the <see cref="T:Facebook.FacebookApiLimitException"/> class. 
             </summary>
-            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
-            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
-            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
-            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
+            <param name="info">
+            The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.
+            </param>
+            <param name="context">
+            The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.
+            </param>
+            <exception cref="T:System.ArgumentNullException">
+            The <paramref name="info"/> parameter is null. 
+            </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">
+            The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). 
+            </exception>
         </member>
-        <member name="T:Facebook.DictionaryUtilities">
+        <member name="T:Facebook.FacebookUtils">
             <summary>
-            Extension methods on Dicationry objects.
+            Helper methods for Facebook.
             </summary>
         </member>
-        <member name="M:Facebook.DictionaryUtilities.Merge(System.Collections.Generic.IDictionary{System.String,System.Object},System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="F:Facebook.FacebookUtils.MultiPartFormPrefix">
+            <summary>
+            The multi-part form prefix characters.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookUtils.MultiPartNewLine">
+            <summary>
+            The multi-part form new line characters.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookUtils.DomainMaps">
+            <summary>
+            Domain Maps
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookUtils.DomainMapsSecure">
+            <summary>
+            Secure Domain Maps
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookUtils.Merge``2(System.Collections.Generic.IDictionary{``0,``1},System.Collections.Generic.IDictionary{``0,``1})">
             <summary>
             Merges two dictionaries.
             </summary>
@@ -951,395 +888,302 @@
             <param name="second">Every value of the merged object is used.</param>
             <returns>The merged dictionary</returns>
         </member>
-        <member name="M:Facebook.DictionaryUtilities.ToJsonQueryString(System.Collections.Generic.IDictionary{System.String,System.Object})">
+        <member name="M:Facebook.FacebookUtils.ToDictionary(System.Object)">
+            <summary>
+            Convert the object to dictionary.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            Returns the dictionary equivalent of the specified object.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.ToJsonQueryString(System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
             Converts the dictionary to a json formatted query string.
             </summary>
             <param name="dictionary">The dictionary.</param>
             <returns>A Json formatted querystring.</returns>
         </member>
-        <member name="M:Facebook.DictionaryUtilities.ToJsonQueryString(System.Collections.Generic.IDictionary{System.String,System.String})">
+        <member name="M:Facebook.FacebookUtils.ToJsonQueryString(System.Collections.Generic.IDictionary{System.String,System.String})">
             <summary>
             Converts the dictionary to a json formatted query string.
             </summary>
             <param name="dictionary">The dictionary.</param>
             <returns>A Json formatted querystring.</returns>
         </member>
-        <member name="M:Facebook.DictionaryUtilities.ToJsonQueryString(System.Collections.Specialized.NameValueCollection)">
+        <member name="M:Facebook.FacebookUtils.ToJsonQueryString(System.Collections.Specialized.NameValueCollection)">
             <summary>
             Converts the NameValueCollection to a json formatted query string.
             </summary>
             <param name="collection">The collection.</param>
             <returns>A Json formatted querystring.</returns>
         </member>
-        <member name="T:Facebook.FacebookApp">
+        <member name="M:Facebook.FacebookUtils.ParseQueryParametersToDictionary(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
             <summary>
-            Provides access to the Facebook Platform.
+            Removes the querystring parameters from the path value and adds them
+            to the parameters dictionary.
+            </summary>
+            <param name="path">The path to parse.</param>
+            <param name="parameters">The dictionary</param>
+            <returns></returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.ConvertToString(Facebook.HttpMethod)">
+            <summary>
+            Gets the string representation of the specified http method.
+            </summary>
+            <param name="httpMethod">
+            The http method.
+            </param>
+            <returns>
+            The string representation of the http method.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">
+            Throws error if the http method is not Get,Post or Delete.
+            </exception>
+        </member>
+        <member name="M:Facebook.FacebookUtils.HtmlDecode(System.String)">
+            <summary>
+            Html decode the input string.
+            </summary>
+            <param name="input">
+            The string to decode.
+            </param>
+            <returns>
+            The html decoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.HtmlEncode(System.String)">
+            <summary>
+            Html encode the input string.
+            </summary>
+            <param name="input">
+            The string to encode.
+            </param>
+            <returns>
+            The html encoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.UrlDecode(System.String)">
+            <summary>
+            Url decode the input string.
+            </summary>
+            <param name="input">
+            The string to url decode.
+            </param>
+            <returns>
+            The url decoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.UrlEncode(System.String)">
+            <summary>
+            Url encode the input string.
+            </summary>
+            <param name="input">
+            The string to url encode.
+            </param>
+            <returns>
+            The url encoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.RemoveTrailingSlash(System.String)">
+            <summary>
+            Removes the trailing slash.
+            </summary>
+            <param name="input">
+            The input string to remove the trailing slash from.
+            </param>
+            <returns>
+            The string with trailing slash removed.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.RemoveTrailingSlash(System.Uri)">
+            <summary>
+            Removes the trailing slash from the uri.
+            </summary>
+            <param name="url">
+            The url to remove the trailing slash from.
+            </param>
+            <returns>
+            The uri with trailing slash removed.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.Base64UrlDecode(System.String)">
+            <summary>
+            Base64 Url decode.
+            </summary>
+            <param name="base64UrlSafeString">
+            The base 64 url safe string.
+            </param>
+            <returns>
+            The base 64 url decoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.Base64UrlEncode(System.Byte[])">
+            <summary>
+            Base64 url encode.
+            </summary>
+            <param name="input">
+            The input.
+            </param>
+            <returns>
+            Base64 url encoded string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.ParseUrlQueryString(System.String)">
+            <summary>
+            Parse a URL query and fragment parameters into a key-value bundle.
+            </summary>
+            <param name="query">
+            The URL query to parse.
+            </param>
+            <returns>
+            Returns a dictionary of keys and values for the querystring.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.ComputerMd5Hash(System.Byte[])">
+            <summary>
+            Computes the Md5 Hash.
+            </summary>
+            <param name="data">
+            The input data.
+            </param>
+            <returns>
+            The md5 hash.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.ComputeHmacSha256Hash(System.Byte[],System.Byte[])">
+            <summary>
+            Computes the Hmac Sha 256 Hash.
+            </summary>
+            <param name="data">
+            The data to hash.
+            </param>
+            <param name="key">
+            The hash key.
+            </param>
+            <returns>
+            The Hmac Sha 256 hash.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.DecryptAes256CBCNoPadding(System.Byte[],System.Byte[],System.Byte[])">
+            <summary>
+            Decrypt encrypted data using the Aes256 CBC no padding algorithm.
+            </summary>
+            <param name="encryptedData">
+            The encrypted data.
+            </param>
+            <param name="key">
+            The key.
+            </param>
+            <param name="iv">
+            The iv.
+            </param>
+            <returns>
+            The decrypted string.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.IsUsingRestApi(System.Collections.Generic.IDictionary{System.String,System.Uri},System.Uri)">
+            <summary>
+            Check if the request uri is a using the old rest api.
+            </summary>
+            <param name="domainMaps">
+            The domain maps.
+            </param>
+            <param name="requestUri">
+            The request uri.
+            </param>
+            <returns>
+            Returns true if request uri is using the old rest api otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.GetUrl(System.Collections.Generic.IDictionary{System.String,System.Uri},System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Build the URL for given domain alias, paht and parameters.
+            </summary>
+            <param name="domainMaps">
+            The domain maps.
+            </param>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <param name="path">
+            Optional path (without a leading slash).
+            </param>
+            <param name="parameters">
+            Optional query parameters.
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookUtils.GetResponseString(Facebook.WebExceptionWrapper)">
+            <summary>
+            Gets the response string from web exception.
+            </summary>
+            <param name="webException">
+            The web exception.
+            </param>
+            <returns>
+            Response string.
+            </returns>
+        </member>
+        <member name="T:Facebook.FacebookApplication">
+            <summary>
+            Represents the Facebook Context class.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookApp.Prefix">
+        <member name="F:Facebook.FacebookApplication.Instance">
             <summary>
-            The multi-part form prefix characters.
+            Current Facebook application.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookApp.NewLine">
+        <member name="M:Facebook.FacebookApplication.SetApplication(Facebook.IFacebookApplication)">
             <summary>
-            The multi-part form new line characters.
+            Set the current facebook application.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookApplication.SetApplication(System.Func{Facebook.IFacebookApplication})">
+            <summary>
+            Set the current facebook application.
+            </summary>
+            <param name="getFacebookApplication">
+            The get facebook application.
+            </param>
+        </member>
+        <member name="F:Facebook.FacebookApplication._current">
+            <summary>
+            The current facebook application.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookApp.retryErrorTypes">
+        <member name="M:Facebook.FacebookApplication.InnerSetApplication(Facebook.IFacebookApplication)">
             <summary>
-            The collection of Facebook error types that should be retried.
+            Set the inner application.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookApplication.InnerSetApplication(System.Func{Facebook.IFacebookApplication})">
+            <summary>
+            Set the inner application.
+            </summary>
+            <param name="getFacebookApplication">
+            The get facebook application.
+            </param>
+        </member>
+        <member name="P:Facebook.FacebookApplication.Current">
+            <summary>
+            Gets the current Facebook application.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookApp.maxRetries">
+        <member name="P:Facebook.FacebookApplication.InnerCurrent">
             <summary>
-            How many times to retry a command if an error occurs until we give up.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookApp.retryDelay">
-            <summary>
-            How long in milliseconds to wait before retrying.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookApp.session">
-            <summary>
-            The current Facebook session.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookApp.signedRequest">
-            <summary>
-            The current Facebook signed request.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookApp.request">
-            <summary>
-            The current HTTP request.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookApp.response">
-            <summary>
-            The current HTTP response.
-            </summary>
-        </member>
-        <member name="M:Facebook.FacebookApp.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookApp"/>
-            class with values stored in the application configuration file
-            or with only the default values if the configuration
-            file does not have the values set.
-            </summary>
-        </member>
-        <member name="M:Facebook.FacebookApp.#ctor(Facebook.IFacebookSettings)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookApp"/>
-            class with values provided. Does not require configuration
-            file to be set.
-            </summary>
-            <param name="settings">The facebook settings for the application.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.#ctor(System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookApp"/>
-            class with only an access_token set. From this state
-            sessions will not be accessable.
-            </summary>
-            <param name="accessToken">The Facebook access token.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            <para>Get a Login URL for use with redirects. By default, full page redirect is
-            assumed. If you are using the generated URL with a window.open() call in
-            JavaScript, you can pass in display=popup as part of the parameters.</para>
-            <para>The parameters:</para>
-            <para>   - next: the url to go to after a successful login</para>
-            <para>   - cancel_url: the url to go to after the user cancels</para>
-            <para>   - req_perms: comma separated list of requested extended perms</para>
-            <para>   - display: can be "page" (default, full page) or "popup"</para>
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            <para>Get a Logout URL suitable for use with redirects.</para>
-            <para>The parameters:</para>
-            <para>   - next: the url to go to after a successful logout</para>
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.GetLoginStatusUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            <para>Get a Logout URL suitable for use with redirects.</para>
-            <para>The parameters:</para>
-            <para>    - next: the url to go to after a successful logout</para>
-            </summary>
-            <param name="parameters">Custom url parameters.</param>
-            <returns>The URL for the login flow.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.ParseFromCookie(System.String)">
-            <summary>
-            Parses the session value from a cookie.
-            </summary>
-            <param name="sessionValue">The session value.</param>
-            <returns>The Facebook session object.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.ValidateSessionObject(Facebook.FacebookSession)">
-            <summary>
-            Validates a session_version=3 style session object.
-            </summary>
-            <param name="session">The session to validate.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.GenerateSignature(Facebook.FacebookSession)">
-            <summary>
-            Generates a MD5 signature for the facebook session.
-            </summary>
-            <param name="session">The session to generate a signature.</param>
-            <returns>An MD5 signature.</returns>
-            <exception cref="T:System.ArgumentNullException">If the session is null.</exception>
-            <exception cref="T:System.InvalidOperationException">If there is a problem generating the hash.</exception>
-        </member>
-        <member name="M:Facebook.FacebookApp.RestServer(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="parameters">The parameters of the method call.</param>
-            <param name="httpMethod">The http method for the request. Default is 'GET'.</param>
-            <returns>The decoded response object.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.Graph(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type)">
-            <summary>
-            Make a graph api call.
-            </summary>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">JsonObject of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>A dynamic object with the resulting data.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.OAuthRequest(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <returns>The decoded response object.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.SetCookieFromSession(Facebook.FacebookSession)">
-            <summary>
-            Set a JS Cookie based on the _passed in_ session. It does not use the
-            currently stored session -- you need to explicitly pass it in.
-            </summary>
-            <param name="session">The session to use for setting the cookie. Can be null.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.RestServerAsync(System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Invoke the old restserver.php endpoint.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="parameters">The parameters of the method call.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.GraphAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make a graph api call.
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="path">The path of the url to call such as 'me/friends'.</param>
-            <param name="parameters">JsonObject of url parameters.</param>
-            <param name="httpMethod">The http method for the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.OAuthRequestAsync(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.Type,System.Boolean,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make a OAuth Request
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="uri">The url to make the request.</param>
-            <param name="parameters">The parameters of the request.</param>
-            <param name="httpMethod">The http method of the request.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.WithMirrorRetry(System.Action)">
-            <summary>
-            This method invokes the supplied delegate with retry logic wrapped around it.  No values are returned.  If the delegate raises
-            recoverable Facebook server or client errors, then the supplied delegate is reinvoked after a certain amount of delay
-            until the retry limit is exceeded, at which point the exception is rethrown. Other exceptions are not caught and will
-            be visible to callers.
-            </summary>
-            <param name="body">The delegate to invoke within the retry code.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.WithMirrorRetry``1(System.Func{``0})">
-            <summary>
-            This method invokes the supplied delegate with retry logic wrapped around it and returns the value of the delegate.
-            If the delegate raises recoverable Facebook server or client errors, then the supplied delegate is reinvoked after
-            a certain amount of delay until the retry limit is exceeded, at which point the exception is rethrown. Other
-            exceptions are not caught and will be visible to callers.
-            </summary>
-            <typeparam name="TReturn">The type of object being returned</typeparam>
-            <param name="body">The delegate to invoke within the retry logic which will produce the value to return</param>
-            <returns>The value the delegate returns</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.ParseSignedRequest(System.String)">
-            <summary>
-            Parses the signed request string.
-            </summary>
-            <param name="signedRequestValue">The encoded signed request value.</param>
-            <returns>The valid signed request.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.Base64UrlDecode(System.String)">
-            <summary>
-            Converts the base 64 url encoded string to standard base 64 encoding.
-            </summary>
-            <param name="encodedValue">The encoded value.</param>
-            <returns>The base 64 string.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.BuildRequestData(System.Uri,System.Collections.Generic.IDictionary{System.String,System.Object},Facebook.HttpMethod,System.String,System.Uri@,System.String@)">
-            <summary>
-            Builds the request post data and request uri based on the given parameters.
-            </summary>
-            <param name="uri">The request uri.</param>
-            <param name="parameters">The request parameters.</param>
-            <param name="httpMethod">The http method.</param>
-            <param name="accessToken">The access token.</param>
-            <param name="requestUrl">The outputed request uri.</param>
-            <param name="contentType">The request content type.</param>
-            <returns>The request post data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.BuildMediaObjectPostData(System.Collections.Generic.IDictionary{System.String,System.Object},System.String)">
-            <summary>
-            Builds the request post data if the request contains a media object
-            such as an image or video to upload.
-            </summary>
-            <param name="parameters">The request parameters.</param>
-            <param name="boundary">The multipart form request boundary.</param>
-            <returns>The request post data.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.MakeRequest(Facebook.HttpMethod,System.Uri,System.Byte[],System.String,System.Type,System.Boolean)">
-            <summary>
-            Make the API Request
-            </summary>
-            <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
-            <param name="requestUrl">The uri of the request.</param>
-            <param name="postData">The request data.</param>
-            <param name="contentType">The request content type.</param>
-            <returns>The decoded response object.</returns>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.MakeRequestAsync(Facebook.HttpMethod,System.Uri,System.Byte[],System.String,System.Type,System.Boolean,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            Make the API Request
-            </summary>
-            <param name="callback">The async callback.</param>
-            <param name="state">The async state.</param>
-            <param name="httpMethod">The http method to use. GET, POST, DELETE.</param>
-            <param name="requestUrl">The uri of the request.</param>
-            <param name="postData">The request data.</param>
-            <param name="contentType">The request content type.</param>
-            <exception cref="T:Facebook.FacebookApiException"/>
-        </member>
-        <member name="M:Facebook.FacebookApp.RequestCallback(System.IAsyncResult,System.Byte[],Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            The asynchronous web request callback.
-            </summary>
-            <param name="asyncResult">The asynchronous result.</param>
-            <param name="postData">The post data.</param>
-            <param name="callback">The callback method.</param>
-            <param name="state">The asynchronous state.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.ResponseCallback(System.IAsyncResult,Facebook.FacebookAsyncCallback,System.Object)">
-            <summary>
-            The asynchronous web response callback.
-            </summary>
-            <param name="asyncResult">The asynchronous result.</param>
-            <param name="callback">The callback method.</param>
-            <param name="state">The asynchronous state.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.AddRestParameters(System.Collections.Generic.IDictionary{System.String,System.Object})">
-            <summary>
-            Adds the standard REST requset parameters.
-            </summary>
-            <param name="parameters">The parameters object.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.ApplySettings(Facebook.IFacebookSettings)">
-            <summary>
-            Applies the Facebook settings to the
-            properties of this object.
-            </summary>
-            <param name="settings">The Facebook settings.</param>
-        </member>
-        <member name="M:Facebook.FacebookApp.CreateSessionFromSignedRequest(Facebook.FacebookSignedRequest)">
-            <summary>
-            Creates a facebook session from a signed request.
-            </summary>
-            <param name="signedRequest">The signed request.</param>
-            <returns>The facebook session.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.GetGraphRequestUri(System.String)">
-            <summary>
-            Gets the graph request url in the proper format.
-            </summary>
-            <param name="path">The request url path.</param>
-            <returns>The fully qualified uri for the request.</returns>
-        </member>
-        <member name="M:Facebook.FacebookApp.InvarientObject">
-            <summary>
-            The code contracts invarient object method.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookApp.MaxRetries">
-            <summary>
-            Gets or sets the maximum number of times to retry an api
-            call after experiencing a recoverable exception.
-            </summary>
-            <value>The max retries.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.RetryDelay">
-            <summary>
-            Gets or sets the value in seconds to wait before retrying, with exponential roll off.
-            </summary>
-            <value>The retry delay.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.SignedRequest">
-            <summary>
-            Gets the signed request.
-            </summary>
-            <value>The signed request.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.Session">
-            <summary>
-            Gets or sets the active user session.
-            </summary>
-            <value>The session.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.RetryErrorTypes">
-            <summary>
-            Gets a collection of Facebook error types that
-            should be retried in the event of a failure.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookApp.Request">
-            <summary>
-            Gets or sets the HTTP request.
-            </summary>
-            <value>The request.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.Response">
-            <summary>
-            Gets or sets the current HTTP response.
-            </summary>
-            <value>The response.</value>
-        </member>
-        <member name="P:Facebook.FacebookApp.CurrentUrl">
-            <summary>
-            Gets the Current URL, stripping it of known FB parameters that should not persist.
+            Gets InnerCurrent.
             </summary>
         </member>
         <member name="T:Facebook.Properties.Resources">
@@ -1363,6 +1207,16 @@
               Looks up a localized string similar to Invalid signed request..
             </summary>
         </member>
+        <member name="P:Facebook.Properties.Resources.MediaObjectMustHavePropertiesSetError">
+            <summary>
+              Looks up a localized string similar to The media object must have a content type, file name, and value set..
+            </summary>
+        </member>
+        <member name="P:Facebook.Properties.Resources.MultipleMediaObjectsError">
+            <summary>
+              Looks up a localized string similar to You cannot include more than one Facebook Media Object in a single request..
+            </summary>
+        </member>
         <member name="T:Facebook.FacebookOAuthException">
             <summary>
             Represents errors that occur as a result of problems with the OAuth access token.
@@ -1379,26 +1233,11 @@
             </summary>
             <param name="message">The message.</param>
         </member>
-        <member name="M:Facebook.FacebookOAuthException.#ctor(System.String,System.String)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
-            </summary>
-            <param name="message">The message.</param>
-            <param name="errorType">Type of the error.</param>
-        </member>
         <member name="M:Facebook.FacebookOAuthException.#ctor(System.String,System.Exception)">
             <summary>
             Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
             </summary>
             <param name="message">The message.</param>
-            <param name="innerException">The inner exception.</param>
-        </member>
-        <member name="M:Facebook.FacebookOAuthException.#ctor(System.String,System.String,System.Exception)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthException"/> class.
-            </summary>
-            <param name="message">The error message text.</param>
-            <param name="errorType">Type of the facebook error.</param>
             <param name="innerException">The inner exception.</param>
         </member>
         <member name="M:Facebook.FacebookOAuthException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
@@ -1410,83 +1249,64 @@
             <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
         </member>
-        <member name="T:Facebook.FacebookAppExtensions">
+        <member name="M:Facebook.WebExceptionWrapper.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
             <summary>
-            Extension methods that add non-standard funcationality to the FacebookAppBase object.
+            Initializes a new instance of the <see cref="T:Facebook.WebExceptionWrapper"/> class.
             </summary>
-        </member>
-        <member name="M:Facebook.FacebookAppExtensions.Query(Facebook.FacebookAppBase,System.String)">
-            <summary>
-            Executes a FQL query.
-            </summary>
-            <param name="app">The Facebook app.</param>
-            <param name="fql">The FQL query.</param>
-            <returns>The FQL query result.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppExtensions.Query(Facebook.FacebookAppBase,System.String[])">
-            <summary>
-            Executes a FQL multiquery.
-            </summary>
-            <param name="app">The Facebook app.</param>
-            <param name="fql">The FQL queries.</param>
-            <returns>A collection of the FQL query results.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppExtensions.Fql(Facebook.FacebookAppBase,System.String)">
-            <summary>
-            Executes a FQL query.
-            </summary>
-            <param name="app">The Facebook app.</param>
-            <param name="query">The FQL query.</param>
-            <returns>The FQL query result.</returns>
-        </member>
-        <member name="M:Facebook.FacebookAppExtensions.Fql(Facebook.FacebookAppBase,System.String[])">
-            <summary>
-            Executes a FQL multiquery.
-            </summary>
-            <param name="app">The Facebook app.</param>
-            <param name="queries">The FQL queries.</param>
-            <returns>A collection of the FQL query results.</returns>
-        </member>
-        <member name="T:Facebook.UriEncoder">
-            <summary>
-            A Facebook Uri encoding utility.
-            </summary>
-        </member>
-        <member name="M:Facebook.UriEncoder.EscapeDataString(System.String)">
-            <summary>
-            Converts a string to its escaped representation.
-            </summary>
-            <param name="stringToEscape">The string to escape.</param>
-            <returns></returns>
+            <param name="info">The <see cref="T:System.Runtime.Serialization.SerializationInfo"/> that holds the serialized object data about the exception being thrown.</param>
+            <param name="context">The <see cref="T:System.Runtime.Serialization.StreamingContext"/> that contains contextual information about the source or destination.</param>
+            <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
+            <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
         </member>
         <member name="T:Facebook.IFacebookSettings">
             <summary>
             Represents the settings of a Facebook application.
             </summary>
         </member>
-        <member name="P:Facebook.IFacebookSettings.AppSecret">
+        <member name="T:Facebook.IFacebookApplication">
             <summary>
-            Gets or sets the App secret.
+            Represents a Facebook Application.
             </summary>
-            <value>The App secret.</value>
         </member>
-        <member name="P:Facebook.IFacebookSettings.AppId">
+        <member name="P:Facebook.IFacebookApplication.AppId">
             <summary>
-            Gets or sets the app id.
+            Gets the application id.
             </summary>
-            <value>The app id.</value>
         </member>
-        <member name="P:Facebook.IFacebookSettings.CookieSupport">
+        <member name="P:Facebook.IFacebookApplication.AppSecret">
             <summary>
-            Gets or sets a value indicating whether cookies are supported.
+            Gets the application secret.
             </summary>
-            <value><c>true</c> if cookies are supported; otherwise, <c>false</c>.</value>
         </member>
-        <member name="P:Facebook.IFacebookSettings.BaseDomain">
+        <member name="P:Facebook.IFacebookApplication.SiteUrl">
             <summary>
-            Gets or sets the base domain.
+            Gets the site url.
             </summary>
-            <value>The base domain.</value>
+        </member>
+        <member name="P:Facebook.IFacebookApplication.CanvasPage">
+            <summary>
+            Gets the canvas page.
+            </summary>
+        </member>
+        <member name="P:Facebook.IFacebookApplication.CanvasUrl">
+            <summary>
+            Gets the canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.IFacebookApplication.SecureCanvasUrl">
+            <summary>
+            Gets the secure canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.IFacebookApplication.CancelUrlPath">
+            <summary>
+            Gets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
+        <member name="P:Facebook.IFacebookApplication.UseFacebookBeta">
+            <summary>
+            Gets a value indicating whether it is beta.
+            </summary>
         </member>
         <member name="P:Facebook.IFacebookSettings.MaxRetries">
             <summary>
@@ -1499,6 +1319,154 @@
             Gets or sets the retry delay.
             </summary>
             <value>The retry delay.</value>
+        </member>
+        <member name="T:Facebook.FacebookOAuthResult">
+            <summary>
+            Represents the authentication result of Facebook.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._accessToken">
+            <summary>
+            The access token.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._expires">
+            <summary>
+            Date and Time when the access token expires.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._errorReason">
+            <summary>
+            Short error reason for failed authentication if there was an error.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._errorDescription">
+            <summary>
+            Long error description for failed authentication if there was an error.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._code">
+            <summary>
+            The code used to exchange access token.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookOAuthResult._state">
+            <summary>
+            Gets or sets an opaque state used to maintain application state between the request and callback.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.#ctor(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthResult"/> class.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <remarks>
+            The values of parameters should not be url encoded.
+            </remarks>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.Parse(System.String)">
+            <summary>
+            Parse the uri to <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </summary>
+            <param name="uriString">
+            The url to parse.
+            </param>
+            <returns>
+            Returns an instance of <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.Parse(System.Uri)">
+            <summary>
+            Parse the uri to <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </summary>
+            <param name="uri">
+            The url to parse.
+            </param>
+            <returns>
+            Returns an instance of <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.TryParse(System.String,Facebook.FacebookOAuthResult@)">
+            <summary>
+            Try parsing the uri to <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </summary>
+            <param name="uriString">
+            The url to parse.
+            </param>
+            <param name="result">
+            An instance of <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </param>
+            <returns>
+            Returns true if parsing was successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.TryParse(System.Uri,Facebook.FacebookOAuthResult@)">
+            <summary>
+            Try parsing the uri to <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </summary>
+            <param name="uri">
+            The url to parse.
+            </param>
+            <param name="result">
+            An instance of <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </param>
+            <returns>
+            Returns true if parsing was successful otherwise false.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthResult.Parse(System.Uri,System.Boolean)">
+            <summary>
+            Internal method for parsing the Facebook oauth ur..
+            </summary>
+            <param name="uri">
+            The url to parse.
+            </param>
+            <param name="throws">
+            Whether to throw the exception or not incase an error occurs.
+            </param>
+            <returns>
+            The <see cref="T:Facebook.FacebookOAuthResult"/>.
+            </returns>
+            <exception cref="T:System.InvalidOperationException">
+            Throws if cannot parse the specified url.
+            </exception>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.ErrorReason">
+            <summary>
+            Gets the short error reason for failed authentication if an error occurred.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.ErrorDescription">
+            <summary>
+            Gets the long error description for failed authentication if an error occurred.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.Expires">
+            <summary>
+            Gets the <see cref="T:System.DateTime"/> when the access token will expire.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.AccessToken">
+            <summary>
+            Gets the access token.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.IsSuccess">
+            <summary>
+            Gets a value indicating whether access token or code was successfully retrieved.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.Code">
+            <summary>
+            Gets the code used to exchange with facebook to retrieve access token.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthResult.State">
+            <summary>
+            Gets an opaque state used to maintain application state between the request and callback.
+            </summary>
         </member>
         <member name="T:Facebook.FacebookAsyncCallback">
             <summary>
@@ -1615,6 +1583,72 @@
             </summary>
             <value>The result.</value>
         </member>
+        <member name="T:Facebook.DefaultFacebookApplication">
+            <summary>
+            Represents the default facebook application.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.AppId">
+            <summary>
+            Gets or sets the application id.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.AppSecret">
+            <summary>
+            Gets or sets the application secret.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.SiteUrl">
+            <summary>
+            Gets or sets the site url.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.CanvasPage">
+            <summary>
+            Gets or sets the canvas page.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.CanvasUrl">
+            <summary>
+            Gets or sets the canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.SecureCanvasUrl">
+            <summary>
+            Gets or sets the secure canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.CancelUrlPath">
+            <summary>
+            Gets or sets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.UseFacebookBeta">
+            <summary>
+            Gets or sets a value indicating whether to use Facebook beta.
+            </summary>
+        </member>
+        <member name="M:Facebook.External.HttpUtility.HtmlDecode(System.String)">
+            <summary>
+            Decodes an HTML-encoded string and returns the decoded string.
+            </summary>
+            <param name="s">The HTML string to decode. </param>
+            <returns>The decoded text.</returns>
+        </member>
+        <member name="M:Facebook.External.HttpUtility.HtmlDecode(System.String,System.IO.TextWriter)">
+            <summary>
+            Decodes an HTML-encoded string and sends the resulting output to a TextWriter output stream.
+            </summary>
+            <param name="s">The HTML string to decode</param>
+            <param name="output">The TextWriter output stream containing the decoded string. </param>
+        </member>
+        <member name="M:Facebook.External.HttpUtility.HtmlEncode(System.String,System.IO.TextWriter)">
+            <summary>
+            HTML-encodes a string and sends the resulting output to a TextWriter output stream.
+            </summary>
+            <param name="s">The string to encode. </param>
+            <param name="output">The TextWriter output stream containing the encoded string. </param>
+        </member>
         <member name="T:Facebook.HttpMethod">
             <summary>
             Represents an HTTP request type.
@@ -1647,6 +1681,54 @@
             <param name="result">The web request result object to check for exception information.</param>
             <returns>The Facebook API exception or null.</returns>
         </member>
+        <member name="M:Facebook.ExceptionFactory.CheckForRestException(System.Collections.Generic.IDictionary{System.String,System.Uri},System.Uri,System.String)">
+            <summary>
+            Checks for rest exception.
+            </summary>
+            <param name="domainMaps">
+            The domain maps.
+            </param>
+            <param name="requestUri">
+            The request uri.
+            </param>
+            <param name="json">
+            The json string.
+            </param>
+            <returns>
+            Returns <see cref="T:Facebook.FacebookApiException"/> if it is a rest exception otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.ExceptionFactory.CheckForRestException(System.Collections.Generic.IDictionary{System.String,System.Uri},System.Uri,System.Object)">
+            <summary>
+            Checks for rest exception.
+            </summary>
+            <param name="domainMaps">
+            The domain maps.
+            </param>
+            <param name="requestUri">
+            The request uri.
+            </param>
+            <param name="json">
+            The json string.
+            </param>
+            <returns>
+            Returns <see cref="T:Facebook.FacebookApiException"/> if it is a rest exception otherwise null.
+            </returns>
+        </member>
+        <member name="M:Facebook.ExceptionFactory.GetGraphException(System.Object)">
+            <summary>
+            Gets the graph exception if possible.
+            </summary>
+            <param name="result">The web request result object to check for exception information.</param>
+            <returns>A Facebook API exception or null.</returns>
+        </member>
+        <member name="M:Facebook.ExceptionFactory.GetGraphException(Facebook.WebExceptionWrapper)">
+            <summary>
+            Gets the graph exception if possible.
+            </summary>
+            <param name="exception">The web exception.</param>
+            <returns>A Facebook API exception or null.</returns>
+        </member>
         <member name="M:Facebook.ExceptionFactory.GetGraphException(System.Net.WebException)">
             <summary>
             Gets the graph exception if possible.
@@ -1654,49 +1736,396 @@
             <param name="exception">The web exception.</param>
             <returns>A Facebook API exception or null.</returns>
         </member>
-        <member name="P:Facebook.ExceptionFactory.PathOrParametersRequired">
+        <member name="T:Facebook.FacebookOAuthClient">
             <summary>
-            Gets the path or parameters required exception.
-            </summary>
-            <value>The path or parameters required exception.</value>
-        </member>
-        <member name="P:Facebook.ExceptionFactory.MethodRequiredForRestCall">
-            <summary>
-            Gets the method required for rest call exception.
-            </summary>
-            <value>The method required for rest call exception.</value>
-        </member>
-        <member name="P:Facebook.ExceptionFactory.CannotIncludeMultipleMediaObjects">
-            <summary>
-            Gets the cannot include multiple media objects exception.
-            </summary>
-            <value>The cannot include multiple media objects exception.</value>
-        </member>
-        <member name="P:Facebook.ExceptionFactory.MediaObjectMustHavePropertiesSet">
-            <summary>
-            Gets the media object must have properties set exception.
-            </summary>
-            <value>The media object must have properties set exception.</value>
-        </member>
-        <member name="P:Facebook.ExceptionFactory.InvalidCookie">
-            <summary>
-            Gets the invalid cookie exception.
-            </summary>
-            <value>The invalid cookie exception.</value>
-        </member>
-        <member name="T:Facebook.JsonObject">
-            <summary>
-            Represents a JSON object.
+            Represents the Facebook OAuth Helpers
             </summary>
         </member>
-        <member name="F:Facebook.JsonObject.members">
+        <member name="F:Facebook.FacebookOAuthClient._webClient">
+            <summary>
+            The current web client.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthClient"/> class.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.#ctor(Facebook.IFacebookApplication)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookOAuthClient"/> class.
+            </summary>
+            <param name="facebookApplication">
+            The facebook application.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl">
+            <summary>
+            Gets the login uri.
+            </summary>
+            <returns>
+            Returns the facebook login uri.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the login uri.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            Returns the facebook login uri.
+            </returns>
+            <remarks>
+            http://developers.facebook.com/docs/reference/dialogs/oauth
+            Parameters that can be used:
+                client_id     : Your application's identifier. This is called client_id instead of app_id for this particular method to be compliant with the OAuth 2.0 specification. Required, but automatically specified by most SDKs.
+                redirect_uri  : The URL to redirect to after the user clicks a button on the dialog. Required, but automatically specified by most SDKs.
+                scope         : Optional. A comma-delimited list of permissions.
+                state         : Optional. An opaque string used to maintain application state between the request and callback. When Facebook redirects the user back to your redirect_uri, this value will be included unchanged in the response.
+                response_type : Optional, default is token. The requested response: an access token (token), an authorization code (code), or both (code_and_token).
+                display       : The display mode in which to render the dialog. The default is page on the www subdomain and wap on the m subdomain. This is automatically specified by most SDKs. (For WP7 builds it is set to touch.)
+            </remarks>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLogoutUrl">
+            <summary>
+            Gets the logout url.
+            </summary>
+            <returns>
+            Returns the logout url.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLogoutUrl(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the logout url.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            Returns the logout url.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl(System.String,System.Uri)">
+            <summary>
+            Gets the login url.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="redirectUri">
+            The redirect Uri.
+            </param>
+            <returns>
+            The url to navigate.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl(System.String,System.Uri,System.String[])">
+            <summary>
+            Gets the login url.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="redirectUri">
+            The redirect Uri.
+            </param>
+            <param name="extendedPermissions">
+            The extended permissions (scope).
+            </param>
+            <returns>
+            The url to navigate.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl(System.String,System.Uri,System.String[],System.Boolean,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the login url.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="redirectUri">
+            The redirect Uri.
+            </param>
+            <param name="extendedPermissions">
+            The extended permissions (scope).
+            </param>
+            <param name="logout">  
+            Indicates whether to logout existing logged in user or not.  
+            </param>  
+            <param name="loginParameters">
+            The login parameters.
+            </param>
+            <returns>
+            The url to navigate.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetLoginUrl(System.String,System.Uri,System.String[],System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the login url.
+            </summary>
+            <param name="appId">
+            The app id.
+            </param>
+            <param name="redirectUri">
+            The redirect Uri.
+            </param>
+            <param name="extendedPermissions">
+            The extended permissions (scope).
+            </param>
+            <param name="loginParameters">
+            The login parameters.
+            </param>
+            <returns>
+            The url to navigate.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetApplicationAccessToken">
+            <summary>
+            Gets the application access token.
+            </summary>
+            <returns>
+            The application access token.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetApplicationAccessToken(System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Gets the application access token.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            The application access token.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetApplicationAccessTokenAsync(System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Gets the application access token asynchronously.
+            </summary>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetApplicationAccessTokenAsync(System.Object)">
+            <summary>
+            Gets the application access token asynchronously.
+            </summary>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetApplicationAccessTokenAsync">
+            <summary>
+            Gets the application access token asynchronously.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.ExchangeCodeForAccessToken(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Exchange code for access token.
+            </summary>
+            <param name="code">
+            The code.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.ExchangeCodeForAccessToken(System.String)">
+            <summary>
+            Exchange code for access token.
+            </summary>
+            <param name="code">
+            The code.
+            </param>
+            <returns>
+            The json result.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.ExchangeCodeForAccessTokenAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object},System.Object)">
+            <summary>
+            Exchange code for access token asynchronously.
+            </summary>
+            <param name="code">
+            The code.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+            <param name="userToken">
+            The user token.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.ExchangeCodeForAccessTokenAsync(System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Exchange code for access token asynchronously.
+            </summary>
+            <param name="code">
+            The code.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.ExchangeCodeForAccessTokenAsync(System.String)">
+            <summary>
+            Exchange code for access token asynchronously.
+            </summary>
+            <param name="code">
+            The code.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookOAuthClient.GetUrl(System.String,System.String,System.Collections.Generic.IDictionary{System.String,System.Object})">
+            <summary>
+            Build the URL for given domain alias, path and parameters.
+            </summary>
+            <param name="name">
+            The name of the domain (from the domain maps).
+            </param>
+            <param name="path">
+            Optional path (without a leading slash)
+            </param>
+            <param name="parameters">
+             Optional query parameters
+            </param>
+            <returns>
+            The string of the url for the given parameters.
+            </returns>
+        </member>
+        <member name="P:Facebook.FacebookOAuthClient.AppId">
+            <summary>
+            Gets or sets the app id.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthClient.AppSecret">
+            <summary>
+            Gets or sets the app secret.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthClient.RedirectUri">
+            <summary>
+            Gets or sets the redirect uri.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthClient.DomainMaps">
+            <summary>
+            Gets the aliases to Facebook domains.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookOAuthClient.WebClient">
+            <summary>
+            Gets or sets the web client.
+            </summary>
+        </member>
+        <member name="E:Facebook.FacebookOAuthClient.GetApplicationAccessTokenCompleted">
+            <summary>
+            Event handler for application access token completion.
+            </summary>
+        </member>
+        <member name="E:Facebook.FacebookOAuthClient.ExchangeCodeForAccessTokenCompleted">
+            <summary>
+            Event handler for application access token completion.
+            </summary>
+        </member>
+        <member name="T:Facebook.FacebookConfigurationSection">
+            <summary>
+            Represents the Facebook section in a configuration file.
+            </summary>
+        </member>
+        <member name="F:Facebook.FacebookConfigurationSection._current">
+            <summary>
+            The current facebook settings stored in the configuration file.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.AppId">
+            <summary>
+            Gets or sets the app id.
+            </summary>
+            <value>The app id.</value>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.AppSecret">
+            <summary>
+            Gets or sets the API secret.
+            </summary>
+            <value>The API secret.</value>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.SiteUrl">
+            <summary>
+            Gets or sets the site url.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.CanvasPage">
+            <summary>
+            Gets or sets the canvas page.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.CanvasUrl">
+            <summary>
+            Gets or sets the canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.SecureCanvasUrl">
+            <summary>
+            Gets or sets the secure canvas url.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.CancelUrlPath">
+            <summary>
+            Gets or sets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.UseFacebookBeta">
+            <summary>
+            Gets or sets a value indicating whether to use Facebook beta.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.Current">
+            <summary>
+            Gets the Facebook settings stored in the configuration file.
+            </summary>
+        </member>
+        <member name="T:Facebook.DownloadDataCompletedEventArgsWrapper">
+            <summary>
+            Represents a wrapper for DownloadDataCompletedEventArgs
+            </summary>
+        </member>
+        <member name="F:Facebook.DownloadDataCompletedEventArgsWrapper._result">
+            <summary>
+            The async result.
+            </summary>
+        </member>
+        <member name="M:Facebook.DownloadDataCompletedEventArgsWrapper.#ctor(System.Exception,System.Boolean,System.Object,System.Byte[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.DownloadDataCompletedEventArgsWrapper"/> class.
+            </summary>
+            <param name="error">
+            The error.
+            </param>
+            <param name="cancelled">
+            The cancelled.
+            </param>
+            <param name="userState">
+            The user state.
+            </param>
+            <param name="result">
+            The result.
+            </param>
+        </member>
+        <member name="P:Facebook.DownloadDataCompletedEventArgsWrapper.Result">
+            <summary>
+            Gets the async result.
+            </summary>
+        </member>
+        <member name="F:Facebook.JsonObject._members">
             <summary>
             The internal member dictionary.
-            </summary>
-        </member>
-        <member name="M:Facebook.JsonObject.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Facebook.JsonObject"/> class.
             </summary>
         </member>
         <member name="M:Facebook.JsonObject.Add(System.String,System.Object)">
@@ -1776,6 +2205,14 @@
             </summary>
             <returns>
             An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Facebook.JsonObject.ToString">
+            <summary>
+            Returns a json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+            </summary>
+            <returns>
+            A json <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
             </returns>
         </member>
         <member name="M:Facebook.JsonObject.TryConvert(System.Dynamic.ConvertBinder,System.Object@)">
@@ -1885,208 +2322,57 @@
             	<c>true</c> if this instance is read only; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="T:Facebook.FacebookSettings">
+        <member name="T:SimpleJson.SimpleJson">
             <summary>
-            Represents the settings of a Facebook application.
+            This class encodes and decodes JSON strings.
+            Spec. details, see http://www.json.org/
+            
+            JSON uses Arrays and Objects. These correspond here to the datatypes JsonArray(IList&lt;object>) and JsonObject(IDictionary&lt;string,object>).
+            All numbers are parsed to doubles.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookSettings.current">
+        <member name="M:SimpleJson.SimpleJson.DeserializeObject(System.String)">
             <summary>
-            The Facebook settings stored in the configuration file.
+            Parses the string json into a value
             </summary>
+            <param name="json">A JSON string.</param>
+            <returns>An IList&lt;object>, a IDictionary&lt;string,object>, a double, a string, null, true, or false</returns>
         </member>
-        <member name="P:Facebook.FacebookSettings.Current">
+        <member name="M:SimpleJson.SimpleJson.TryDeserializeObject(System.String,System.Object@)">
             <summary>
-            Gets the Facebook settings stored in the configuration file.
+            Try parsing the json string into a value.
             </summary>
+            <param name="json">
+            A JSON string.
+            </param>
+            <param name="object">
+            The object.
+            </param>
+            <returns>
+            Returns true if successfull otherwise false.
+            </returns>
         </member>
-        <member name="P:Facebook.FacebookSettings.AppSecret">
+        <member name="M:SimpleJson.SimpleJson.SerializeObject(System.Object,SimpleJson.IJsonSerializerStrategy)">
             <summary>
-            Gets or sets the Application secret.
+            Converts a IDictionary&lt;string,object> / IList&lt;object> object into a JSON string
             </summary>
-            <value>The Application secret.</value>
+            <param name="json">A IDictionary&lt;string,object> / IList&lt;object></param>
+            <returns>A JSON encoded string, or null if object 'json' is not serializable</returns>
         </member>
-        <member name="P:Facebook.FacebookSettings.AppId">
+        <member name="M:SimpleJson.SimpleJson.IsNumeric(System.Object)">
             <summary>
-            Gets or sets the app id.
+            Determines if a given object is numeric in any way
+            (can be integer, double, null, etc). 
+            
+            Thanks to mtighe for pointing out Double.TryParse to me.
             </summary>
-            <value>The app id.</value>
-        </member>
-        <member name="P:Facebook.FacebookSettings.CookieSupport">
-            <summary>
-            Gets or sets a value indicating whether [cookie support].
-            </summary>
-            <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Facebook.FacebookSettings.BaseDomain">
-            <summary>
-            Gets or sets the base domain.
-            </summary>
-            <value>The base domain.</value>
-        </member>
-        <member name="P:Facebook.FacebookSettings.MaxRetries">
-            <summary>
-            Gets or sets the max retries.
-            </summary>
-            <value>The max retries.</value>
-        </member>
-        <member name="P:Facebook.FacebookSettings.RetryDelay">
-            <summary>
-            Gets or sets the retry delay.
-            </summary>
-            <value>The retry delay.</value>
-        </member>
-        <member name="T:Facebook.FacebookConfigurationSection">
-            <summary>
-            Represents the Facebook section in a configuration file.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.AppSecret">
-            <summary>
-            Gets or sets the API secret.
-            </summary>
-            <value>The API secret.</value>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.AppId">
-            <summary>
-            Gets or sets the app id.
-            </summary>
-            <value>The app id.</value>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.CookieSupport">
-            <summary>
-            Gets or sets a value indicating whether [cookie support].
-            </summary>
-            <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.BaseDomain">
-            <summary>
-            Gets or sets the base domain.
-            </summary>
-            <value>The base domain.</value>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.MaxRetries">
-            <summary>
-            Gets or sets the max retries.
-            </summary>
-            <value>The max retries.</value>
-        </member>
-        <member name="P:Facebook.FacebookConfigurationSection.RetryDelay">
-            <summary>
-            Gets or sets the retry delay.
-            </summary>
-            <value>The retry delay.</value>
-        </member>
-        <member name="T:Facebook.FacebookSignedRequest">
-            <summary>
-            Rerpesents a Facebook signed request.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.Dictionary">
-            <summary>
-            Gets the underlying dictionary store.
-            </summary>
-            <value>The dictionary.</value>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.UserId">
-            <summary>
-            Gets or sets the user id.
-            </summary>
-            <value>The user id.</value>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.AccessToken">
-            <summary>
-            Gets or sets the access token.
-            </summary>
-            <value>The access token.</value>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.Expires">
-            <summary>
-            Gets or sets the expires.
-            </summary>
-            <value>The expires.</value>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.ProfileId">
-            <summary>
-            Gets or sets the profile id.
-            </summary>
-            <value>The profile id.</value>
-        </member>
-        <member name="P:Facebook.FacebookSignedRequest.Algorithm">
-            <summary>
-            Gets or sets the algorithm.
-            </summary>
-            <value>The algorithm.</value>
-        </member>
-        <member name="T:Facebook.FacebookSession">
-            <summary>
-            Represents a Facebook session.
-            </summary>
-        </member>
-        <member name="F:Facebook.FacebookSession.dictionary">
-            <summary>
-            The internal dictionary store.
-            </summary>
-        </member>
-        <member name="M:Facebook.FacebookSession.InvarientObject">
-            <summary>
-            The code contracts invarient object method.
-            </summary>
-        </member>
-        <member name="P:Facebook.FacebookSession.Dictionary">
-            <summary>
-            Gets the internal dictionary store.
-            </summary>
-            <value>The dictionary.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.UserId">
-            <summary>
-            Gets or sets the user id.
-            </summary>
-            <value>The user id.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.Secret">
-            <summary>
-            Gets or sets the secret.
-            </summary>
-            <value>The secret.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.AccessToken">
-            <summary>
-            Gets or sets the access token.
-            </summary>
-            <value>The access token.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.SessionKey">
-            <summary>
-            Gets or sets the session key.
-            </summary>
-            <value>The session key.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.Expires">
-            <summary>
-            Gets or sets the expires.
-            </summary>
-            <value>The expires.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.Signature">
-            <summary>
-            Gets or sets the signature.
-            </summary>
-            <value>The signature.</value>
-        </member>
-        <member name="P:Facebook.FacebookSession.BaseDomain">
-            <summary>
-            Gets or sets the base domain.
-            </summary>
-            <value>The base domain.</value>
         </member>
         <member name="T:Facebook.FacebookMediaObject">
             <summary>
             Represents a media object such as a photo or video.
             </summary>
         </member>
-        <member name="F:Facebook.FacebookMediaObject.value">
+        <member name="F:Facebook.FacebookMediaObject._value">
             <summary>
             The value of the media object.
             </summary>
@@ -2114,6 +2400,105 @@
             Gets or sets the name of the file.
             </summary>
             <value>The name of the file.</value>
+        </member>
+        <member name="T:Facebook.FacebookBatchParameter">
+            <summary>
+            Represents a batch parameter for the creating batch requests.
+            </summary>
+            <remarks>
+            http://developers.facebook.com/docs/api/batch/
+            </remarks>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookBatchParameter"/> class.
+            </summary>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.#ctor(System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookBatchParameter"/> class.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.#ctor(Facebook.HttpMethod,System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookBatchParameter"/> class.
+            </summary>
+            <param name="httpMethod">
+            The http method.
+            </param>
+            <param name="path">
+            The resource path.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.#ctor(System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookBatchParameter"/> class.
+            </summary>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.#ctor(Facebook.HttpMethod,System.String,System.Object)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Facebook.FacebookBatchParameter"/> class.
+            </summary>
+            <param name="httpMethod">
+            The http method.
+            </param>
+            <param name="path">
+            The resource path.
+            </param>
+            <param name="parameters">
+            The parameters.
+            </param>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.Query(System.String)">
+            <summary>
+            Returns a <see cref="T:Facebook.FacebookBatchParameter"/> representing FQL query.
+            </summary>
+            <param name="fql">
+            The fql query.
+            </param>
+            <returns>
+            The <see cref="T:Facebook.FacebookBatchParameter"/>.
+            </returns>
+        </member>
+        <member name="M:Facebook.FacebookBatchParameter.Query(System.String[])">
+            <summary>
+            Returns a <see cref="T:Facebook.FacebookBatchParameter"/> representing FQL multi-query.
+            </summary>
+            <param name="fql">
+            The fql queries.
+            </param>
+            <returns>
+            The <see cref="T:Facebook.FacebookBatchParameter"/>.
+            </returns>
+        </member>
+        <member name="P:Facebook.FacebookBatchParameter.HttpMethod">
+            <summary>
+            Gets or sets the http method.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookBatchParameter.Path">
+            <summary>
+            Gets or sets the resource path.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookBatchParameter.Parameters">
+            <summary>
+            Gets or sets the parameters.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookBatchParameter.Data">
+            <summary>
+            Gets or sets the raw data parameter.
+            </summary>
         </member>
     </members>
 </doc>

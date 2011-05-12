@@ -1,32 +1,25 @@
 ﻿// --------------------------------
-// <copyright file="FacebookConfigurationSection.cs" company="Facebook C# SDK">
+// <copyright file="FacebookConfigurationSection.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
 namespace Facebook
 {
-    using System;
     using System.Configuration;
 
     /// <summary>
     /// Represents the Facebook section in a configuration file.
     /// </summary>
-    public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookSettings
+    public sealed class FacebookConfigurationSection : ConfigurationSection, IFacebookApplication
     {
         /// <summary>
-        /// Gets or sets the API secret.
+        /// The current facebook settings stored in the configuration file.
         /// </summary>
-        /// <value>The API secret.</value>
-        [ConfigurationProperty("appSecret", IsRequired = true)]
-        public string AppSecret
-        {
-            get { return (string)this["appSecret"]; }
-            set { this["appSecret"] = value; }
-        }
+        private static IFacebookApplication _current;
 
         /// <summary>
         /// Gets or sets the app id.
@@ -40,47 +33,94 @@ namespace Facebook
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether [cookie support].
+        /// Gets or sets the API secret.
         /// </summary>
-        /// <value><c>true</c> if [cookie support]; otherwise, <c>false</c>.</value>
-        [ConfigurationProperty("cookieSupport", IsRequired = false, DefaultValue = false)]
-        public bool CookieSupport
+        /// <value>The API secret.</value>
+        [ConfigurationProperty("appSecret", IsRequired = true)]
+        public string AppSecret
         {
-            get { return (bool)this["cookieSupport"]; }
-            set { this["cookieSupport"] = value; }
+            get { return (string)this["appSecret"]; }
+            set { this["appSecret"] = value; }
         }
 
         /// <summary>
-        /// Gets or sets the base domain.
+        /// Gets or sets the site url.
         /// </summary>
-        /// <value>The base domain.</value>
-        [ConfigurationProperty("baseDomain", IsRequired = false)]
-        public string BaseDomain
+        [ConfigurationProperty("siteUrl", IsRequired = false)]
+        public string SiteUrl
         {
-            get { return (string)this["baseDomain"]; }
-            set { this["baseDomain"] = value; }
+            get { return (string)this["siteUrl"]; }
+            set { this["siteUrl"] = value; }
         }
 
         /// <summary>
-        /// Gets or sets the max retries.
+        /// Gets or sets the canvas page.
         /// </summary>
-        /// <value>The max retries.</value>
-        [ConfigurationProperty("maxRetries", IsRequired = false, DefaultValue = -1)]
-        public int MaxRetries
+        [ConfigurationProperty("canvasPage", IsRequired = false)]
+        public string CanvasPage
         {
-            get { return (int)this["maxRetries"]; }
-            set { this["maxRetries"] = value; }
+            get { return (string)this["canvasPage"]; }
+            set { this["canvasPage"] = value; }
         }
 
         /// <summary>
-        /// Gets or sets the retry delay.
+        /// Gets or sets the canvas url.
         /// </summary>
-        /// <value>The retry delay.</value>
-        [ConfigurationProperty("retryDelay", IsRequired = false, DefaultValue = -1)]
-        public int RetryDelay
+        [ConfigurationProperty("canvasUrl", IsRequired = false)]
+        public string CanvasUrl
         {
-            get { return (int)this["retryDelay"]; }
-            set { this["retryDelay"] = value; }
+            get { return (string)this["canvasUrl"]; }
+            set { this["canvasUrl"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the secure canvas url.
+        /// </summary>
+        [ConfigurationProperty("secureCanvasUrl", IsRequired = false)]
+        public string SecureCanvasUrl
+        {
+            get { return (string)this["secureCanvasUrl"]; }
+            set { this["secureCanvasUrl"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the url to return the user after they cancel authorization.
+        /// </summary>
+        [ConfigurationProperty("cancelUrlPath", IsRequired = false)]
+        public string CancelUrlPath
+        {
+            get { return (string)this["cancelUrlPath"]; }
+            set { this["cancelUrlPath"] = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to use Facebook beta.
+        /// </summary>
+        [ConfigurationProperty("useFacebookBeta", IsRequired = false, DefaultValue = false)]
+        public bool UseFacebookBeta
+        {
+            get { return (bool)this["useFacebookBeta"]; }
+            set { this["useFacebookBeta"] = value; }
+        }
+
+        /// <summary>
+        /// Gets the Facebook settings stored in the configuration file.
+        /// </summary>
+        internal static IFacebookApplication Current
+        {
+            get
+            {
+                if (_current == null)
+                {
+                    var settings = ConfigurationManager.GetSection("facebookSettings");
+                    if (settings != null)
+                    {
+                        _current = settings as IFacebookApplication;
+                    }
+                }
+
+                return _current;
+            }
         }
 
     }

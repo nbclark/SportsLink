@@ -10,6 +10,20 @@ SportsLinkScript.Controls.UserOffers = function SportsLinkScript_Controls_UserOf
     SportsLinkScript.Controls.UserOffers.initializeBase(this, [ element ]);
     var cancelMatch = this.obj.find('.cancelMatch');
     cancelMatch.button({ text: false, icons: { primary: 'ui-icon-closethick' } });
+    cancelMatch.click(ss.Delegate.create(this, this._cancelOffer$1));
+}
+SportsLinkScript.Controls.UserOffers.prototype = {
+    
+    _cancelOffer$1: function SportsLinkScript_Controls_UserOffers$_cancelOffer$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        var button = $(e.currentTarget);
+        var parameters = { offerId: button.attr('data-offerId') };
+        $.post('/services/CancelOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        }));
+    }
 }
 
 
@@ -58,7 +72,7 @@ SportsLinkScript.Controls.Players.prototype = {
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
         var button = $(e.currentTarget);
         var parameters = { page: this._page$1 - 1 };
-        $.post('/services/Players', JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/Players?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
     },
@@ -69,7 +83,7 @@ SportsLinkScript.Controls.Players.prototype = {
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
         var button = $(e.currentTarget);
         var parameters = { page: this._page$1 + 1 };
-        $.post('/services/Players', JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/Players?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
     },
@@ -170,7 +184,7 @@ SportsLinkScript.Controls.Results.prototype = {
         }
         var parameters = { offerId: offerId, comments: comments, scores: score };
         dialog.attr('disabled', 'disabled').addClass('ui-state-disabled');
-        $.post('/services/PostScore', JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/PostScore?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             dialog.dialog('destroy');
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
@@ -205,7 +219,7 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
         /// </param>
         var button = $(e.currentTarget);
         var offerId = button.siblings('input').val();
-        $.post('/services/AcceptOffer', JSON.stringify({ offerId: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ offerId: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
             button.parent().children('a').fadeOut('slow');
         }));
     },
@@ -307,7 +321,8 @@ SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_C
     /// </param>
     var parameters = { date: datetime, locations: ids, comments: comments, opponentId: opponentId };
     obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-    $.post('/services/CreateOffer', JSON.stringify(parameters), function(data, textStatus, request) {
+    alert(document.getElementById('signed_request').getAttribute('value'));
+    $.post('/services/CreateOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
         obj.attr('disabled', '').removeClass('ui-state-disabled');
         SportsLinkScript.Shared.Utility.processResponse(data);
         if (null !== callback) {
@@ -405,7 +420,7 @@ SportsLinkScript.Pages.Login.processLogin = function SportsLinkScript_Pages_Logi
     /// <param name="rows" type="Array">
     /// </param>
     var row = rows[0];
-    $.post('/Services/AddUser', { member: {} }, function(data, textStatus, request) {
+    $.post('/Services/AddUser?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), { member: {} }, function(data, textStatus, request) {
         var response = data;
         var addUser = response.d;
     });
@@ -439,6 +454,10 @@ SportsLinkScript.Shared.SessionContext.prototype = {
 
 SportsLinkScript.Shared.Utility = function SportsLinkScript_Shared_Utility() {
 }
+SportsLinkScript.Shared.Utility._getSignedRequest = function SportsLinkScript_Shared_Utility$_getSignedRequest() {
+    /// <returns type="String"></returns>
+    return document.getElementById('signed_request').getAttribute('value');
+}
 SportsLinkScript.Shared.Utility.showPlayerDetails = function SportsLinkScript_Shared_Utility$showPlayerDetails(dialogContainerId, name, id) {
     /// <param name="dialogContainerId" type="String">
     /// </param>
@@ -451,7 +470,7 @@ SportsLinkScript.Shared.Utility.showPlayerDetails = function SportsLinkScript_Sh
         container.html('Loading...');
         container.attr('title', name);
         var parameters = { id: id };
-        $.post('/services/PlayerDetails', JSON.stringify(parameters), function(data, textStatus, request) {
+        $.post('/services/PlayerDetails?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
             var html = (data)['PlayerDetails'];
             container.html(html);
         });

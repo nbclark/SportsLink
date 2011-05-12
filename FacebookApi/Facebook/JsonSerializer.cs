@@ -1,187 +1,84 @@
 ﻿// --------------------------------
-// <copyright file="JsonSerializer.cs" company="Facebook C# SDK">
+// <copyright file="JsonSerializer.cs" company="Thuzi LLC (www.thuzi.com)">
 //     Microsoft Public License (Ms-PL)
 // </copyright>
-// <author>Nathan Totten (ntotten.com) and Jim Zimmerman (jimzimmerman.com)</author>
+// <author>Nathan Totten (ntotten.com), Jim Zimmerman (jimzimmerman.com) and Prabir Shrestha (prabir.me)</author>
 // <license>Released under the terms of the Microsoft Public License (Ms-PL)</license>
 // <website>http://facebooksdk.codeplex.com</website>
 // ---------------------------------
 
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Serialization;
-using System.Globalization;
-
 namespace Facebook
 {
-    internal static class JsonSerializer
-    {
-        private static readonly Regex _stripXmlnsRegex = new Regex(@"(xmlns:?[^=]*=[""][^""]*[""])",
-#if SILVERLIGHT
- RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.CultureInvariant);
-#else
- RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
-#endif
+    using System;
+    using System.Diagnostics.Contracts;
 
-        private static JsonSerializerSettings SerializerSettings
+    public class JsonSerializer
+    {
+        private static readonly JsonSerializer _instance = new JsonSerializer();
+
+        public static IJsonSerializer Current
         {
             get
             {
-                var isoDate = new IsoDateTimeConverter();
-                isoDate.DateTimeFormat = "yyyy-MM-ddTHH:mm:sszzz";
-                var settings = new JsonSerializerSettings();
-                settings.Converters = settings.Converters ?? new List<JsonConverter>();
-                settings.Converters.Add(isoDate);
-                settings.MissingMemberHandling = MissingMemberHandling.Ignore;
-                settings.NullValueHandling = NullValueHandling.Include;
-                settings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-                settings.TypeNameHandling = TypeNameHandling.None;
-                settings.ConstructorHandling = ConstructorHandling.Default;
-                return settings;
+                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
+                return _instance.InnerCurrent;
             }
         }
 
-
-        public static string SerializeObject(object value)
+        public static void SetJsonSerializer(IJsonSerializer jsonSerializer)
         {
-            return JsonConvert.SerializeObject(value, Formatting.None, SerializerSettings);
+            _instance.InnerSetApplication(jsonSerializer);
         }
 
-        public static object DeserializeObject(Stream stream)
+        public static void SetJsonSerializer(Func<IJsonSerializer> getJsonSerializer)
         {
-            Contract.Requires(stream != null);
-
-            object result;
-            using (var reader = new StreamReader(stream))
-            {
-                string json = reader.ReadToEnd();
-                result = DeserializeObject(json);
-            }
-            return result;
+            Contract.Requires(getJsonSerializer != null);
+            _instance.InnerSetApplication(getJsonSerializer);
         }
 
-        public static object DeserializeObject(string json)
+        private IJsonSerializer _current = new SimpleJsonSerializer();
+
+        public IJsonSerializer InnerCurrent
         {
-            return DeserializeObject(json, null);
+            get
+            {
+                Contract.Ensures(Contract.Result<IJsonSerializer>() != null);
+                return _current;
+            }
         }
 
-        public static object DeserializeObject(string json, Type type)
+        public void InnerSetApplication(IJsonSerializer jsonSerializer)
         {
-            if (string.IsNullOrEmpty(json))
-            {
-                return null;
-            }
-            else if (json.Trim().StartsWith("<?xml", StringComparison.Ordinal))
-            {
-                return ConvertXml(json);
-            }
-            else
-            {
-                object obj;
-
-                try
-                {
-                    obj = JsonConvert.DeserializeObject(json, type, SerializerSettings);
-                }
-                catch (JsonSerializationException ex)
-                {
-                    throw new System.Runtime.Serialization.SerializationException(ex.Message, ex);
-                }
-
-                // If the object is a JToken we want to
-                // convert it to dynamic, it if is any
-                // other type we just return it.
-                var jToken = obj as JToken;
-                if (jToken != null)
-                {
-                    return ConvertJTokenToDictionary(jToken);
-                }
-                else
-                {
-                    return obj;
-                }
-            }
+            _current = jsonSerializer ?? new SimpleJsonSerializer();
         }
 
-        private static object ConvertJTokenToDictionary(JToken token)
+        public void InnerSetApplication(Func<IJsonSerializer> getJsonSerializer)
         {
-            if (token == null)
-            {
-                return null;
-            }
-
-            var jValue = token as JValue;
-            if (jValue != null)
-            {
-                return jValue.Value;
-            }
-
-            var jContainer = token as JArray;
-            if (jContainer != null)
-            {
-                var jsonList = new JsonArray();
-                foreach (JToken arrayItem in jContainer)
-                {
-                    jsonList.Add(ConvertJTokenToDictionary(arrayItem));
-                }
-                return jsonList;
-            }
-
-            var jsonObject = new JsonObject();
-            var jsonDict = (IDictionary<string, object>)jsonObject;
-            (from childToken in token where childToken is JProperty select childToken as JProperty).ToList().ForEach(property =>
-            {
-                jsonDict.Add(property.Name, ConvertJTokenToDictionary(property.Value));
-            });
-            return jsonObject;
+            Contract.Requires(getJsonSerializer != null);
+            InnerSetApplication(getJsonSerializer());
         }
 
-        private static object ConvertXml(string xml)
+        private class SimpleJsonSerializer : IJsonSerializer
         {
-            Contract.Requires(!String.IsNullOrEmpty(xml));
-
-            xml = _stripXmlnsRegex.Replace(xml, string.Empty);
-
-            XDocument doc = XDocument.Parse(xml);
-            if (doc != null && doc.Root != null)
+            public string SerializeObject(object obj)
             {
-                return ConvertXElementToDictionary(doc.Root);
+                return SimpleJson.SimpleJson.SerializeObject(obj);
             }
-            return null;
-        }
 
-        private static object ConvertXElementToDictionary(XElement element)
-        {
-            if (element == null)
+            public object DeserializeObject(string json, Type type)
             {
-                return null;
+                return SimpleJson.SimpleJson.DeserializeObject(json, type);
             }
-            else if (element.HasElements)
+
+            public T DeserializeObject<T>(string json)
             {
-                JsonObject jsonObject = new JsonObject();
-                var jsonDict = (IDictionary<string, object>)jsonObject;
-                foreach (var child in element.Elements())
-                {
-                    if (child != null)
-                    {
-                        jsonDict.Add(child.Name.ToString(), ConvertXElementToDictionary(child));
-                    }
-                }
-                return jsonObject;
+                return SimpleJson.SimpleJson.DeserializeObject<T>(json);
             }
-            else
+
+            public object DeserializeObject(string json)
             {
-                return element.Value;
+                return SimpleJson.SimpleJson.DeserializeObject(json);
             }
         }
-
     }
 }
