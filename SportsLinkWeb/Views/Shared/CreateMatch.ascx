@@ -31,7 +31,12 @@
         </select>
     </div>
     -->
-    <div class="label">Comments:</div>
+    <div class="label">Location (optional):</div>
+    <div class="input full">
+        <input type="hidden" class="placesAutoValue" />
+        <input class="placesAutoFill" data-location='<%= string.Concat(userModel.User.City.Latitude, ",", userModel.User.City.Longitude) %>' data-accesstoken='<%=ConfigurationManager.AppSettings["GoogleAccessToken"] %>' />
+    </div>
+    <div class="label">Comments (optional):</div>
     <div class="input full">
         <input class="comments" type="text" />
     </div>

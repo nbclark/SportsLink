@@ -31,6 +31,22 @@ namespace SportsLinkWeb.Controllers
         private const string FacebookAppId = "121654811241938";
         private const string FacebookAppSecret = "02b1fc02ef9c2a48510331eac380ecab";
 
+        public ActionResult ServiceProxy(string url)
+        {
+            WebRequest request = WebRequest.Create(url);
+            WebResponse response = request.GetResponse();
+
+            using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
+            {
+                string responseText = responseStream.ReadToEnd();
+
+                JavaScriptResult result = new JavaScriptResult();
+                result.Script = responseText;
+
+                return result;
+            }
+        }
+
         public ActionResult PostScore(string offerId, string comments, string scores)
         {
             Guid offerGuid;
@@ -168,7 +184,7 @@ namespace SportsLinkWeb.Controllers
 
         public static string GetAccessToken()
         {
-            string urlString = string.Concat(AccessTokenUrl, "?type=client_cred&client_id=", "197465840298266", "&client_secret=", "fb414fe06ea76c51457a7cdef79466ea");
+            string urlString = string.Concat(AccessTokenUrl, "?type=client_cred&client_id=", FacebookApplication.Current.AppId, "&client_secret=", FacebookApplication.Current.AppSecret);
 
             HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(urlString);
             WebResponse response = request.GetResponse();
@@ -275,7 +291,7 @@ namespace SportsLinkWeb.Controllers
                 tokens.Add("From.Rating", IndexModel.FormatRating(tennisUser.Rating));
                 tokens.Add("Message", comments);
 
-                SendMessage(new long[] { userId }, "TennisLink: Message from " + tennisUser.Name, template, tokens);
+                SendMessage(new long[] { userId }, string.Format("TennisLink: Message from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId), template, tokens);
             }
 
             return Json("");

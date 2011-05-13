@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <DeploymentBuildOnly>False</DeploymentBuildOnly>
-    <DeploymentIsExpanded>True</DeploymentIsExpanded>
+    <DeploymentIsExpanded>False</DeploymentIsExpanded>
     <DeploymentAccountName>SportsLink</DeploymentAccountName>
     <DeploymentHostedService>sportslink</DeploymentHostedService>
     <DeploymentHostedServiceLabel>SportsLink</DeploymentHostedServiceLabel>
@@ -11,7 +11,7 @@
     <DeploymentEnableWebDeploy>False</DeploymentEnableWebDeploy>
     <DeploymentStorageService>instaplay</DeploymentStorageService>
     <DeploymentStorageServiceLabel>instaplay</DeploymentStorageServiceLabel>
-    <DeploymentLabel>SportsLinkAzure - 5/10/2011 10:23:25 PM</DeploymentLabel>
+    <DeploymentLabel>SportsLinkAzure - 5/13/2011 2:40:59 PM</DeploymentLabel>
     <DeploymentPromptBeforeDeleting>True</DeploymentPromptBeforeDeleting>
   </PropertyGroup>
 </Project>

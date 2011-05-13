@@ -39,6 +39,8 @@ namespace SportsLinkScript.Controls
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#challengeDialog");
             jQueryUIObject datePicker = (jQueryUIObject)dialog.Find(".datepicker");
 
+            Utility.WireAutoComplete((jQueryUIObject)dialog.Find(".placesAutoFill"), (jQueryUIObject)dialog.Find(".placesAutoValue"));
+
             string id = button.GetElement(0).ID;
 
             datePicker.DatePicker("disable");
@@ -46,7 +48,7 @@ namespace SportsLinkScript.Controls
             dialog.Dialog(
                 new JsonObject(
                     "width", "260",
-                    "height", "254",
+                    "height", "324",
                     "modal", true,
                     "title",  button.GetAttribute("Title"),
                     "buttons", new JsonObject(

@@ -13,6 +13,7 @@ using Facebook;
 using Facebook.Web;
 using Facebook.Web.Mvc;
 using SportsLink;
+using System.Configuration;
 
 namespace SportsLinkWeb.Controllers
 {
@@ -21,13 +22,15 @@ namespace SportsLinkWeb.Controllers
     [HandleError]
     public class HomeController : Controller
     {
-        public static string AppId = "197465840298266";
-        public static string ApiKey = "4f175801a1a388540d72445a059bd01d";
-        public static string AppSecret = "fb414fe06ea76c51457a7cdef79466ea";
         public static JavaScriptSerializer Serializer = new JavaScriptSerializer();
 
         //protected SportsLink.SportsLinkDB DB = new SportsLink.SportsLinkDB(@"Data Source=NCLARK-MOBILE\SQLEXPRESS;Initial Catalog=fbtennis;Integrated Security=True");
-        protected SportsLink.SportsLinkDB DB = new SportsLink.SportsLinkDB(@"Data Source=e3z720am4s.database.windows.net;Initial Catalog=sportslink;Persist Security Info=True;User ID=fbtennis@live.com@e3z720am4s;Password=May22RTM");
+        protected SportsLink.SportsLinkDB DB = null;
+
+        public HomeController()
+        {
+            this.DB = new SportsLink.SportsLinkDB(ConfigurationManager.AppSettings["AzureConnectionString"]);
+        }
         
         protected override void Dispose(bool disposing)
         {

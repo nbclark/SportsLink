@@ -20,6 +20,8 @@ namespace SportsLinkScript.Controls
             ((jQueryUIObject)this.Obj.Find(".datepicker")).DatePicker();
             ((jQueryUIObject)this.Obj.Find(".findMatch")).Button();
             ((jQueryUIObject)this.Obj.Find("select")).SelectMenu();
+
+            Utility.WireAutoComplete((jQueryUIObject)this.Obj.Find(".placesAutoFill"), (jQueryUIObject)this.Obj.Find(".placesAutoValue"));
         }
 
         private void CreateMatch(jQueryEvent e)

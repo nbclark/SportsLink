@@ -1,0 +1,4 @@
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkScript\bin\Release\SportsLinkScript.xml
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkScript\obj\Release\ResolveAssemblyReference.cache
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkScript\obj\Release\SportsLinkScript.dll
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLinkScript\obj\Release\SportsLinkScript.pdb

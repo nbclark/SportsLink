@@ -12,7 +12,6 @@
     <script src="/scripts/jquery.ui.selectmenu.js"></script>
     <script src="/scripts/ss.shared.js"></script>
     <script src="/scripts/SportsLinkScript.debug.js"></script>
-    <script src="/scripts/jquery.simpletip-1.3.1.pack.js"></script>
 
     <script>
         function OnPageLoad() {
@@ -31,7 +30,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            <a href="http://www.facebook.com/dialog/apprequests?app_id=197465840298266&redirect_uri=http://localhost:57157/&message=Try+out+TennisLink">Invite Users</a>
+            <a href="http://www.facebook.com/dialog/apprequests?app_id=197465840298266&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=Try+out+TennisLink">Invite Users</a>
             </div>
         </div>
     </div>

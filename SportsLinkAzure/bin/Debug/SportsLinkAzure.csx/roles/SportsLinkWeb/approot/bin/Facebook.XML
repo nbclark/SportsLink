@@ -1303,6 +1303,11 @@
             Gets the url to return the user after they cancel authorization.
             </summary>
         </member>
+        <member name="P:Facebook.IFacebookApplication.ReturnUrlPath">
+            <summary>
+            Gets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
         <member name="P:Facebook.IFacebookApplication.UseFacebookBeta">
             <summary>
             Gets a value indicating whether it is beta.
@@ -1619,6 +1624,11 @@
             </summary>
         </member>
         <member name="P:Facebook.DefaultFacebookApplication.CancelUrlPath">
+            <summary>
+            Gets or sets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
+        <member name="P:Facebook.DefaultFacebookApplication.ReturnUrlPath">
             <summary>
             Gets or sets the url to return the user after they cancel authorization.
             </summary>
@@ -2079,6 +2089,11 @@
         <member name="P:Facebook.FacebookConfigurationSection.CancelUrlPath">
             <summary>
             Gets or sets the url to return the user after they cancel authorization.
+            </summary>
+        </member>
+        <member name="P:Facebook.FacebookConfigurationSection.ReturnUrlPath">
+            <summary>
+            Gets or sets the url to return the user after they return authorization.
             </summary>
         </member>
         <member name="P:Facebook.FacebookConfigurationSection.UseFacebookBeta">

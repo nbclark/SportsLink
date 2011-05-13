@@ -2,7 +2,7 @@
 <%@ Import Namespace="Facebook.Web" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>Sign up for TennisLink</h2>
-    <p>
+    <p style="max-height:500px;">
         <fb:registration fields="[
 {'name':'name'}, {'name':'email'}, {'name':'birthday'}, {'name':'gender'},
 {'name':'location'},
@@ -20,7 +20,8 @@
         }, 'default' : 'Either'
 }
             ]"
-            redirect-uri="http://localhost:57157/"
+            fb_only="true"
+            redirect-uri="<%=Facebook.FacebookApplication.Current.CanvasUrl %>"
             perms="user_about_me,user_birthday,user_location,publish_stream,email"
             >
         </fb:registration>

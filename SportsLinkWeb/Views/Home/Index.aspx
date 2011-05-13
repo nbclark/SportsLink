@@ -1,5 +1,6 @@
 ﻿<%@ Page Language="C#" Title="Tennis Link" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" %>
 <%@ Import Namespace="SportsLink" %>
+<%@ Import Namespace="System.Configuration" %>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 

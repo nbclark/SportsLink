@@ -8,14 +8,96 @@ using jQueryApi;
 using System.Serialization;
 using SportsLinkScript.Controls;
 using System.Net;
+using SportsLinkScript.Shared.Google;
 
 namespace SportsLinkScript.Shared
 {
     public static class Utility
     {
+        private static Dictionary Cache = new Dictionary();
+        private static XmlHttpRequest LastRequest = null;
+
         internal static string GetSignedRequest()
         {
             return (string)Document.GetElementById("signed_request").GetAttribute("value");
+        }
+
+        internal static void WireAutoComplete(jQueryUIObject autoFill, jQueryUIObject hiddenField)
+        {
+            string accessToken = autoFill.GetAttribute("data-accesstoken");
+            string location = autoFill.GetAttribute("data-location");
+
+            autoFill.AutoComplete
+            (
+                new JsonObject
+                (
+                    "minLength", 2,
+                    "open", (Callback)delegate()
+                    {
+                        jQuery.This.RemoveClass("ui-corner-all").AddClass("ui-corner-top");
+                    },
+                    "close", (Callback)delegate()
+                    {
+                        jQuery.This.RemoveClass("ui-corner-top").AddClass("ui-corner-all");
+                    },
+                    "select", (jQuerySelectItemHandler)delegate(jQueryEvent ev, object obj)
+                    {
+                        if (null != hiddenField)
+                        {
+                            jQueryAutoCompleteData data = (jQueryAutoCompleteData)obj;
+                            autoFill.Value(data.Item.Label);
+
+                            hiddenField.Value(data.Item.Value);
+                            ev.StopPropagation();
+                        }
+
+                        return true;
+                    },
+                    "source", (jQueryAutoCompleteHandler)delegate(jQueryAutoCompleteRequest request, jQueryAutoCompleteResponse response)
+                    {
+                        string term = request.Term;
+
+                        if (Cache[term] != null)
+                        {
+                            response((ArrayList)Cache[term]);
+                            return;
+                        }
+
+                        LastRequest = jQuery.Post
+                        (
+                            "/services/serviceproxy",
+                            Json.Stringify(new JsonObject("url", "https://maps.googleapis.com/maps/api/place/search/json?location=" + location.EncodeUriComponent() + "&radius=5000&name=" + term.EncodeUriComponent() + "&sensor=false&key=AIzaSyBnD3R38Jh9IhcT7VOJ4Mh8vE7AkSuP_zE")),
+                            (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest xhr)
+                            {
+                                // build up the data
+                                if (xhr == LastRequest)
+                                {
+                                    PlacesResponse placesData = (PlacesResponse)data;
+                                    ArrayList places = new ArrayList();
+
+                                    for (int i = 0; i < placesData.Results.Length; ++i)
+                                    {
+                                        PlacesItem item = (PlacesItem)placesData.Results[i];
+                                        places.Add(new JsonObject("value", item.Id, "label", item.Name, "icon", item.Icon, "description", item.Vicinity));
+                                    }
+
+                                    Cache[term] = places;
+                                    response(places);
+                                }
+                            }
+                        );
+                    }
+                )
+            ).Data("autocomplete")._renderItem = (jQueryRenderItemHandler)delegate(Element element, JsonObject item)
+            {
+                jQueryAutoCompleteItem acItem = (jQueryAutoCompleteItem)item;
+
+                return
+                    jQuery.Select("<li class='acItem'></li>")
+                    .Data("item.autocomplete", item)
+                    .Append("<a><div class='acName'>" + acItem.Label + "</div><div class='acLoc'>" + acItem.Description + "</div></a>")
+                    .AppendTo(element);
+            };
         }
 
         public static void ShowPlayerDetails(string dialogContainerId, string name, long id)

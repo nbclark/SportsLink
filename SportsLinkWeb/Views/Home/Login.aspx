@@ -3,7 +3,5 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h2>
         <%: ViewData["Message"] %></h2>
-    <p id="login">
-        <fb:login-button registration-url="http://sportslink.cloudapp.net/home/register" show-faces="true" perms="user_about_me,user_birthday,user_location,publish_stream" />
-    </p>
+        <fb:login-button registration-url="http://localhost:57157/home/register" show-faces="false" perms="user_birthday,user_location,publish_stream,email"></fb:login-button>
 </asp:Content>

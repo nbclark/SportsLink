@@ -20,19 +20,14 @@ namespace SportsLinkScript.Pages
         {
             bool isLoginPage = action == "Login" || action == "Register";
 
-            if (isLoginPage)
-            {
-                jQuery.Select("#main").Show(EffectDuration.Fast);
-            }
-
             FbWindow.FbAsyncInit = delegate()
             {
                 FB.Init(new JsonObject("appId", AppId, "cookie", true, "status", true, "xfbml", true));
-
+                /*
                 FB.GetLoginStatus((FBSubscribeHandler)delegate(object r)
                 {
                     AuthResponse response = (AuthResponse)r;
-
+                    return;
                     if (response.Status == "connected")
                     {
                         if (action == "Login")
@@ -51,10 +46,16 @@ namespace SportsLinkScript.Pages
                         Window.Location.Href = "/home/register";
                     }
                 });
+                */
+                FB.Event.Subscribe("auth.statusChange", (FBSubscribeHandler)delegate(object r)
+                {
+                });
 
                 FB.Event.Subscribe("auth.login", (FBSubscribeHandler)delegate(object r)
                 {
                     AuthResponse response = (AuthResponse)r;
+
+                    return;
 
                     if (response.Status == "connected")
                     {
@@ -81,7 +82,7 @@ namespace SportsLinkScript.Pages
 
             H5ScriptElement e = (H5ScriptElement)Document.CreateElement("script");
             e.Async = true;
-            e.Src = "/scripts/fb.js";
+            e.Src = "http://connect.facebook.net/en_US/all.js";
             Document.GetElementById("fb-root").AppendChild(e);
         }
 

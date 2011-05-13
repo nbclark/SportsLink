@@ -54,6 +54,9 @@ namespace Facebook.Web.Mvc
             Contract.Requires(settings != null);
             Contract.Requires(httpContext != null);
 
+            this.ReturnUrlPath = FacebookConfigurationSection.Current.ReturnUrlPath;
+            this.CancelUrlPath = FacebookConfigurationSection.Current.CancelUrlPath;
+
             var authorizer = new CanvasAuthorizer(settings, httpContext)
             {
                 ReturnUrlPath = this.ReturnUrlPath,

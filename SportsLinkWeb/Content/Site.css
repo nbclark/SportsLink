@@ -382,3 +382,16 @@ body
 {
     margin-top: 0.5em;
 }
+
+.ui-autocomplete-loading { background: white url('/content/ui-anim_basic_16x16.gif') right center no-repeat; }
+
+
+.acName
+{
+    font-weight:bold;
+}
+
+.acLoc
+{
+    font-style: italic;
+}

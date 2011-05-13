@@ -60,8 +60,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Shared\Google\PlacesResponse.cs" />
+    <Compile Include="Shared\Google\PlacesItem.cs" />
+    <Compile Include="Shared\jQueryExt.cs" />
+    <Compile Include="Shared\jQueryAutoComplete.cs" />
     <Compile Include="Shared\StaticUtility.cs" />
-    <Compile Include="Shared\jQueryUI.cs" />
+    <Compile Include="Shared\jQueryUIObject.cs" />
     <Compile Include="Shared\LocalStorage.cs" />
     <Compile Include="Shared\SessionContext.cs" />
     <Compile Include="Shared\Facebook\AuthResponse.cs" />

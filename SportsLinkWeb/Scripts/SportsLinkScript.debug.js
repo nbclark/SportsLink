@@ -88,9 +88,10 @@ SportsLinkScript.Controls.Players.prototype = {
         var button = $(e.currentTarget);
         var dialog = $('#challengeDialog');
         var datePicker = dialog.find('.datepicker');
+        SportsLinkScript.Shared.Utility._wireAutoComplete(dialog.find('.placesAutoFill'), dialog.find('.placesAutoValue'));
         var id = button.get(0).id;
         datePicker.datepicker('disable');
-        dialog.dialog({ width: '260', height: '254', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': ss.Delegate.create(this, function(ex) {
+        dialog.dialog({ width: '260', height: '324', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': ss.Delegate.create(this, function(ex) {
             this._createMatch$1(id);
         }) }, open: ss.Delegate.create(this, function() {
             dialog.find('.comments').focus();
@@ -251,7 +252,10 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
         /// </param>
         var button = $(e.currentTarget);
         var offerId = button.siblings('input').val();
+        var parentRow = button.parents('.offer');
+        parentRow.attr('disabled', 'disabled').addClass('ui-state-disabled');
         $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ id: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
+            parentRow.attr('disabled', '').removeClass('ui-state-disabled');
             button.parent().children('a').fadeOut('slow');
         }));
     },
@@ -337,6 +341,7 @@ SportsLinkScript.Controls.QuickMatch = function SportsLinkScript_Controls_QuickM
     (this.obj.find('.datepicker')).datepicker();
     (this.obj.find('.findMatch')).button();
     (this.obj.find('select')).selectmenu();
+    SportsLinkScript.Shared.Utility._wireAutoComplete(this.obj.find('.placesAutoFill'), this.obj.find('.placesAutoValue'));
 }
 SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_Controls_QuickMatch$doCreateMatch(obj, datetime, ids, comments, opponentId, callback) {
     /// <param name="obj" type="jQueryObject">
@@ -404,29 +409,13 @@ SportsLinkScript.Pages.Login.init = function SportsLinkScript_Pages_Login$init(a
     /// <param name="action" type="String">
     /// </param>
     var isLoginPage = action === 'Login' || action === 'Register';
-    if (isLoginPage) {
-        $('#main').show('fast');
-    }
     window.fbAsyncInit = function() {
         FB.init({ appId: SportsLinkScript.Pages.Login.appId, cookie: true, status: true, xfbml: true });
-        FB.getLoginStatus(function(r) {
-            var response = r;
-            if (response.status === 'connected') {
-                if (action === 'Login') {
-                    $('#login').hide();
-                    window.location.href = '/home/index';
-                }
-                else {
-                    $('#main').show('slow');
-                }
-            }
-            else if (response.status === 'notConnected' && action !== 'Register') {
-                $('#login').hide();
-                window.location.href = '/home/register';
-            }
+        FB.Event.subscribe('auth.statusChange', function(r) {
         });
         FB.Event.subscribe('auth.login', function(r) {
             var response = r;
+            return;
             if (response.status === 'connected') {
                 $('#login').hide();
                 return;
@@ -444,7 +433,7 @@ SportsLinkScript.Pages.Login.init = function SportsLinkScript_Pages_Login$init(a
     };
     var e = document.createElement('script');
     e.async = true;
-    e.src = '/scripts/fb.js';
+    e.src = 'http://connect.facebook.net/en_US/all.js';
     document.getElementById('fb-root').appendChild(e);
 }
 SportsLinkScript.Pages.Login.processLogin = function SportsLinkScript_Pages_Login$processLogin(rows) {
@@ -484,10 +473,56 @@ SportsLinkScript.Shared.SessionContext.prototype = {
 // SportsLinkScript.Shared.Utility
 
 SportsLinkScript.Shared.Utility = function SportsLinkScript_Shared_Utility() {
+    /// <field name="_cache" type="Object" static="true">
+    /// </field>
+    /// <field name="_lastRequest" type="XMLHttpRequest" static="true">
+    /// </field>
 }
 SportsLinkScript.Shared.Utility._getSignedRequest = function SportsLinkScript_Shared_Utility$_getSignedRequest() {
     /// <returns type="String"></returns>
     return document.getElementById('signed_request').getAttribute('value');
+}
+SportsLinkScript.Shared.Utility._wireAutoComplete = function SportsLinkScript_Shared_Utility$_wireAutoComplete(autoFill, hiddenField) {
+    /// <param name="autoFill" type="jQueryUIObject">
+    /// </param>
+    /// <param name="hiddenField" type="jQueryUIObject">
+    /// </param>
+    var accessToken = autoFill.attr('data-accesstoken');
+    var location = autoFill.attr('data-location');
+    autoFill.autocomplete({ minLength: 2, open: function() {
+        $(this).removeClass('ui-corner-all').addClass('ui-corner-top');
+    }, close: function() {
+        $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
+    }, select: function(ev, obj) {
+        if (null !== hiddenField) {
+            var data = obj;
+            autoFill.val(data.item.label);
+            hiddenField.val(data.item.value);
+            ev.stopPropagation();
+        }
+        return true;
+    }, source: function(request, response) {
+        var term = request.term;
+        if (SportsLinkScript.Shared.Utility._cache[term] != null) {
+            response.invoke(SportsLinkScript.Shared.Utility._cache[term]);
+            return;
+        }
+        SportsLinkScript.Shared.Utility._lastRequest = $.post('/services/serviceproxy', JSON.stringify({ url: 'https://maps.googleapis.com/maps/api/place/search/json?location=' + encodeURIComponent(location) + '&radius=5000&name=' + encodeURIComponent(term) + '&sensor=false&key=AIzaSyBnD3R38Jh9IhcT7VOJ4Mh8vE7AkSuP_zE' }), function(data, textStatus, xhr) {
+            if (xhr === SportsLinkScript.Shared.Utility._lastRequest) {
+                var placesData = data;
+                var places = [];
+                for (var i = 0; i < placesData.results.length; ++i) {
+                    var item = placesData.results[i];
+                    places.add({ value: item.id, label: item.name, icon: item.icon, description: item.vicinity });
+                }
+                SportsLinkScript.Shared.Utility._cache[term] = places;
+                response.invoke(places);
+            }
+        });
+    } }).data('autocomplete')._renderItem = function(element, item) {
+        var acItem = item;
+        return $('<li class=\'acItem\'></li>').data('item.autocomplete', item).append('<a><div class=\'acName\'>' + acItem.label + '</div><div class=\'acLoc\'>' + acItem.description + '</div></a>').appendTo(element);
+    };
 }
 SportsLinkScript.Shared.Utility.showPlayerDetails = function SportsLinkScript_Shared_Utility$showPlayerDetails(dialogContainerId, name, id) {
     /// <param name="dialogContainerId" type="String">
@@ -577,3 +612,5 @@ SportsLinkScript.Controls.Module.instances = [];
 SportsLinkScript.Pages.Login.appId = '197465840298266';
 SportsLinkScript.Pages.Login.accessToken = null;
 SportsLinkScript.Shared.SessionContext.instance = new SportsLinkScript.Shared.SessionContext();
+SportsLinkScript.Shared.Utility._cache = {};
+SportsLinkScript.Shared.Utility._lastRequest = null;
