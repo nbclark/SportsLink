@@ -2,6 +2,38 @@
 Type.registerNamespace('SportsLinkScript.Controls');
 
 ////////////////////////////////////////////////////////////////////////////////
+// SportsLinkScript.Controls.PlayerDetails
+
+SportsLinkScript.Controls.PlayerDetails = function SportsLinkScript_Controls_PlayerDetails(element) {
+    /// <param name="element" type="Object" domElement="true">
+    /// </param>
+    SportsLinkScript.Controls.PlayerDetails.initializeBase(this, [ element ]);
+    var sendMessage = this.obj.find('#playerMessage .sendMessage');
+    sendMessage.button({ text: true, icons: { secondary: 'ui-icon-carat-1-e' } });
+    sendMessage.click(ss.Delegate.create(this, this._sendMessage$1));
+}
+SportsLinkScript.Controls.PlayerDetails.prototype = {
+    
+    _sendMessage$1: function SportsLinkScript_Controls_PlayerDetails$_sendMessage$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        var button = $(e.currentTarget);
+        var dialog = $('#playerDetailsCard');
+        var text = $('#playerDetailsCard .comments').val();
+        var id = dialog.attr('data-id');
+        debugger;
+        dialog.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        var parameters = { userId: id, comments: text };
+        $.post('/services/SendMessage?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+            dialog.attr('disabled', '').removeClass('ui-state-disabled');
+            dialog.dialog('close');
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        }));
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // SportsLinkScript.Controls.UserOffers
 
 SportsLinkScript.Controls.UserOffers = function SportsLinkScript_Controls_UserOffers(element) {
@@ -321,7 +353,6 @@ SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_C
     /// </param>
     var parameters = { date: datetime, locations: ids, comments: comments, opponentId: opponentId };
     obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-    alert(document.getElementById('signed_request').getAttribute('value'));
     $.post('/services/CreateOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
         obj.attr('disabled', '').removeClass('ui-state-disabled');
         SportsLinkScript.Shared.Utility.processResponse(data);
@@ -467,14 +498,14 @@ SportsLinkScript.Shared.Utility.showPlayerDetails = function SportsLinkScript_Sh
     /// </param>
     var container = $('#' + dialogContainerId);
     if (container.length > 0) {
-        container.html('Loading...');
+        container.children().first().html('Loading...');
         container.attr('title', name);
+        container.attr('data-id', id.toString());
         var parameters = { id: id };
         $.post('/services/PlayerDetails?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
-            var html = (data)['PlayerDetails'];
-            container.html(html);
+            SportsLinkScript.Shared.Utility.processResponse(data);
         });
-        container.dialog({ title: name, width: '340', height: '150', modal: 'true' });
+        container.dialog({ title: name, width: '340', height: '160', modal: 'true' });
     }
 }
 SportsLinkScript.Shared.Utility.processResponse = function SportsLinkScript_Shared_Utility$processResponse(obj) {
@@ -506,16 +537,15 @@ SportsLinkScript.Shared.Utility._updateModule = function SportsLinkScript_Shared
     /// </param>
     /// <param name="value" type="String">
     /// </param>
-    var element = content.children().first().get(0);
+    var element = content.children('*[data-type]').first().get(0);
     var module = SportsLinkScript.Controls.Module.getModule(element);
-    debugger;
     content.fadeOut(500, function() {
         if (null !== module) {
             module.unload();
         }
         content.html(value);
         content.fadeIn(500);
-        SportsLinkScript.Shared.Utility._loadModule(content.children().first().get(0));
+        SportsLinkScript.Shared.Utility._loadModule(content.children('*[data-type]').first().get(0));
     });
 }
 
@@ -523,6 +553,7 @@ SportsLinkScript.Shared.Utility._updateModule = function SportsLinkScript_Shared
 Type.registerNamespace('SportsLinkScript.Shared.Facebook');
 
 SportsLinkScript.Controls.Module.registerClass('SportsLinkScript.Controls.Module');
+SportsLinkScript.Controls.PlayerDetails.registerClass('SportsLinkScript.Controls.PlayerDetails', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.UserOffers.registerClass('SportsLinkScript.Controls.UserOffers', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.ModuleInstance.registerClass('SportsLinkScript.Controls.ModuleInstance');

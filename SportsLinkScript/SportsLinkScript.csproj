@@ -45,6 +45,7 @@
     <Reference Include="Script.jQuery" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\PlayerDetails.cs" />
     <Compile Include="Controls\UserOffers.cs" />
     <Compile Include="Controls\Players.cs" />
     <Compile Include="Controls\ModuleInstance.cs" />

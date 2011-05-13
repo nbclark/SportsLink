@@ -96,6 +96,8 @@
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\UserMessage.htm" />
+    <Content Include="Content\MatchAccepted.htm" />
     <Content Include="Content\MatchChallenge.htm" />
     <Content Include="Content\MatchRequest.htm" />
     <Content Include="Content\ui-lightness\images\ui-anim_basic_16x16.gif" />

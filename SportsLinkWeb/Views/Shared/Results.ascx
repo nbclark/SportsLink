@@ -17,7 +17,8 @@
                             <img src="http://graph.facebook.com/<%=opponent.FacebookId %>/picture" />
                         </td>
                         <td class="opponent">
-                            <a href="#"><%=opponent.Name %></a><br />
+                            <a class="name" href="javascript:SportsLinkScript.Shared.Utility.showPlayerDetails('playerDetailsCard', '<%=opponent.Name %>', '<%=opponent.FacebookId %>');"><%=opponent.Name%></a>
+                            <br />
                             <i><%=(isRequestor) ? o.RequestComments : o.AcceptComments %></i>
                         </td>
                         <td class="score">

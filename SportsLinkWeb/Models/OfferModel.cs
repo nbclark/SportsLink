@@ -40,5 +40,6 @@ namespace SportsLinkWeb.Models
         public long? USTAId;
         public bool CurrentAvailability;
         public City City;
+        public int TimeZoneOffset;
     }
 }

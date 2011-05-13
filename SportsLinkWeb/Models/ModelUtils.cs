@@ -28,7 +28,8 @@ namespace SportsLinkWeb.Models
                        SinglesDoubles = tu.SinglesDoubles,
                        USTAId = tu.USTAId,
                        CurrentAvailability = tu.CurrentAvailability,
-                       City = u.City
+                       City = u.City,
+                       TimeZoneOffset = u.TimeZoneOffset
                    };
         }
     }

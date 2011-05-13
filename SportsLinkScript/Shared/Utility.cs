@@ -24,15 +24,15 @@ namespace SportsLinkScript.Shared
 
             if (container.Length > 0)
             {
-                container.Html("Loading...");
+                container.Children().First().Html("Loading...");
                 container.Attribute("title", name);
+                container.Attribute("data-id", id.ToString());
 
                 JsonObject parameters = new JsonObject("id", id);
 
                 jQuery.Post("/services/PlayerDetails?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
                 {
-                    string html = (string)((Dictionary)data)["PlayerDetails"];
-                    container.Html(html);
+                    ProcessResponse((Dictionary)data);
                 }
                 );
 
@@ -42,7 +42,7 @@ namespace SportsLinkScript.Shared
                     (
                         "title", name,
                         "width", "340",
-                        "height", "150",
+                        "height", "160",
                         "modal", "true"
                     )
                 );
@@ -83,10 +83,8 @@ namespace SportsLinkScript.Shared
 
         private static void UpdateModule(jQueryObject content, string value)
         {
-            Element element = content.Children().First().GetElement(0);
+            Element element = content.Children("*[data-type]").First().GetElement(0);
             Module module = Module.GetModule(element);
-
-            Script.Literal("debugger");
 
             content.FadeOut(500, (Callback)delegate()
             {
@@ -98,7 +96,7 @@ namespace SportsLinkScript.Shared
                 content.Html(value);
                 content.FadeIn(500);
 
-                LoadModule(content.Children().First().GetElement(0));
+                LoadModule(content.Children("*[data-type]").First().GetElement(0));
             });
         }
     }

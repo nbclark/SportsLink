@@ -4,10 +4,9 @@
     <% var userModel = (UserModel)ViewData["UserModel"]; %>
     <% var indexModel = (IndexModel)ViewData["IndexModel"]; %>
 
-    <div class="module" style="display:none" data-type="PotentialOffers" display='<%=indexModel.PotentialOffers.Count > 0 ? "" : "none" %>'>
+    <div class="module" data-type="PotentialOffers" style='display:<%=indexModel.PotentialOffers.Count > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
-            <h3 class="ui-widget-header ui-corner-all">Potential Matches
-            </h3>
+            <h3 class="ui-widget-header ui-corner-all">Match Requests</h3>
             <div class="data">
                 <table>
                 <% foreach (OfferModel o in indexModel.PotentialOffers) { %>

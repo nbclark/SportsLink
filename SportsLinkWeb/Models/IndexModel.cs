@@ -50,7 +50,7 @@ namespace SportsLinkWeb.Models
                             };
 
             // Outstanding offers by the user
-            this.UserOffers = offers.Where(o => o.RequestUser.FacebookId == user.FacebookId && !o.Completed && o.MatchDateUtc > DateTime.UtcNow).OrderBy(o => o.MatchDateUtc).ToList();
+            this.UserOffers = offers.Where(o => o.AcceptUser == null).Where(o => o.RequestUser.FacebookId == user.FacebookId && !o.Completed && o.MatchDateUtc > DateTime.UtcNow).OrderBy(o => o.MatchDateUtc).ToList();
 
             // Completed matches
             this.UserResults = offers.Where(o => o.AcceptUser != null).Where(o => (o.AcceptUser.FacebookId == user.FacebookId || o.RequestUser.FacebookId == user.FacebookId)).OrderByDescending(o => o.MatchDateUtc).ToList();

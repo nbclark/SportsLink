@@ -91,12 +91,19 @@ namespace SportsLinkWeb.Controllers
                     offer.AcceptedById = fbContext.UserId;
                     this.DB.SubmitChanges();
 
-                    ActionResult result = Index();
+                    TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+
+                    string subject = string.Format("TennisLink: Match Accepted by <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId);
+                    string template = Server.MapPath("/content/matchaccepted.htm");
+
+                    SendMessage(new long[] { offer.FacebookId }, subject, template, offer, tennisUser);
 
                     if (!Request.IsAjaxRequest())
                     {
                         return new RedirectResult("/");
                     }
+
+                    ActionResult result = Index();
 
                     return Json
                     (
@@ -123,12 +130,25 @@ namespace SportsLinkWeb.Controllers
 
             if (Guid.TryParse(offerId, out offerGuid))
             {
-                Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
+                Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid).FirstOrDefault();
 
                 if (null != offer)
                 {
                     this.DB.Offer.DeleteOnSubmit(offer);
                     this.DB.SubmitChanges();
+
+                    if (null != offer.AcceptedById)
+                    {
+                        /*
+                        var fbContext = FacebookWebContext.Current;
+                        TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+
+                        string subject = "Match Cancelled";
+                        string template = Server.MapPath("/content/matchcancelled.htm");
+
+                        SendMessage(new long[] { offer.AcceptedById.Value }, subject, template, offer, tennisUser);
+                        */
+                    }
 
                     ActionResult result = Index();
 
@@ -146,7 +166,7 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
-        public string GetAccessToken()
+        public static string GetAccessToken()
         {
             string urlString = string.Concat(AccessTokenUrl, "?type=client_cred&client_id=", "197465840298266", "&client_secret=", "fb414fe06ea76c51457a7cdef79466ea");
 
@@ -170,27 +190,22 @@ namespace SportsLinkWeb.Controllers
 
         public ActionResult CreateOffer(DateTime date, long[] locations, string comments, long? opponentId)
         {
-            string accessToken = GetAccessToken();
-
-            FacebookApp postApp = new FacebookApp(accessToken);
-            FacebookApp app = new FacebookApp();
             var fbContext = FacebookWebContext.Current;
+            
+            TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
 
-            User user = this.DB.User.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
-            TennisUser tennisUser = this.DB.TennisUser.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
-
-            if (null != user && null != tennisUser)
+            if (null != tennisUser)
             {
                 List<long> pushIds = new List<long>();
 
                 //Add the entry, send out the messages
                 Offer offer = new Offer();
                 offer.OfferId = Guid.NewGuid();
-                offer.FacebookId = user.FacebookId;
-                offer.MatchDateUtc = date.AddHours(-user.TimeZoneOffset);
+                offer.FacebookId = tennisUser.FacebookId;
+                offer.MatchDateUtc = date.AddHours(-tennisUser.TimeZoneOffset);
                 offer.PostDateUtc = DateTime.UtcNow;
                 offer.Message = comments;
-                offer.PreferredLocationId = user.CityId;
+                offer.PreferredLocationId = tennisUser.City.LocationId;
                 offer.Completed = false;
 
                 User opponent = null;
@@ -210,10 +225,10 @@ namespace SportsLinkWeb.Controllers
                     var tennisUsers = ModelUtils.GetTennisUsers(this.DB);
                     var matchUsers = tennisUsers.Where
                     (u =>
-                        this.DB.CoordinateDistanceMiles(u.City.Latitude, u.City.Longitude, user.City.Latitude, user.City.Longitude) < 15 &&
+                        this.DB.CoordinateDistanceMiles(u.City.Latitude, u.City.Longitude, tennisUser.City.Latitude, tennisUser.City.Longitude) < 15 &&
                         Math.Abs(tennisUser.Rating - u.Rating) <= 0.25 &&
-                        u.Gender == user.Gender &&
-                        u.FacebookId != user.FacebookId
+                        u.Gender == tennisUser.Gender &&
+                        u.FacebookId != tennisUser.FacebookId
                     );
 
                     foreach (var tu in matchUsers)
@@ -222,46 +237,12 @@ namespace SportsLinkWeb.Controllers
                     }
                 }
 
-                string requests = "";
-
-                foreach (long id in pushIds)
-                {
-                    requests = requests + string.Format(@"{{ 'method' : 'POST', 'relative_url' : '{0}/apprequests' }}.", id);
-
-                    //parameters.Add("message", string.Format("{0} ({1}) has requested a match, {2}.", user.Name, IndexModel.FormatRating(tennisUser.Rating), IndexModel.FormatDate(offer.MatchDateUtc, user.TimeZoneOffset).Replace(",", " @ ")));
-                    
-                }
-                Dictionary<string, object> parameters = new Dictionary<string,object>();
-                //parameters.Add("batch", "[" + requests.TrimEnd(',') + "]");
-
-                //dynamic messageResult = postApp.Api("/", parameters, HttpMethod.Post);
-
-                //parameters.Add("method", "events.create");
-                //parameters.Add("event_info", string.Format(" {{ 'page_id' : '197465840298266', 'name' : 'Test Event', 'start_time' : '{0}', 'privacy_type' : 'CLOSED' }}", DateTime.UtcNow.ToString()));
-                //parameters.Add("name", "Test Tennis Match");
-                //parameters.Add("start_time", DateTime.UtcNow.ToString());
-                //parameters.Add("privacy_type", "CLOSED");
-                //parameters.Add("description", "We want you to come play tennis!");
-
                 this.DB.Offer.InsertOnSubmit(offer);
                 this.DB.SubmitChanges();
 
-                string bodyPath = Server.MapPath("/content/matchrequest.htm");
-
-                string body = System.IO.File.ReadAllText(bodyPath);
-                body = body.Replace("{FacebookId}", user.FacebookId.ToString());
-                body = body.Replace("{Rating}", IndexModel.FormatRating(tennisUser.Rating));
-                body = body.Replace("{Date}", IndexModel.FormatDate(date, user.TimeZoneOffset).Replace(",", " @ "));
-                body = body.Replace("{Name}", user.Name.ToString());
-                body = body.Replace("{Location}", user.City.Name);
-                body = body.Replace("{Comments}", comments);
-                body = body.Replace("{OfferId}", offer.OfferId.ToString());
-
-                parameters.Add("method", "notifications.sendEmail");
-                parameters.Add("recipients", string.Join(",", pushIds));
-                parameters.Add("subject", string.Format("TennisLink: Match Requested from <fb:name uid='{0}' capitalize='true'></fb:name>", user.FacebookId));
-                parameters.Add("fbml", body);
-                dynamic messageResult = postApp.Api("/", parameters, HttpMethod.Post);
+                string template = Server.MapPath("/content/matchrequest.htm");
+                string subject = string.Format("TennisLink: Match Requested from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId);
+                SendMessage(pushIds, subject, template, offer, tennisUser);
 
                 // Send out messages to all matching users
 
@@ -280,11 +261,61 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
-        private void SendMatchMessage()
+        public ActionResult SendMessage(long userId, string comments)
         {
-            //
+            var fbContext = FacebookWebContext.Current;
+            TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+            TennisUserModel sendToUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == userId).FirstOrDefault();
+
+            if (null != tennisUser && null != sendToUser)
+            {
+                string template = Server.MapPath("/content/usermessage.htm");
+                Dictionary<string, string> tokens = new Dictionary<string, string>();
+                tokens.Add("From.Id", tennisUser.FacebookId.ToString());
+                tokens.Add("From.Rating", IndexModel.FormatRating(tennisUser.Rating));
+                tokens.Add("Message", comments);
+
+                SendMessage(new long[] { userId }, "TennisLink: Message from " + tennisUser.Name, template, tokens);
+            }
+
+            return Json("");
         }
 
+        private static bool SendMessage(IEnumerable<long> pushIds, string subject, string templatePath, Offer offer, TennisUserModel tennisUser)
+        {
+            Dictionary<string, string> tokens = new Dictionary<string, string>();
+            tokens.Add("{FacebookId}", tennisUser.FacebookId.ToString());
+            tokens.Add("{Rating}", IndexModel.FormatRating(tennisUser.Rating));
+            tokens.Add("{Date}", IndexModel.FormatDate(offer.MatchDateUtc, tennisUser.TimeZoneOffset).Replace(",", " @ "));
+            tokens.Add("{Name}", tennisUser.Name.ToString());
+            tokens.Add("{Location}", tennisUser.City.Name);
+            tokens.Add("{Comments}", offer.Message);
+            tokens.Add("{OfferId}", offer.OfferId.ToString());
+
+            return SendMessage(pushIds, subject, templatePath, tokens);
+        }
+
+        private static bool SendMessage(IEnumerable<long> pushIds, string subject, string templatePath, Dictionary<string, string> tokens)
+        {
+            string accessToken = GetAccessToken();
+            FacebookApp postApp = new FacebookApp(accessToken);
+
+            string body = System.IO.File.ReadAllText(templatePath);
+
+            foreach (string key in tokens.Keys)
+            {
+                body = body.Replace("{" + key + "}", tokens[key]);
+            }
+
+            Dictionary<string, object> parameters = new Dictionary<string, object>();
+            parameters.Add("method", "notifications.sendEmail");
+            parameters.Add("recipients", string.Join(",", pushIds));
+            parameters.Add("subject", subject);
+            parameters.Add("fbml", body);
+            dynamic messageResult = postApp.Api("/", parameters, HttpMethod.Post);
+
+            return true;
+        }
         public ActionResult PlayerDetails(long id)
         {
             TennisUserModel model = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == id).FirstOrDefault();

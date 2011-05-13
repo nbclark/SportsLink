@@ -5,7 +5,10 @@
 
     <% var userModel = (UserModel)ViewData["UserModel"]; %>
 
-    <div id="playerDetailsCard" style="display:none"></div>
+    <div id="playerDetailsCard" style="display:none">
+        <div id="module_PlayerDetails">
+        </div>
+    </div>
 
     <table id="content">
     <tr>
