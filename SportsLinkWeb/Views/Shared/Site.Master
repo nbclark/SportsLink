@@ -15,7 +15,7 @@
 
     <script>
         function OnPageLoad() {
-            SportsLinkScript.Pages['Login'].init('<%=(string)ViewData["Action"] %>');
+            SportsLinkScript.Pages['Login'].init('<%= Facebook.FacebookApplication.Current.AppId%>', '<%=(string)ViewData["Action"] %>');
         }
     </script>
 </head>
@@ -30,7 +30,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            <a href="http://www.facebook.com/dialog/apprequests?app_id=197465840298266&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=Try+out+TennisLink">Invite Users</a>
+            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=Try+out+TennisLink">Invite Users</a>
             </div>
         </div>
     </div>

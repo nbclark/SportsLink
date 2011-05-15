@@ -13,16 +13,15 @@ namespace SportsLinkScript.Pages
 {
     public static class Login
     {
-        public static string AppId = "197465840298266";
         public static string AccessToken;
 
-        public static void Init(string action)
+        public static void Init(string appId, string action)
         {
             bool isLoginPage = action == "Login" || action == "Register";
 
             FbWindow.FbAsyncInit = delegate()
             {
-                FB.Init(new JsonObject("appId", AppId, "cookie", true, "status", true, "xfbml", true));
+                FB.Init(new JsonObject("appId", appId, "cookie", true, "status", true, "xfbml", true));
                 /*
                 FB.GetLoginStatus((FBSubscribeHandler)delegate(object r)
                 {

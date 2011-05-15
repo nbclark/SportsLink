@@ -38,9 +38,12 @@ namespace SportsLinkWeb.Controllers
             base.Dispose(disposing);
         }
 
-        private City GetCity(RegistrationJson regInfo)
+        private City GetCity(JsonObject regInfo, out long locationId)
         {
-            return this.DB.City.Where(c => c.LocationId == regInfo.Location.Id).FirstOrDefault();
+            locationId = regInfo.GetValue<JsonObject>("location").GetValue<long>("id");
+
+            long locId = locationId;
+            return this.DB.City.Where(c => c.LocationId == locId).FirstOrDefault();
         }
 
         [CanvasAuthorize(Permissions = "user_birthday,user_location,publish_stream,email")]
@@ -59,16 +62,17 @@ namespace SportsLinkWeb.Controllers
                     return new RedirectResult("/home/register");
                 }
 
-                var regInfo = (RegistrationJson)Serializer.Deserialize((string)fbContext.SignedRequest.Data["registration"], typeof(RegistrationJson));
+                var regInfo = (JsonObject)fbContext.SignedRequest.Data["registration"];
 
-                City city = GetCity(regInfo);
+                long locationId;
+                City city = GetCity(regInfo, out locationId);
 
                 int timeZoneOffset = 0;
 
                 if (null == city)
                 {
                     JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + fbContext.UserId);
-                    JsonArray places = (JsonArray)app.Query("SELECT latitude,longitude FROM place WHERE page_id = " + regInfo.Location.Id);
+                    JsonArray places = (JsonArray)app.Query("SELECT latitude,longitude FROM place WHERE page_id = " + locationId);
 
                     if (null != users && users.Count > 0)
                     {
@@ -78,10 +82,11 @@ namespace SportsLinkWeb.Controllers
 
                     if (null != places && places.Count > 0)
                     {
+                        JsonObject location = regInfo.GetValue<JsonObject>("location");
                         dynamic place = places[0];
                         city = new City();
-                        city.LocationId = regInfo.Location.Id;
-                        city.Name = regInfo.Location.Name;
+                        city.LocationId = location.GetValue<long>("id");
+                        city.Name = location.GetValue<string>("name");
                         city.Latitude = Convert.ToDouble(place.latitude);
                         city.Longitude = Convert.ToDouble(place.longitude);
                         this.DB.City.InsertOnSubmit(city);
@@ -90,17 +95,17 @@ namespace SportsLinkWeb.Controllers
 
                 user = new User();
                 user.FacebookId = fbContext.UserId;
-                user.Name = regInfo.Name;
-                user.Email = regInfo.Email;
-                user.Birthday = regInfo.Birthday;
-                user.Gender = regInfo.Gender == "male";
+                user.Name = regInfo.GetValue<string>("name");
+                user.Email = regInfo.GetValue<string>("email");
+                user.Birthday = regInfo.GetValue<DateTime>("birthday");
+                user.Gender = regInfo.GetValue<string>("gender") == "male";
                 user.City = city;
                 user.TimeZoneOffset = timeZoneOffset;
 
                 tennisUser = new TennisUser();
                 tennisUser.FacebookId = fbContext.UserId;
-                tennisUser.Rating = regInfo.NTRPRating;
-                tennisUser.SinglesDoubles = regInfo.SinglesDoubles;
+                tennisUser.Rating = regInfo.GetValue<double>("NTRPRating");
+                tennisUser.SinglesDoubles = regInfo.GetValue<string>("SinglesDoubles");
                 tennisUser.CurrentAvailability = true;
 
                 this.DB.User.InsertOnSubmit(user);

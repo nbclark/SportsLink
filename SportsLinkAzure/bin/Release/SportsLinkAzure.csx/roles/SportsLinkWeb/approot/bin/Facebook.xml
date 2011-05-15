@@ -2174,6 +2174,14 @@
             <param name="value">The value.</param>
             <returns></returns>
         </member>
+        <member name="M:Facebook.JsonObject.GetValue``1(System.String)">
+            <summary>
+            Tries the get value.
+            </summary>
+            <param name="key">The key.</param>
+            <param name="value">The value.</param>
+            <returns></returns>
+        </member>
         <member name="M:Facebook.JsonObject.Add(System.Collections.Generic.KeyValuePair{System.String,System.Object})">
             <summary>
             Adds the specified item.

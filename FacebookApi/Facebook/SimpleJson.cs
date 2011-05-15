@@ -155,6 +155,23 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Tries the get value.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
+        public T GetValue<T>(string key)
+        {
+            object value = null;
+            if (_members.TryGetValue(key, out value))
+            {
+                return (T)Convert.ChangeType(value, typeof(T));
+            }
+
+            return default(T);
+        }
+
+        /// <summary>
         /// Gets the values.
         /// </summary>
         /// <value>The values.</value>

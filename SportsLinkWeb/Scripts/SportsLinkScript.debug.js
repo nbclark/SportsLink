@@ -400,17 +400,17 @@ SportsLinkScript.Pages._index = function SportsLinkScript_Pages__index() {
 // SportsLinkScript.Pages.Login
 
 SportsLinkScript.Pages.Login = function SportsLinkScript_Pages_Login() {
-    /// <field name="appId" type="String" static="true">
-    /// </field>
     /// <field name="accessToken" type="String" static="true">
     /// </field>
 }
-SportsLinkScript.Pages.Login.init = function SportsLinkScript_Pages_Login$init(action) {
+SportsLinkScript.Pages.Login.init = function SportsLinkScript_Pages_Login$init(appId, action) {
+    /// <param name="appId" type="String">
+    /// </param>
     /// <param name="action" type="String">
     /// </param>
     var isLoginPage = action === 'Login' || action === 'Register';
     window.fbAsyncInit = function() {
-        FB.init({ appId: SportsLinkScript.Pages.Login.appId, cookie: true, status: true, xfbml: true });
+        FB.init({ appId: appId, cookie: true, status: true, xfbml: true });
         FB.Event.subscribe('auth.statusChange', function(r) {
         });
         FB.Event.subscribe('auth.login', function(r) {
@@ -609,7 +609,6 @@ SportsLinkScript.Controls.Module.instances = [];
         });
     });
 })();
-SportsLinkScript.Pages.Login.appId = '197465840298266';
 SportsLinkScript.Pages.Login.accessToken = null;
 SportsLinkScript.Shared.SessionContext.instance = new SportsLinkScript.Shared.SessionContext();
 SportsLinkScript.Shared.Utility._cache = {};
