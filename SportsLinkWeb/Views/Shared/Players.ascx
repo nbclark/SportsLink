@@ -1,15 +1,16 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%@ Import Namespace="SportsLink" %>
 
-    <% var playerModel = (PlayerModel)ViewData["PlayerModel"]; %>
+    <% var playerModel = (PlayersModel)Model; %>
+    <% var perPage = 5; %>
+    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, playerModel.Players.Count()); %>
 
-    <div class="module" id="players" data-type="Players" style='display:<%=(playerModel.Players.Count > 0) ? "" : "none" %>'>
-        <input type="hidden" id="playersPage" value="<%=playerModel.Page %>" />
+    <div class="module" id="players" data-type="Players" style='display:<%=(playerModel.Players.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Similar Players</h3>
             <div class="data">
                 <table width="100%">
-                <%foreach (TennisUserModel user in playerModel.Players) { %>
+                <%foreach (TennisUserModel user in playerModel.Players.Skip(pageModel.Skip).Take(perPage)) { %>
                     <tr>
                         <td>
                             <img src="http://graph.facebook.com/<%=user.FacebookId %>/picture" />
@@ -25,16 +26,11 @@
                     </tr>
                 <% } %>
                 </table>
-                <% if (playerModel.HasPrev) { %>
-                    <a id="playersPrev" href="#">Prev</a>
-                <% } %>
-                <% if (playerModel.HasNext) { %>
-                    <a id="playersNext" href="#">Next</a>
-                <% } %>
+                <% Html.RenderPartial("Paginator", pageModel); %>
             </div>
         </div>
     </div>
 
     <div id="challengeDialog" class="module quickmatch" data-type="QuickMatch" style="display:none">
-        <% Html.RenderPartial("CreateMatch"); %>
+        <% Html.RenderPartial("CreateMatch", Model); %>
     </div>

@@ -2,6 +2,56 @@
 Type.registerNamespace('SportsLinkScript.Controls');
 
 ////////////////////////////////////////////////////////////////////////////////
+// SportsLinkScript.Controls.PaginatedModule
+
+SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_PaginatedModule(element, serviceName) {
+    /// <param name="element" type="Object" domElement="true">
+    /// </param>
+    /// <param name="serviceName" type="String">
+    /// </param>
+    /// <field name="_page$1" type="Number" integer="true">
+    /// </field>
+    /// <field name="_serviceName$1" type="String">
+    /// </field>
+    SportsLinkScript.Controls.PaginatedModule.initializeBase(this, [ element ]);
+    this._page$1 = parseInt(this.obj.find('.page').val());
+    this._serviceName$1 = serviceName;
+    var prev = this.obj.find('.prev');
+    var next = this.obj.find('.next');
+    prev.button();
+    next.button();
+    prev.click(ss.Delegate.create(this, this._pagePrev$1));
+    next.click(ss.Delegate.create(this, this._pageNext$1));
+}
+SportsLinkScript.Controls.PaginatedModule.prototype = {
+    _page$1: 0,
+    _serviceName$1: null,
+    
+    _pagePrev$1: function SportsLinkScript_Controls_PaginatedModule$_pagePrev$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        var button = $(e.currentTarget);
+        var parameters = { page: this._page$1 - 1 };
+        $.post('/services/' + this._serviceName$1 + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        }));
+    },
+    
+    _pageNext$1: function SportsLinkScript_Controls_PaginatedModule$_pageNext$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        var button = $(e.currentTarget);
+        var parameters = { page: this._page$1 + 1 };
+        $.post('/services/' + this._serviceName$1 + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        }));
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // SportsLinkScript.Controls.PlayerDetails
 
 SportsLinkScript.Controls.PlayerDetails = function SportsLinkScript_Controls_PlayerDetails(element) {
@@ -39,14 +89,14 @@ SportsLinkScript.Controls.PlayerDetails.prototype = {
 SportsLinkScript.Controls.UserOffers = function SportsLinkScript_Controls_UserOffers(element) {
     /// <param name="element" type="Object" domElement="true">
     /// </param>
-    SportsLinkScript.Controls.UserOffers.initializeBase(this, [ element ]);
+    SportsLinkScript.Controls.UserOffers.initializeBase(this, [ element, 'UserOffers' ]);
     var cancelMatch = this.obj.find('.cancelMatch');
     cancelMatch.button({ text: false, icons: { primary: 'ui-icon-closethick' } });
-    cancelMatch.click(ss.Delegate.create(this, this._cancelOffer$1));
+    cancelMatch.click(ss.Delegate.create(this, this._cancelOffer$2));
 }
 SportsLinkScript.Controls.UserOffers.prototype = {
     
-    _cancelOffer$1: function SportsLinkScript_Controls_UserOffers$_cancelOffer$1(e) {
+    _cancelOffer$2: function SportsLinkScript_Controls_UserOffers$_cancelOffer$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
@@ -65,24 +115,14 @@ SportsLinkScript.Controls.UserOffers.prototype = {
 SportsLinkScript.Controls.Players = function SportsLinkScript_Controls_Players(element) {
     /// <param name="element" type="Object" domElement="true">
     /// </param>
-    /// <field name="_page$1" type="Number" integer="true">
-    /// </field>
-    SportsLinkScript.Controls.Players.initializeBase(this, [ element ]);
-    this._page$1 = parseInt($('#playersPage').val());
+    SportsLinkScript.Controls.Players.initializeBase(this, [ element, 'Players' ]);
     var requestMatch = this.obj.find('.requestMatch');
     requestMatch.button({ text: true, icons: { secondary: 'ui-icon-carat-1-e' } });
-    requestMatch.click(ss.Delegate.create(this, this._requestMatch$1));
-    var prev = $('#playersPrev');
-    var next = $('#playersNext');
-    prev.button();
-    next.button();
-    prev.click(ss.Delegate.create(this, this._pagePrev$1));
-    next.click(ss.Delegate.create(this, this._pageNext$1));
+    requestMatch.click(ss.Delegate.create(this, this._requestMatch$2));
 }
 SportsLinkScript.Controls.Players.prototype = {
-    _page$1: 0,
     
-    _requestMatch$1: function SportsLinkScript_Controls_Players$_requestMatch$1(e) {
+    _requestMatch$2: function SportsLinkScript_Controls_Players$_requestMatch$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         var button = $(e.currentTarget);
@@ -92,36 +132,14 @@ SportsLinkScript.Controls.Players.prototype = {
         var id = button.get(0).id;
         datePicker.datepicker('disable');
         dialog.dialog({ width: '260', height: '324', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': ss.Delegate.create(this, function(ex) {
-            this._createMatch$1(id);
+            this._createMatch$2(id);
         }) }, open: ss.Delegate.create(this, function() {
             dialog.find('.comments').focus();
             datePicker.datepicker('enable');
         }) });
     },
     
-    _pagePrev$1: function SportsLinkScript_Controls_Players$_pagePrev$1(e) {
-        /// <param name="e" type="jQueryEvent">
-        /// </param>
-        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-        var button = $(e.currentTarget);
-        var parameters = { page: this._page$1 - 1 };
-        $.post('/services/Players?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
-            SportsLinkScript.Shared.Utility.processResponse(data);
-        }));
-    },
-    
-    _pageNext$1: function SportsLinkScript_Controls_Players$_pageNext$1(e) {
-        /// <param name="e" type="jQueryEvent">
-        /// </param>
-        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-        var button = $(e.currentTarget);
-        var parameters = { page: this._page$1 + 1 };
-        $.post('/services/Players?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
-            SportsLinkScript.Shared.Utility.processResponse(data);
-        }));
-    },
-    
-    _createMatch$1: function SportsLinkScript_Controls_Players$_createMatch$1(id) {
+    _createMatch$2: function SportsLinkScript_Controls_Players$_createMatch$2(id) {
         /// <param name="id" type="String">
         /// </param>
         var dialog = $('#challengeDialog');
@@ -237,17 +255,17 @@ SportsLinkScript.Controls.Results.prototype = {
 SportsLinkScript.Controls.PotentialOffers = function SportsLinkScript_Controls_PotentialOffers(element) {
     /// <param name="element" type="Object" domElement="true">
     /// </param>
-    SportsLinkScript.Controls.PotentialOffers.initializeBase(this, [ element ]);
+    SportsLinkScript.Controls.PotentialOffers.initializeBase(this, [ element, 'PotentialOffers' ]);
     var acceptMatch = this.obj.find('.acceptMatch');
     var rejectMatch = this.obj.find('.rejectMatch');
     acceptMatch.button({ text: false, icons: { primary: 'ui-icon-check' } });
     rejectMatch.button({ text: false, icons: { primary: 'ui-icon-closethick' } });
-    acceptMatch.click(ss.Delegate.create(this, this._acceptMatch$1));
-    rejectMatch.click(ss.Delegate.create(this, this._rejectMatch$1));
+    acceptMatch.click(ss.Delegate.create(this, this._acceptMatch$2));
+    rejectMatch.click(ss.Delegate.create(this, this._rejectMatch$2));
 }
 SportsLinkScript.Controls.PotentialOffers.prototype = {
     
-    _acceptMatch$1: function SportsLinkScript_Controls_PotentialOffers$_acceptMatch$1(e) {
+    _acceptMatch$2: function SportsLinkScript_Controls_PotentialOffers$_acceptMatch$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         var button = $(e.currentTarget);
@@ -260,7 +278,7 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
         }));
     },
     
-    _rejectMatch$1: function SportsLinkScript_Controls_PotentialOffers$_rejectMatch$1(e) {
+    _rejectMatch$2: function SportsLinkScript_Controls_PotentialOffers$_rejectMatch$2(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         alert('reject');
@@ -588,12 +606,13 @@ SportsLinkScript.Shared.Utility._updateModule = function SportsLinkScript_Shared
 Type.registerNamespace('SportsLinkScript.Shared.Facebook');
 
 SportsLinkScript.Controls.Module.registerClass('SportsLinkScript.Controls.Module');
+SportsLinkScript.Controls.PaginatedModule.registerClass('SportsLinkScript.Controls.PaginatedModule', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.PlayerDetails.registerClass('SportsLinkScript.Controls.PlayerDetails', SportsLinkScript.Controls.Module);
-SportsLinkScript.Controls.UserOffers.registerClass('SportsLinkScript.Controls.UserOffers', SportsLinkScript.Controls.Module);
-SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.Module);
+SportsLinkScript.Controls.UserOffers.registerClass('SportsLinkScript.Controls.UserOffers', SportsLinkScript.Controls.PaginatedModule);
+SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.ModuleInstance.registerClass('SportsLinkScript.Controls.ModuleInstance');
 SportsLinkScript.Controls.Results.registerClass('SportsLinkScript.Controls.Results', SportsLinkScript.Controls.Module);
-SportsLinkScript.Controls.PotentialOffers.registerClass('SportsLinkScript.Controls.PotentialOffers', SportsLinkScript.Controls.Module);
+SportsLinkScript.Controls.PotentialOffers.registerClass('SportsLinkScript.Controls.PotentialOffers', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.QuickMatch.registerClass('SportsLinkScript.Controls.QuickMatch', SportsLinkScript.Controls.Module);
 SportsLinkScript.Pages._index.registerClass('SportsLinkScript.Pages._index');
 SportsLinkScript.Pages.Login.registerClass('SportsLinkScript.Pages.Login');

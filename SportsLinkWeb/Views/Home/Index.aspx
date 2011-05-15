@@ -4,7 +4,7 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <% var userModel = (UserModel)ViewData["UserModel"]; %>
+    <% var indexModel = (IndexModel)ViewData["IndexModel"]; %>
 
     <div id="playerDetailsCard" style="display:none">
         <div id="module_PlayerDetails">
@@ -15,26 +15,34 @@
     <tr>
     <td class="left">
     
-    <% Html.RenderPartial("Overview"); %>
-    <% Html.RenderPartial("PotentialOffers"); %>
+    <% Html.RenderPartial("Overview", indexModel); %>
+    
+    <div id="module_PotentialOffers">
+    <% Html.RenderPartial("PotentialOffers", indexModel.GetModel<PotentialOffersModel>()); %>
+    </div>
 
     <div id="module_Results">
-    <% Html.RenderPartial("Results"); %>
+    <% Html.RenderPartial("Results", indexModel.GetModel<ResultsModel>()); %>
     </div>
 
     <div id="module_Players">
-    <% Html.RenderPartial("Players"); %>
+    <% Html.RenderPartial("Players", indexModel.GetModel<PlayersModel>()); %>
     </div>
     
 
     </td>
     <td class="right">
     
-    <% Html.RenderPartial("QuickMatch"); %>
-    <div id="module_UserOffers">
-    <% Html.RenderPartial("UserOffers"); %>
+    
+    <div id="module_QuickMatch">
+    <% Html.RenderPartial("QuickMatch", indexModel); %>
     </div>
-    <% Html.RenderPartial("UserDetails"); %>
+    <div id="module_UserOffers">
+    <% Html.RenderPartial("UserOffers", indexModel.GetModel<UserOffersModel>()); %>
+    </div>
+    <div id="module_UserDetails">
+    <% Html.RenderPartial("UserDetails", indexModel); %>
+    </div>
 
     <div class="module">
     <fb:login-button show-faces="true" width="240"></fb:login-button>

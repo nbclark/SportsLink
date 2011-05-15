@@ -11,10 +11,10 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class UserOffers : Module
+    public class UserOffers : PaginatedModule
     {
         public UserOffers(Element element)
-            : base(element)
+            : base(element, "UserOffers")
         {
             jQueryUIObject cancelMatch = (jQueryUIObject)this.Obj.Find(".cancelMatch");
             cancelMatch.Button(new JsonObject("text", false, "icons", new JsonObject("primary", "ui-icon-closethick")));

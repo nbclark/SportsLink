@@ -1,16 +1,17 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%@ Import Namespace="SportsLink" %>
 
-    <% var userModel = (UserModel)ViewData["UserModel"]; %>
-    <% var indexModel = (IndexModel)ViewData["IndexModel"]; %>
+    <% var results = (ResultsModel)Model; %>
+    <% var perPage = 10; %>
+    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, results.UserResults.Count()); %>
     
-    <div class="module" id="results" data-type="Results" style='display:<%=(indexModel.UserResults.Count > 0) ? "" : "none" %>'>
+    <div class="module" id="results" data-type="Results" style='display:<%=(results.UserResults.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Recent Results</h3>
             <div class="data">
                 <table>
-                <% foreach (OfferModel o in indexModel.UserResults) { %>
-                    <% var isRequestor = (o.RequestUser.FacebookId == userModel.User.FacebookId); %>
+                <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>
+                    <% var isRequestor = (o.RequestUser.FacebookId == results.TennisUser.FacebookId); %>
                     <% var opponent = (!isRequestor) ? o.RequestUser : o.AcceptUser; %>
                     <tr class="result">
                         <td>
@@ -34,11 +35,12 @@
                             <% } %>
                         </div>
                         <td class="time">
-                            <%=IndexModel.FormatDate(o.MatchDateUtc, userModel.User.TimeZoneOffset).Replace(",", "<br />")%>
+                            <%=IndexModel.FormatDate(o.MatchDateUtc, results.TennisUser.TimeZoneOffset).Replace(",", "<br />")%>
                         </div>
                     </tr>
                 <% } %>
                 </table>
+                <% Html.RenderPartial("Paginator", pageModel); %>
             </div>
         </div>
     </div>

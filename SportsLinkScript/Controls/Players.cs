@@ -11,26 +11,14 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class Players : Module
+    public class Players : PaginatedModule
     {
-        private int Page = 0;
-
         public Players(Element element)
-            : base(element)
+            : base(element, "Players")
         {
-            this.Page = int.Parse(jQuery.Select("#playersPage").GetValue());
             jQueryUIObject requestMatch = (jQueryUIObject)this.Obj.Find(".requestMatch");
             requestMatch.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-carat-1-e")));
             requestMatch.Click(RequestMatch);
-
-            jQueryUIObject prev = (jQueryUIObject)jQuery.Select("#playersPrev");
-            jQueryUIObject next = (jQueryUIObject)jQuery.Select("#playersNext");
-
-            prev.Button();
-            next.Button();
-
-            prev.Click(PagePrev);
-            next.Click(PageNext);
         }
 
         private void RequestMatch(jQueryEvent e)
@@ -63,34 +51,6 @@ namespace SportsLinkScript.Controls
                         datePicker.DatePicker("enable");
                     }
                 )
-            );
-        }
-
-        private void PagePrev(jQueryEvent e)
-        {
-            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQueryObject button = jQuery.FromElement(e.CurrentTarget);
-
-            JsonObject parameters = new JsonObject("page", this.Page - 1);
-
-            jQuery.Post("/services/Players?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
-            {
-                Utility.ProcessResponse((Dictionary)data);
-            }
-            );
-        }
-
-        private void PageNext(jQueryEvent e)
-        {
-            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQueryObject button = jQuery.FromElement(e.CurrentTarget);
-
-            JsonObject parameters = new JsonObject("page", this.Page + 1);
-
-            jQuery.Post("/services/Players?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
-            {
-                Utility.ProcessResponse((Dictionary)data);
-            }
             );
         }
 

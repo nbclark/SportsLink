@@ -82,8 +82,8 @@ namespace SportsLinkWeb.Controllers
                     (
                         new
                         {
-                            Results = RenderPartialViewToString("Results"),
-                            UserOffers = RenderPartialViewToString("UserOffers")
+                            Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                         }
                      );
                 }
@@ -125,8 +125,8 @@ namespace SportsLinkWeb.Controllers
                     (
                         new
                         {
-                            PotentialMatches = RenderPartialViewToString("PotentialMatches"),
-                            Results = RenderPartialViewToString("Results")
+                            PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB))
                         }
                      );
                 }
@@ -172,8 +172,8 @@ namespace SportsLinkWeb.Controllers
                     (
                         new
                         {
-                            UserOffers = RenderPartialViewToString("UserOffers"),
-                            Results = RenderPartialViewToString("Results")
+                            UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB))
                         }
                      );
                 }
@@ -268,8 +268,8 @@ namespace SportsLinkWeb.Controllers
                 (
                     new
                     {
-                        UserOffers = RenderPartialViewToString("UserOffers"),
-                        Results = RenderPartialViewToString("Results")
+                        UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                        Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB))
                     }
                  );
             }
@@ -349,7 +349,7 @@ namespace SportsLinkWeb.Controllers
                 (
                     new
                     {
-                        PlayerDetails = RenderPartialViewToString("PlayerDetails")
+                        PlayerDetails = RenderPartialViewToString("PlayerDetails", ModelUtils.GetModel<ModuleModel>(FacebookWebContext.Current.UserId, this.DB))
                     },
                     JsonRequestBehavior.AllowGet
                  );
@@ -360,17 +360,39 @@ namespace SportsLinkWeb.Controllers
 
         public ActionResult Players(int page)
         {
-            FacebookApp app = new FacebookApp();
-            User user = this.DB.User.Where(u => u.FacebookId == app.Session.UserId).FirstOrDefault();
-            TennisUser tennisUser = this.DB.TennisUser.Where(u => u.FacebookId == app.Session.UserId).FirstOrDefault();
-
-            ViewData["PlayerModel"] = new PlayerModel(user, tennisUser, this.DB, page);
+            ViewData["Page"] = page;
 
             return Json
             (
                 new
                 {
-                    Players = RenderPartialViewToString("Players")
+                    Players = RenderPartialViewToString("Players", ModelUtils.GetModel<PlayersModel>(FacebookWebContext.Current.UserId, this.DB))
+                }
+             );
+        }
+
+        public ActionResult UserOffers(int page)
+        {
+            ViewData["Page"] = page;
+
+            return Json
+            (
+                new
+                {
+                    UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
+                }
+             );
+        }
+
+        public ActionResult PotentialOffers(int page)
+        {
+            ViewData["Page"] = page;
+
+            return Json
+            (
+                new
+                {
+                    PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                 }
              );
         }

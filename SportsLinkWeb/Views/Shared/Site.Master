@@ -1,5 +1,6 @@
 ﻿<%@ Master Language="C#" Inherits="System.Web.Mvc.ViewMasterPage" %>
 <%@ Import Namespace="SportsLink" %>
+<%@ Import Namespace="System.Configuration" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -30,7 +31,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=Try+out+TennisLink">Invite Users</a>
+            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
             </div>
         </div>
     </div>

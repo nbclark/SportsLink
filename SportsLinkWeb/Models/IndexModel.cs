@@ -11,64 +11,22 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
-    public class IndexModel
+    public class IndexModel : ModuleModel
     {
         public IndexModel() { }
 
-        public IndexModel(User user, TennisUser tennisUser, SportsLinkDB db)
+        public IndexModel(TennisUserModel tennisUser, SportsLinkDB db)
+            : base(tennisUser)
         {
-            var tennisUsers = ModelUtils.GetTennisUsers(db);
-
-            var offers =    from o in db.Offer
-                            join u1 in tennisUsers on o.FacebookId equals u1.FacebookId
-                            join u2 in tennisUsers on o.AcceptedById equals u2.FacebookId
-                            into tempUser
-                            from acceptedUser in tempUser.DefaultIfEmpty()
-                            join u3 in tennisUsers on o.SpecificOpponentId equals u3.FacebookId
-                            into tempSpecUser
-                            from specificUser in tempSpecUser.DefaultIfEmpty()
-                            join c in db.City on o.PreferredLocationId equals c.LocationId
-                            into tempCity
-                            from city in tempCity.DefaultIfEmpty()
-
-                            where user.Gender == u1.Gender
-
-                            select new OfferModel()
-                            {
-                                OfferId = o.OfferId,
-                                PostDateUtc = o.PostDateUtc,
-                                MatchDateUtc = o.MatchDateUtc,
-                                City = city,
-                                Completed = o.Completed,
-                                Score = o.Score,
-                                Message = o.Message,
-                                RequestComments = o.RequestComments,
-                                AcceptComments = o.AcceptComments,
-                                RequestUser = u1,
-                                AcceptUser = acceptedUser,
-                                SpecificOpponent = specificUser
-                            };
-
-            // Outstanding offers by the user
-            this.UserOffers = offers.Where(o => o.AcceptUser == null).Where(o => o.RequestUser.FacebookId == user.FacebookId && !o.Completed && o.MatchDateUtc > DateTime.UtcNow).OrderBy(o => o.MatchDateUtc).ToList();
-
-            // Completed matches
-            this.UserResults = offers.Where(o => o.AcceptUser != null).Where(o => (o.AcceptUser.FacebookId == user.FacebookId || o.RequestUser.FacebookId == user.FacebookId)).OrderByDescending(o => o.MatchDateUtc).ToList();
-
-            this.PotentialOffers = offers.Where
-                (o =>
-                        o.AcceptUser == null &&
-                        (o.SpecificOpponent == null || o.SpecificOpponent.FacebookId == user.FacebookId) &&
-                        o.RequestUser.FacebookId != user.FacebookId &&
-                        o.MatchDateUtc >= DateTime.UtcNow &&
-                        Math.Abs(tennisUser.Rating - o.RequestUser.Rating) <= 0.25 &&
-                        db.CoordinateDistanceMiles(o.City.Latitude, o.City.Longitude, user.City.Latitude, user.City.Longitude) < 15
-                ).OrderBy(o => Math.Abs(tennisUser.Rating - o.RequestUser.Rating)).Take(20).ToList();
+            this.DB = db;
         }
 
-        public List<OfferModel> UserOffers { get; private set; }
-        public List<OfferModel> UserResults { get; private set; }
-        public List<OfferModel> PotentialOffers { get; private set; }
+        public SportsLinkDB DB { get; private set; }
+
+        public T GetModel<T>()
+        {
+            return ModelUtils.GetModel<T>(this.TennisUser, this.DB);
+        }
 
         public static string FormatRating(double rating)
         {

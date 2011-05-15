@@ -30,6 +30,7 @@ namespace SportsLinkWeb.Controllers
         public HomeController()
         {
             this.DB = new SportsLink.SportsLinkDB(ConfigurationManager.AppSettings["AzureConnectionString"]);
+            ViewData["Page"] = 0;
         }
         
         protected override void Dispose(bool disposing)
@@ -52,10 +53,9 @@ namespace SportsLinkWeb.Controllers
             var app = new FacebookWebClient();
             var fbContext = FacebookWebContext.Current;
 
-            User user = this.DB.User.Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
-            TennisUser tennisUser = this.DB.TennisUser.Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+            TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
 
-            if (null == tennisUser && null != fbContext.SignedRequest)
+            if (null == existingUser && null != fbContext.SignedRequest)
             {
                 if (!fbContext.SignedRequest.Data.ContainsKey("registration"))
                 {
@@ -93,7 +93,7 @@ namespace SportsLinkWeb.Controllers
                     }
                 }
 
-                user = new User();
+                User user = new User();
                 user.FacebookId = fbContext.UserId;
                 user.Name = regInfo.GetValue<string>("name");
                 user.Email = regInfo.GetValue<string>("email");
@@ -102,7 +102,7 @@ namespace SportsLinkWeb.Controllers
                 user.City = city;
                 user.TimeZoneOffset = timeZoneOffset;
 
-                tennisUser = new TennisUser();
+                TennisUser tennisUser = new TennisUser();
                 tennisUser.FacebookId = fbContext.UserId;
                 tennisUser.Rating = regInfo.GetValue<double>("NTRPRating");
                 tennisUser.SinglesDoubles = regInfo.GetValue<string>("SinglesDoubles");
@@ -116,16 +116,12 @@ namespace SportsLinkWeb.Controllers
                 return new RedirectResult("http://apps.facebook.com/tennislink");
             }
 
-            if (null == tennisUser)
+            if (null == existingUser)
             {
                 return new RedirectResult("/home/register");
             }
 
-            List<City> neighboringCities = this.DB.City.Where(c => this.DB.CoordinateDistanceMiles(user.City.Latitude, user.City.Longitude, c.Latitude, c.Longitude) < 15).OrderBy(c => this.DB.CoordinateDistanceMiles(user.City.Latitude, user.City.Longitude, c.Latitude, c.Longitude)).ToList();
-
-            ViewData["UserModel"] = new UserModel(user, tennisUser, neighboringCities);
-            ViewData["IndexModel"] = new IndexModel(user, tennisUser, this.DB);
-            ViewData["PlayerModel"] = new PlayerModel(user, tennisUser, this.DB, 0);
+            ViewData["IndexModel"] = new IndexModel(existingUser, this.DB);
             ViewData["Action"] = "Index";
 
             return View("~/Views/Home/Index.aspx");
@@ -153,7 +149,7 @@ namespace SportsLinkWeb.Controllers
             return View();
         }
 
-        protected string RenderPartialViewToString(string viewName)
+        protected string RenderPartialViewToString(string viewName, object model)
         {
             if (string.IsNullOrEmpty(viewName))
             {
@@ -164,6 +160,7 @@ namespace SportsLinkWeb.Controllers
             {
                 ViewEngineResult viewResult = ViewEngines.Engines.FindPartialView(ControllerContext, viewName);
                 ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewContext.ViewData.Model = model;
                 viewResult.View.Render(viewContext, sw);
 
                 return sw.GetStringBuilder().ToString();

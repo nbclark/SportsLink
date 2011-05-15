@@ -10,10 +10,10 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class PotentialOffers : Module
+    public class PotentialOffers : PaginatedModule
     {
         public PotentialOffers(Element element)
-            : base(element)
+            : base(element, "PotentialOffers")
         {
             jQueryUIObject acceptMatch = (jQueryUIObject)this.Obj.Find(".acceptMatch");
             jQueryUIObject rejectMatch = (jQueryUIObject)this.Obj.Find(".rejectMatch");
