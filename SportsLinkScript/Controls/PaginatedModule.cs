@@ -11,7 +11,7 @@ namespace SportsLinkScript.Controls
     public class PaginatedModule : Module
     {
         private int Page = 0;
-        private string ServiceName;
+        public string ServiceName;
 
         public PaginatedModule(Element element, string serviceName)
             : base(element)

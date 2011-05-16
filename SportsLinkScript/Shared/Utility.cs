@@ -51,7 +51,7 @@ namespace SportsLinkScript.Shared
                             ev.StopPropagation();
                         }
 
-                        return true;
+                        return false;
                     },
                     "source", (jQueryAutoCompleteHandler)delegate(jQueryAutoCompleteRequest request, jQueryAutoCompleteResponse response)
                     {
@@ -165,8 +165,14 @@ namespace SportsLinkScript.Shared
 
         private static void UpdateModule(jQueryObject content, string value)
         {
-            Element element = content.Children("*[data-type]").First().GetElement(0);
-            Module module = Module.GetModule(element);
+            jQueryObject dataTypes = content.Children("*[data-type]");
+            Module module = null;
+
+            if (dataTypes.Length > 0)
+            {
+                Element element = dataTypes.First().GetElement(0);
+                module = Module.GetModule(element);
+            }
 
             content.FadeOut(500, (Callback)delegate()
             {
@@ -178,7 +184,12 @@ namespace SportsLinkScript.Shared
                 content.Html(value);
                 content.FadeIn(500);
 
-                LoadModule(content.Children("*[data-type]").First().GetElement(0));
+                dataTypes = content.Children("*[data-type]");
+
+                if (dataTypes.Length > 0)
+                {
+                    LoadModule(dataTypes.First().GetElement(0));
+                }
             });
         }
     }

@@ -83,6 +83,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CalendarModel.cs" />
+    <Compile Include="Models\PlayersDataGridModel.cs" />
+    <Compile Include="Models\DataGridModel.cs" />
+    <Compile Include="Models\WeekPageModel.cs" />
     <Compile Include="Models\PotentialOffersModel.cs" />
     <Compile Include="Models\ResultsModel.cs" />
     <Compile Include="Models\ModuleModel.cs" />
@@ -144,6 +148,9 @@
     <Content Include="Scripts\SportsLinkScript.debug.js" />
     <Content Include="Scripts\SportsLinkScript.js" />
     <Content Include="Scripts\ss.shared.js" />
+    <Content Include="Views\Shared\Calendar.ascx" />
+    <Content Include="Views\Shared\DataGrid.ascx" />
+    <Content Include="Views\Shared\Offer.ascx" />
     <Content Include="Views\Shared\Paginator.ascx" />
     <Content Include="Views\Shared\CreateMatch.ascx" />
     <Content Include="Views\Shared\PlayerDetails.ascx" />

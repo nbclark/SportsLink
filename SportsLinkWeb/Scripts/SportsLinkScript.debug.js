@@ -2,6 +2,80 @@
 Type.registerNamespace('SportsLinkScript.Controls');
 
 ////////////////////////////////////////////////////////////////////////////////
+// SportsLinkScript.Controls.Calendar
+
+SportsLinkScript.Controls.Calendar = function SportsLinkScript_Controls_Calendar(element) {
+    /// <param name="element" type="Object" domElement="true">
+    /// </param>
+    SportsLinkScript.Controls.Calendar.initializeBase(this, [ element ]);
+    this.serviceName = 'Calendar';
+}
+SportsLinkScript.Controls.Calendar.prototype = {
+    
+    _acceptMatch$3: function SportsLinkScript_Controls_Calendar$_acceptMatch$3(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        var button = $(e.currentTarget);
+        var offerId = button.siblings('input').val();
+        var parentRow = button.parents('.offer');
+        parentRow.attr('disabled', 'disabled').addClass('ui-state-disabled');
+        $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ id: offerId }), ss.Delegate.create(this, function(data, textStatus, request) {
+            parentRow.attr('disabled', '').removeClass('ui-state-disabled');
+            button.parent().children('a').fadeOut('slow');
+        }));
+    },
+    
+    _rejectMatch$3: function SportsLinkScript_Controls_Calendar$_rejectMatch$3(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        alert('reject');
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
+// SportsLinkScript.Controls.UserDetails
+
+SportsLinkScript.Controls.UserDetails = function SportsLinkScript_Controls_UserDetails(element) {
+    /// <param name="element" type="Object" domElement="true">
+    /// </param>
+    /// <field name="_editButton$1" type="jQueryUIObject">
+    /// </field>
+    /// <field name="_saveButton$1" type="jQueryUIObject">
+    /// </field>
+    SportsLinkScript.Controls.UserDetails.initializeBase(this, [ element ]);
+    this._editButton$1 = this.obj.find('a.edit');
+    this._editButton$1.click(ss.Delegate.create(this, this._editDetails$1));
+    this._saveButton$1 = this.obj.find('a.save');
+    this._saveButton$1.click(ss.Delegate.create(this, this._saveDetails$1));
+}
+SportsLinkScript.Controls.UserDetails.prototype = {
+    _editButton$1: null,
+    _saveButton$1: null,
+    
+    _editDetails$1: function SportsLinkScript_Controls_UserDetails$_editDetails$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        var edits = this.obj.find('.keyvaluerow .edit');
+        edits.show('fast');
+        edits.prev('.value').hide('fast');
+        this._editButton$1.hide('fast');
+        this._saveButton$1.show('fast');
+    },
+    
+    _saveDetails$1: function SportsLinkScript_Controls_UserDetails$_saveDetails$1(e) {
+        /// <param name="e" type="jQueryEvent">
+        /// </param>
+        var edits = this.obj.find('.keyvaluerow .edit');
+        edits.hide('fast');
+        edits.prev('.value').show('fast');
+        this._editButton$1.show('fast');
+        this._saveButton$1.hide('fast');
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // SportsLinkScript.Controls.PaginatedModule
 
 SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_PaginatedModule(element, serviceName) {
@@ -11,11 +85,11 @@ SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_P
     /// </param>
     /// <field name="_page$1" type="Number" integer="true">
     /// </field>
-    /// <field name="_serviceName$1" type="String">
+    /// <field name="serviceName" type="String">
     /// </field>
     SportsLinkScript.Controls.PaginatedModule.initializeBase(this, [ element ]);
     this._page$1 = parseInt(this.obj.find('.page').val());
-    this._serviceName$1 = serviceName;
+    this.serviceName = serviceName;
     var prev = this.obj.find('.prev');
     var next = this.obj.find('.next');
     prev.button();
@@ -25,7 +99,7 @@ SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_P
 }
 SportsLinkScript.Controls.PaginatedModule.prototype = {
     _page$1: 0,
-    _serviceName$1: null,
+    serviceName: null,
     
     _pagePrev$1: function SportsLinkScript_Controls_PaginatedModule$_pagePrev$1(e) {
         /// <param name="e" type="jQueryEvent">
@@ -33,7 +107,7 @@ SportsLinkScript.Controls.PaginatedModule.prototype = {
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
         var button = $(e.currentTarget);
         var parameters = { page: this._page$1 - 1 };
-        $.post('/services/' + this._serviceName$1 + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/' + this.serviceName + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
     },
@@ -44,7 +118,7 @@ SportsLinkScript.Controls.PaginatedModule.prototype = {
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
         var button = $(e.currentTarget);
         var parameters = { page: this._page$1 + 1 };
-        $.post('/services/' + this._serviceName$1 + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+        $.post('/services/' + this.serviceName + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
     }
@@ -258,7 +332,7 @@ SportsLinkScript.Controls.PotentialOffers = function SportsLinkScript_Controls_P
     SportsLinkScript.Controls.PotentialOffers.initializeBase(this, [ element, 'PotentialOffers' ]);
     var acceptMatch = this.obj.find('.acceptMatch');
     var rejectMatch = this.obj.find('.rejectMatch');
-    acceptMatch.button({ text: false, icons: { primary: 'ui-icon-check' } });
+    acceptMatch.button({ text: true, icons: { secondary: 'ui-icon-check' } });
     rejectMatch.button({ text: false, icons: { primary: 'ui-icon-closethick' } });
     acceptMatch.click(ss.Delegate.create(this, this._acceptMatch$2));
     rejectMatch.click(ss.Delegate.create(this, this._rejectMatch$2));
@@ -412,6 +486,19 @@ Type.registerNamespace('SportsLinkScript.Pages');
 
 SportsLinkScript.Pages._index = function SportsLinkScript_Pages__index() {
 }
+SportsLinkScript.Pages._index._calendar = function SportsLinkScript_Pages__index$_calendar(ev) {
+    /// <param name="ev" type="jQueryEvent">
+    /// </param>
+    var dialog = $('#calendarCard');
+    dialog.children().first().html('Loading...');
+    var parameters = { page: 0 };
+    $.post('/services/Calendar?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
+        SportsLinkScript.Shared.Utility.processResponse(data);
+    });
+    dialog.dialog({ width: $(window).width() / 1.5, height: $(window).height() - 20, modal: true, title: 'Calendar', open: function() {
+        dialog.find('.comments').focus();
+    } });
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -518,7 +605,7 @@ SportsLinkScript.Shared.Utility._wireAutoComplete = function SportsLinkScript_Sh
             hiddenField.val(data.item.value);
             ev.stopPropagation();
         }
-        return true;
+        return false;
     }, source: function(request, response) {
         var term = request.term;
         if (SportsLinkScript.Shared.Utility._cache[term] != null) {
@@ -590,15 +677,22 @@ SportsLinkScript.Shared.Utility._updateModule = function SportsLinkScript_Shared
     /// </param>
     /// <param name="value" type="String">
     /// </param>
-    var element = content.children('*[data-type]').first().get(0);
-    var module = SportsLinkScript.Controls.Module.getModule(element);
+    var dataTypes = content.children('*[data-type]');
+    var module = null;
+    if (dataTypes.length > 0) {
+        var element = dataTypes.first().get(0);
+        module = SportsLinkScript.Controls.Module.getModule(element);
+    }
     content.fadeOut(500, function() {
         if (null !== module) {
             module.unload();
         }
         content.html(value);
         content.fadeIn(500);
-        SportsLinkScript.Shared.Utility._loadModule(content.children('*[data-type]').first().get(0));
+        dataTypes = content.children('*[data-type]');
+        if (dataTypes.length > 0) {
+            SportsLinkScript.Shared.Utility._loadModule(dataTypes.first().get(0));
+        }
     });
 }
 
@@ -607,12 +701,14 @@ Type.registerNamespace('SportsLinkScript.Shared.Facebook');
 
 SportsLinkScript.Controls.Module.registerClass('SportsLinkScript.Controls.Module');
 SportsLinkScript.Controls.PaginatedModule.registerClass('SportsLinkScript.Controls.PaginatedModule', SportsLinkScript.Controls.Module);
+SportsLinkScript.Controls.PotentialOffers.registerClass('SportsLinkScript.Controls.PotentialOffers', SportsLinkScript.Controls.PaginatedModule);
+SportsLinkScript.Controls.Calendar.registerClass('SportsLinkScript.Controls.Calendar', SportsLinkScript.Controls.PotentialOffers);
+SportsLinkScript.Controls.UserDetails.registerClass('SportsLinkScript.Controls.UserDetails', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.PlayerDetails.registerClass('SportsLinkScript.Controls.PlayerDetails', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.UserOffers.registerClass('SportsLinkScript.Controls.UserOffers', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.ModuleInstance.registerClass('SportsLinkScript.Controls.ModuleInstance');
 SportsLinkScript.Controls.Results.registerClass('SportsLinkScript.Controls.Results', SportsLinkScript.Controls.Module);
-SportsLinkScript.Controls.PotentialOffers.registerClass('SportsLinkScript.Controls.PotentialOffers', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.QuickMatch.registerClass('SportsLinkScript.Controls.QuickMatch', SportsLinkScript.Controls.Module);
 SportsLinkScript.Pages._index.registerClass('SportsLinkScript.Pages._index');
 SportsLinkScript.Pages.Login.registerClass('SportsLinkScript.Pages.Login');
@@ -626,6 +722,7 @@ SportsLinkScript.Controls.Module.instances = [];
             SportsLinkScript.Shared.Utility._loadModule(element);
             return true;
         });
+        $('#header .calendar').click(SportsLinkScript.Pages._index._calendar);
     });
 })();
 SportsLinkScript.Pages.Login.accessToken = null;

@@ -29,7 +29,7 @@ namespace SportsLinkWeb.Models
                          into tempCity
                          from city in tempCity.DefaultIfEmpty()
 
-                         where user.Gender == u1.Gender
+                         where user.Gender == u1.Gender && u1.CurrentAvailability
 
                          select new OfferModel()
                          {

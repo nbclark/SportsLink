@@ -28,6 +28,12 @@
     <%: Html.FacebookSignedRequest() %>
     <div id="fb-root"></div>
     <div class="page">
+        <table id="header">
+            <tr>
+                <td>TennisLink</td>
+                <td class="cal"><a href="#" class="calendar">Calendar</a></td>
+            </tr>
+        </table>
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">

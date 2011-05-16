@@ -10,19 +10,12 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class PotentialOffers : PaginatedModule
+    public class Calendar : PotentialOffers
     {
-        public PotentialOffers(Element element)
-            : base(element, "PotentialOffers")
+        public Calendar(Element element)
+            : base(element)
         {
-            jQueryUIObject acceptMatch = (jQueryUIObject)this.Obj.Find(".acceptMatch");
-            jQueryUIObject rejectMatch = (jQueryUIObject)this.Obj.Find(".rejectMatch");
-
-            acceptMatch.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-check")));
-            rejectMatch.Button(new JsonObject("text", false, "icons", new JsonObject("primary", "ui-icon-closethick")));
-
-            acceptMatch.Click(AcceptMatch);
-            rejectMatch.Click(RejectMatch);
+            this.ServiceName = "Calendar";
         }
 
         private void AcceptMatch(jQueryEvent e)

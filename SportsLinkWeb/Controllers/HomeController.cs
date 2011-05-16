@@ -69,16 +69,17 @@ namespace SportsLinkWeb.Controllers
 
                 int timeZoneOffset = 0;
 
+                JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + fbContext.UserId);
+
+                if (null != users && users.Count > 0)
+                {
+                    dynamic userData = users[0];
+                    timeZoneOffset = Convert.ToInt32(userData.timezone);
+                }
+
                 if (null == city)
                 {
-                    JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + fbContext.UserId);
                     JsonArray places = (JsonArray)app.Query("SELECT latitude,longitude FROM place WHERE page_id = " + locationId);
-
-                    if (null != users && users.Count > 0)
-                    {
-                        dynamic userData = users[0];
-                        timeZoneOffset = Convert.ToInt32(userData.timezone);
-                    }
 
                     if (null != places && places.Count > 0)
                     {
@@ -113,7 +114,7 @@ namespace SportsLinkWeb.Controllers
 
                 this.DB.SubmitChanges();
 
-                return new RedirectResult("http://apps.facebook.com/tennislink");
+                return new RedirectResult(Facebook.FacebookApplication.Current.ReturnUrlPath);
             }
 
             if (null == existingUser)
@@ -121,16 +122,26 @@ namespace SportsLinkWeb.Controllers
                 return new RedirectResult("/home/register");
             }
 
-            ViewData["IndexModel"] = new IndexModel(existingUser, this.DB);
+            ViewData.Model = new IndexModel(existingUser, this.DB);
             ViewData["Action"] = "Index";
 
             return View("~/Views/Home/Index.aspx");
         }
 
+        public ActionResult DataGrid()
+        {
+            var app = new FacebookWebClient();
+            var fbContext = FacebookWebContext.Current;
+
+            TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+            ViewData.Model = new PlayersDataGridModel(existingUser, this.DB);
+
+            return View("DataGrid");
+        }
+
         public ActionResult Login()
         {
             ViewData["Action"] = "Login";
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
 
             return View();
         }
@@ -138,7 +149,6 @@ namespace SportsLinkWeb.Controllers
         public ActionResult Register()
         {
             ViewData["Action"] = "Register";
-            ViewData["Message"] = "Welcome to ASP.NET MVC!";
 
             return View();
         }

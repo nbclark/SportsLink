@@ -18,7 +18,7 @@ namespace SportsLinkWeb.Models
             return new PageModel(page, perPage, total);
         }
 
-        private PageModel(int page, int perPage, int total)
+        protected PageModel(int page, int perPage, int total)
         {
             this.Page = page;
             this.ItemsPerPage = perPage;
@@ -37,7 +37,7 @@ namespace SportsLinkWeb.Models
             }
         }
 
-        public bool HasNext
+        public virtual bool HasNext
         {
             get
             {
@@ -45,7 +45,7 @@ namespace SportsLinkWeb.Models
             }
         }
 
-        public bool HasPrev
+        public virtual bool HasPrev
         {
             get
             {

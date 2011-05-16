@@ -22,7 +22,7 @@
             ]"
             fb_only="true"
             redirect-uri="<%=Facebook.FacebookApplication.Current.CanvasUrl %>"
-            perms="user_about_me,user_birthday,user_location,publish_stream,email"
+            perms="user_birthday,user_location,publish_stream,email"
             >
         </fb:registration>
     </p>

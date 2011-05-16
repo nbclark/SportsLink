@@ -13,6 +13,18 @@ body
     color: #696969;
 }
 
+#header
+{
+    width: 100%;
+    background: #F6A828 url(images/ui-bg_gloss-wave_35_f6a828_500x100.png) 50% 50% repeat-x;
+    border:1px solid #E78F08;
+    color: White;
+    font-size: 1.17em;
+    font-weight:bold;
+    padding: 4px;
+    border-radius: 4px;
+}
+
 #footer
 {
     margin-top: 10px;
@@ -28,16 +40,10 @@ body
     position: relative;
 }
 
-#header
-{
-    text-align: left;
-    color:black;
-}
-
 #main
 {
     background-color:White;
-    padding: 10px;
+    padding: 10px 0;
 }
 
 .module
@@ -88,35 +94,40 @@ body
 #content .right
 {
     padding-left: 1em;
-    width:110px;
+    width:220px;
 }
 
-.keyvaluerow
+.keyvaluerow td
 {
     height: 1em;
     padding:4px;
     margin-bottom: 4px;
 }
 
-.keyvaluerow:nth-child(2n+1)
-{
-    background-color: rgba(255,255,255,0.5);
-}
-
 .keyvaluerow .name
 {
-    float: left;
-    width: 30%;
     font-weight: bold;
+    white-space:nowrap;
+    width: 60px;
+}
+
+.keyvaluerow .value
+{
     overflow:hidden;
     white-space:nowrap;
 }
-.keyvaluerow .value
+
+.keyvaluerow .edit
 {
-    float: right;
-    width: 70%;
     overflow:hidden;
     white-space:nowrap;
+    display: none;
+}
+
+#userdetails .data
+{
+    width: 200px;
+    table-layout: fixed;
 }
 
 .result
@@ -198,7 +209,7 @@ body
 
 .form .input.full input
 {
-    width:220px;
+    width:200px;
 }
 
 .form .submit
@@ -207,26 +218,7 @@ body
 
 .quickmatch .datepicker
 {
-    width:80px;
-}
-
-.offer
-{
-}
-
-.offer .name
-{
-    font-weight: bold;
-    display: inline;
-}
-
-.offer .rating
-{
-}
-
-.offer .location
-{
-    font-style: italic;
+    width:70px;
 }
 
 .offer .time, #results .time, #results .score
@@ -251,27 +243,27 @@ body
     border-top: 0px solid #ccc;
 }
 
-.offer .details
+#players .image, .offer .image
 {
-    width: 100%;
+    width: 54px;
+    text-align: left;
 }
 
-.offer .image
-{
-    padding-right: 5px;
-}
-
-.offer .accept, .offer .image
+.offer .accept
 {
     vertical-align: top;
     text-align: right;
 }
 
-.offer .accept a
+.offer .acceptMatch, #players .requestMatch
 {
-    height: 50px;
-    width: 50px;
+    width: 86px;
     margin-bottom: 2px;
+}
+
+.ui-button-text-icon-secondary .ui-button-text
+{
+    padding: .4em 2.1em .4em 0.5em !important;
 }
 
 #results table
@@ -363,9 +355,20 @@ body
     text-align:right;
 }
 
-#players .rating
+#players td, .offer td
+{
+    vertical-align: top;
+    text-align: center;
+}
+
+#players .rating, #players .age, .offer .rating, .offer .age
 {
     font-size: 24px;
+}
+
+#players .title, .offer .details
+{
+    text-align: left;
 }
 
 #players .challenge
@@ -373,14 +376,14 @@ body
     text-align: right;
 }
 
-#players .name
+#players .name, .offer .name
 {
     font-size: 18px;
 }
 
-#players .location
+#players .location, .offer .location
 {
-    margin-top: 0.5em;
+    margin-top: 0.25em;
 }
 
 .ui-autocomplete-loading { background: white url('/content/ui-anim_basic_16x16.gif') right center no-repeat; }
@@ -394,4 +397,73 @@ body
 .acLoc
 {
     font-style: italic;
+}
+
+#calendarCard
+{
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+.calendarpage
+{
+    margin-bottom: 0.5em;
+}
+
+.calendarpage .prev
+{
+    float: left;
+}
+
+.calendarpage .next
+{
+    float: right;
+}
+
+.calendar
+{
+    width: 100%;
+}
+
+.calendar td, .calendar th
+{
+    padding: 4px;
+}
+
+.calendar th
+{
+    text-align: left;
+    background-color: #C9C0B4;
+}
+
+.calendar tr td
+{
+    background-color: White;
+}
+
+.calendar tr:first-child td
+{
+    background-color: black;
+}
+
+.offertime .time
+{
+    background-color:Black;
+    color:White;
+    font-weight: bold;
+}
+
+.offertime .time
+{
+    border-bottom-width: 0;
+}
+
+#header .cal
+{
+    text-align:right;
+}
+
+#header .cal a
+{
+    color: White !important;
 }

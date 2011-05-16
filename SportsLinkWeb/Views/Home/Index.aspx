@@ -4,10 +4,15 @@
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-    <% var indexModel = (IndexModel)ViewData["IndexModel"]; %>
+    <% var indexModel = (IndexModel)ViewData.Model; %>
 
     <div id="playerDetailsCard" style="display:none">
         <div id="module_PlayerDetails">
+        </div>
+    </div>
+
+    <div id="calendarCard" style="display:none">
+        <div id="module_Calendar">
         </div>
     </div>
 
@@ -45,7 +50,7 @@
     </div>
 
     <div class="module">
-    <fb:login-button show-faces="true" width="240"></fb:login-button>
+    <fb:login-button show-faces="true" width="220"></fb:login-button>
     </div>
     </td>
     </tr>

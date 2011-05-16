@@ -76,8 +76,6 @@ namespace SportsLinkWeb.Controllers
 
                     this.DB.SubmitChanges();
 
-                    ActionResult result = Index();
-
                     return Json
                     (
                         new
@@ -118,8 +116,6 @@ namespace SportsLinkWeb.Controllers
                     {
                         return new RedirectResult("/");
                     }
-
-                    ActionResult result = Index();
 
                     return Json
                     (
@@ -165,8 +161,6 @@ namespace SportsLinkWeb.Controllers
                         SendMessage(new long[] { offer.AcceptedById.Value }, subject, template, offer, tennisUser);
                         */
                     }
-
-                    ActionResult result = Index();
 
                     return Json
                     (
@@ -261,8 +255,6 @@ namespace SportsLinkWeb.Controllers
                 SendMessage(pushIds, subject, template, offer, tennisUser);
 
                 // Send out messages to all matching users
-
-                ActionResult result = Index();
 
                 return Json
                 (
@@ -393,6 +385,26 @@ namespace SportsLinkWeb.Controllers
                 new
                 {
                     PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB))
+                }
+             );
+        }
+
+        public ActionResult Calendar(int page)
+        {
+            ViewData["Page"] = page;
+
+            var app = new FacebookWebClient();
+            var fbContext = FacebookWebContext.Current;
+
+            TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+
+            var calendarModel = new CalendarModel(DateTime.Now.AddDays(7 * page), existingUser, this.DB);
+
+            return Json
+            (
+                new
+                {
+                    Calendar = RenderPartialViewToString("Calendar", calendarModel)
                 }
              );
         }
