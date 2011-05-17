@@ -90,7 +90,7 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
-        public ActionResult AcceptOffer(string id)
+        public ActionResult AcceptOffer(string id, long uid)
         {
             Guid offerGuid;
 
@@ -101,6 +101,13 @@ namespace SportsLinkWeb.Controllers
                 if (null != offer)
                 {
                     var fbContext = FacebookWebContext.Current;
+
+                    if (fbContext.UserId != uid)
+                    {
+                        ViewData.Model = "Wrong User Account...";
+                        return View("Redirect");
+                    }
+
                     TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
                     string message = "Unknown Error";
 
@@ -160,9 +167,10 @@ namespace SportsLinkWeb.Controllers
 
             if (Guid.TryParse(id, out offerGuid))
             {
+                var fbContext = FacebookWebContext.Current;
                 Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
 
-                if (null != offer)
+                if (null != offer && fbContext.UserId == offer.FacebookId)
                 {
                     offer.AcceptedById = uid;
                     this.DB.SubmitChanges();
