@@ -36,7 +36,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Mvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Microsoft.Web.Mvc.dll</HintPath>
+      <HintPath>..\External\MVC\Microsoft.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Diagnostics" />
     <Reference Include="Microsoft.WindowsAzure.ServiceRuntime" />
