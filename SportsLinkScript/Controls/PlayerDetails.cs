@@ -33,7 +33,7 @@ namespace SportsLinkScript.Controls
 
             dialog.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
             JsonObject parameters = new JsonObject("userId", id, "comments", text);
-            jQuery.Post("/services/SendMessage?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/SendMessage?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 dialog.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 dialog.Dialog("close");

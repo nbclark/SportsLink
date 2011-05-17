@@ -14,6 +14,6 @@ namespace SportsLinkScript.Shared.Html
     [ScriptName("window")]
     public sealed class FbWindow
     {
-        public static Func FbAsyncInit;
+        public static Callback FbAsyncInit;
     }
 }

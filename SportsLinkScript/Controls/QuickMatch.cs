@@ -50,7 +50,7 @@ namespace SportsLinkScript.Controls
             JsonObject parameters = new JsonObject("date", datetime, "locations", ids, "comments", comments, "opponentId", opponentId);
 
             obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQuery.Post("/services/CreateOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/CreateOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 obj.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 Utility.ProcessResponse((Dictionary)data);

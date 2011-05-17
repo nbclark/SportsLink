@@ -29,7 +29,7 @@ namespace SportsLinkScript.Controls
 
             JsonObject parameters = new JsonObject("offerId", button.GetAttribute("data-offerId"));
 
-            jQuery.Post("/services/CancelOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/CancelOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }

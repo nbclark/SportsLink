@@ -40,7 +40,7 @@ namespace SportsLinkScript.Pages
 
             JsonObject parameters = new JsonObject("page", 0);
 
-            jQuery.Post("/services/Calendar?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/Calendar?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }

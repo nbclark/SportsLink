@@ -33,7 +33,7 @@ namespace SportsLinkScript.Controls
 
             JsonObject parameters = new JsonObject("page", 0);
 
-            jQuery.Post("/services/PlayerGrid?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/PlayerGrid?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }
