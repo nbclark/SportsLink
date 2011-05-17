@@ -26,7 +26,7 @@ namespace SportsLinkScript.Controls
             jQueryObject parentRow = button.Parents(".offer");
             parentRow.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
 
-            jQuery.Post("/services/AcceptOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(new JsonObject("id", offerId)), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/AcceptOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(new JsonObject("id", offerId)), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 parentRow.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 button.Parent().Children("a").FadeOut(EffectDuration.Slow);

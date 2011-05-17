@@ -75,8 +75,6 @@ namespace SportsLinkScript.Pages
                         jQuery.Select("#main").Show(EffectDuration.Slow);
                     }
                 });
-
-                return null;
             };
 
             H5ScriptElement e = (H5ScriptElement)Document.CreateElement("script");
@@ -89,7 +87,7 @@ namespace SportsLinkScript.Pages
         {
             LoginRow row = (LoginRow)rows[0];
 
-            jQuery.Post("/Services/AddUser?signed_request=" + Utility.GetSignedRequest(), new JsonObject("member", new JsonObject()), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/Services/AddUser?signed_request=" + Utility.GetSignedRequest(), new JsonObject("member", new JsonObject()), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
                 {
                     WebServiceResponse response = (WebServiceResponse)data;
                     AddUserResponse addUser = (AddUserResponse)response.Data;

@@ -1,0 +1,4 @@
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\ScriptLibrary1\bin\Debug\ScriptLibrary1.xml
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\ScriptLibrary1\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\ScriptLibrary1\obj\Debug\ScriptLibrary1.dll
+C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\ScriptLibrary1\obj\Debug\ScriptLibrary1.pdb

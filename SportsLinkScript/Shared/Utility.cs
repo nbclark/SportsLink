@@ -15,7 +15,7 @@ namespace SportsLinkScript.Shared
     public static class Utility
     {
         private static Dictionary Cache = new Dictionary();
-        private static XmlHttpRequest LastRequest = null;
+        private static jQueryXmlHttpRequest<object> LastRequest = null;
 
         internal static string GetSignedRequest()
         {
@@ -67,7 +67,7 @@ namespace SportsLinkScript.Shared
                         (
                             "/services/serviceproxy",
                             Json.Stringify(new JsonObject("url", "https://maps.googleapis.com/maps/api/place/search/json?location=" + location.EncodeUriComponent() + "&radius=5000&name=" + term.EncodeUriComponent() + "&sensor=false&key=AIzaSyBnD3R38Jh9IhcT7VOJ4Mh8vE7AkSuP_zE")),
-                            (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest xhr)
+                            (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> xhr)
                             {
                                 // build up the data
                                 if (xhr == LastRequest)
@@ -112,7 +112,7 @@ namespace SportsLinkScript.Shared
 
                 JsonObject parameters = new JsonObject("id", id);
 
-                jQuery.Post("/services/PlayerDetails?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+                jQuery.Post("/services/PlayerDetails?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
                 {
                     ProcessResponse((Dictionary)data);
                 }
@@ -174,7 +174,7 @@ namespace SportsLinkScript.Shared
                 module = Module.GetModule(element);
             }
 
-            content.FadeOut(500, (Callback)delegate()
+            content.FadeOut(500, delegate()
             {
                 if (null != module)
                 {

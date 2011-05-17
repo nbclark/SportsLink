@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook", "FacebookApi\Fac
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Web.Mvc", "FacebookApi\Facebook.Web.Mvc\Facebook.Web.Mvc.csproj", "{7DC5C10F-E871-4202-9014-0F958358389E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScriptLibrary1", "ScriptLibrary1\ScriptLibrary1.csproj", "{E8CF9A6C-381A-476C-8686-D18AD9B59401}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,6 +45,10 @@ Global
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC5C10F-E871-4202-9014-0F958358389E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8CF9A6C-381A-476C-8686-D18AD9B59401}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8CF9A6C-381A-476C-8686-D18AD9B59401}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8CF9A6C-381A-476C-8686-D18AD9B59401}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8CF9A6C-381A-476C-8686-D18AD9B59401}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

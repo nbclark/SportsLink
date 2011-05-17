@@ -46,7 +46,7 @@ namespace SportsLinkScript.Controls
 
             JsonObject parameters = new JsonObject("page", page, "filter", this.Filter);
 
-            jQuery.Post("/services/" + this.ServiceName + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            jQuery.Post("/services/" + this.ServiceName + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
                 Utility.ProcessResponse((Dictionary)data);
             }
