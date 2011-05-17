@@ -13,6 +13,7 @@
     <script src="/scripts/jquery-ui-1.8.12.custom.min.js"></script>
     <script src="/scripts/jquery.ui.selectmenu.js"></script>
     <script src="/scripts/jquery.multiselect.min.js"></script>
+    <script src="/scripts/mscorlib.js"></script>
     <script src="/scripts/ss.shared.js"></script>
     <script src="/scripts/SportsLinkScript.debug.js"></script>
 
