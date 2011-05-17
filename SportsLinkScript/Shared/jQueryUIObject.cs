@@ -28,7 +28,16 @@ namespace SportsLinkScript.Shared
         [ScriptName("selectmenu")]
         public jQueryUIObject SelectMenu(params object[] nameValuePairs) { return null; }
 
+        [ScriptName("multiselect")]
+        public jQueryUIObject MultiSelect(params object[] nameValuePairs) { return null; }
+
+        [ScriptName("multiselectfilter")]
+        public jQueryUIObject MultiSelectFilter() { return null; }
+
         public jQueryUIObject Data(string key) { return null; }
+
+        [ScriptName("multiselect")]
+        public Array MultiSelect(string method) { return null; }
 
         public object _renderItem;
     }

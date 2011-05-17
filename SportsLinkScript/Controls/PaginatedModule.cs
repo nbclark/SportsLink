@@ -10,8 +10,9 @@ namespace SportsLinkScript.Controls
 {
     public class PaginatedModule : Module
     {
-        private int Page = 0;
+        protected int Page = 0;
         public string ServiceName;
+        public string Filter = string.Empty;
 
         public PaginatedModule(Element element, string serviceName)
             : base(element)
@@ -31,24 +32,19 @@ namespace SportsLinkScript.Controls
 
         private void PagePrev(jQueryEvent e)
         {
-            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQueryObject button = jQuery.FromElement(e.CurrentTarget);
-
-            JsonObject parameters = new JsonObject("page", this.Page - 1);
-
-            jQuery.Post("/services/" + this.ServiceName + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
-            {
-                Utility.ProcessResponse((Dictionary)data);
-            }
-            );
+            PostBack(this.Page - 1);
         }
 
         private void PageNext(jQueryEvent e)
         {
-            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
-            jQueryObject button = jQuery.FromElement(e.CurrentTarget);
+            PostBack(this.Page + 1);
+        }
 
-            JsonObject parameters = new JsonObject("page", this.Page + 1);
+        protected void PostBack(int page)
+        {
+            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
+
+            JsonObject parameters = new JsonObject("page", page, "filter", this.Filter);
 
             jQuery.Post("/services/" + this.ServiceName + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
             {

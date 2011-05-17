@@ -11,17 +11,49 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class Players : PaginatedModule
+    public class Players : Module
     {
         public Players(Element element)
-            : base(element, "Players")
+            : base(element)
         {
+            jQueryUIObject moreButton = (jQueryUIObject)this.Obj.Find(".more");
+
             jQueryUIObject requestMatch = (jQueryUIObject)this.Obj.Find(".requestMatch");
             requestMatch.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-carat-1-e")));
             requestMatch.Click(RequestMatch);
+
+            // playerGridCard
+            moreButton.Click(MoreClick);
         }
 
-        private void RequestMatch(jQueryEvent e)
+        private void MoreClick(jQueryEvent e)
+        {
+            jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#playerGridCard");
+            dialog.Children().First().Html("Loading...");
+
+            JsonObject parameters = new JsonObject("page", 0);
+
+            jQuery.Post("/services/PlayerGrid?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback)delegate(object data, string textStatus, XmlHttpRequest request)
+            {
+                Utility.ProcessResponse((Dictionary)data);
+            }
+            );
+
+            dialog.Dialog(
+                new JsonObject(
+                    "width", jQuery.Window.GetWidth() - 40,
+                    "height", jQuery.Window.GetHeight() - 20,
+                    "modal", true,
+                    "title", "Similar Players",
+                    "open", (Callback)delegate()
+                    {
+                        dialog.Find(".comments").Focus();
+                    }
+                )
+            );
+        }
+
+        public static void RequestMatch(jQueryEvent e)
         {
             jQueryObject button = jQuery.FromElement(e.CurrentTarget);
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#challengeDialog");
@@ -54,7 +86,7 @@ namespace SportsLinkScript.Controls
             );
         }
 
-        private void CreateMatch(string id)
+        private static void CreateMatch(string id)
         {
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#challengeDialog");
 

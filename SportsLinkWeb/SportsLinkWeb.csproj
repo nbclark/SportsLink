@@ -104,6 +104,8 @@
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\MatchAcceptOffer.htm" />
+    <Content Include="Content\ui-lightness\jquery.ui.multiselect.css" />
     <Content Include="Content\UserMessage.htm" />
     <Content Include="Content\MatchAccepted.htm" />
     <Content Include="Content\MatchChallenge.htm" />
@@ -141,6 +143,7 @@
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.12.custom.min.js" />
     <Content Include="Scripts\jquery.jsonp-2.1.4.min.js" />
+    <Content Include="Scripts\jquery.multiselect.min.js" />
     <Content Include="Scripts\jquery.simpletip-1.3.1.pack.js" />
     <Content Include="Scripts\jquery.ui.selectmenu.js" />
     <Content Include="Scripts\mscorlib.debug.js" />
@@ -149,11 +152,15 @@
     <Content Include="Scripts\SportsLinkScript.js" />
     <Content Include="Scripts\ss.shared.js" />
     <Content Include="Views\Shared\Calendar.ascx" />
+    <Content Include="Views\Shared\Redirect.aspx" />
+    <Content Include="Views\Shared\PlayerGrid.ascx" />
     <Content Include="Views\Shared\DataGrid.ascx" />
     <Content Include="Views\Shared\Offer.ascx" />
     <Content Include="Views\Shared\Paginator.ascx" />
     <Content Include="Views\Shared\CreateMatch.ascx" />
     <Content Include="Views\Shared\PlayerDetails.ascx" />
+    <Content Include="Views\Shared\PlayerGrid\UserChallenge.ascx" />
+    <Content Include="Views\Shared\PlayerGrid\UserPicture.ascx" />
     <Content Include="Views\Shared\Players.ascx" />
     <Content Include="Views\Shared\PotentialOffers.ascx" />
     <Content Include="Views\Shared\UserOffers.ascx" />

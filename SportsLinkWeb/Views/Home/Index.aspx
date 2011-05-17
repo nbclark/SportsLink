@@ -16,6 +16,11 @@
         </div>
     </div>
 
+    <div id="playerGridCard" style="display:none">
+        <div id="module_PlayerGrid">
+        </div>
+    </div>
+
     <table id="content">
     <tr>
     <td class="left">

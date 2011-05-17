@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SportsLinkAzure" generation="1" functional="0" release="0" Id="29cacb63-95a9-4a07-9400-7cdf7ee5993b" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="SportsLinkAzure" generation="1" functional="0" release="0" Id="b648f594-d980-4e28-8d9f-82d2c46cd23e" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="SportsLinkAzureGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -99,9 +99,9 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="942a19d6-1aa2-4dad-b4ae-907a6c7966b3" ref="Microsoft.RedDog.Contract\ServiceContract\SportsLinkAzureContract@ServiceDefinition.build">
+    <implementation Id="b91fe603-01e5-40ea-b4f6-800d84cd4087" ref="Microsoft.RedDog.Contract\ServiceContract\SportsLinkAzureContract@ServiceDefinition.build">
       <interfacereferences>
-        <interfaceReference Id="d24eabbd-950d-4a11-813b-d3150668aedd" ref="Microsoft.RedDog.Contract\Interface\SportsLinkWeb:Endpoint1@ServiceDefinition.build">
+        <interfaceReference Id="d8937140-7827-46a0-a038-84f7a37ee1e0" ref="Microsoft.RedDog.Contract\Interface\SportsLinkWeb:Endpoint1@ServiceDefinition.build">
           <inPort>
             <inPortMoniker name="/SportsLinkAzure/SportsLinkAzureGroup/SportsLinkWeb:Endpoint1" />
           </inPort>

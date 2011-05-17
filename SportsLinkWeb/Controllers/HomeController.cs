@@ -134,7 +134,7 @@ namespace SportsLinkWeb.Controllers
             var fbContext = FacebookWebContext.Current;
 
             TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
-            ViewData.Model = new PlayersDataGridModel(existingUser, this.DB);
+            //ViewData.Model = new PlayersDataGridModel(existingUser, this.DB);
 
             return View("DataGrid");
         }

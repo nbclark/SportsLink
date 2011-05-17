@@ -41,5 +41,6 @@ namespace SportsLinkWeb.Models
         public bool CurrentAvailability;
         public City City;
         public int TimeZoneOffset;
+        public int Age;
     }
 }

@@ -34,6 +34,59 @@ SportsLinkScript.Controls.Calendar.prototype = {
 
 
 ////////////////////////////////////////////////////////////////////////////////
+// SportsLinkScript.Controls.PlayerGrid
+
+SportsLinkScript.Controls.PlayerGrid = function SportsLinkScript_Controls_PlayerGrid(element) {
+    /// <param name="element" type="Object" domElement="true">
+    /// </param>
+    SportsLinkScript.Controls.PlayerGrid.initializeBase(this, [ element, 'PlayerGrid' ]);
+    var requestMatch = this.obj.find('.requestMatch');
+    requestMatch.button({ text: true, icons: { secondary: 'ui-icon-carat-1-e' } });
+    requestMatch.click(SportsLinkScript.Controls.Players.requestMatch);
+    var selects = this.obj.find('th select');
+    selects.each(ss.Delegate.create(this, function(index, el) {
+        ($(el)).multiselect({ header: false, minWidth: '80', height: 'auto', noneSelectedText: el.title, selectedText: el.title, close: ss.Delegate.create(this, function() {
+            this.doFilter(this.obj, true);
+        }) });
+    }));
+    this.doFilter(this.obj, false);
+}
+SportsLinkScript.Controls.PlayerGrid.prototype = {
+    
+    doFilter: function SportsLinkScript_Controls_PlayerGrid$doFilter(obj, postBack) {
+        /// <param name="obj" type="jQueryObject">
+        /// </param>
+        /// <param name="postBack" type="Boolean">
+        /// </param>
+        var selects = obj.find('th select');
+        var filterValue = '';
+        selects.each(ss.Delegate.create(this, function(index, el) {
+            var select = $(el);
+            var checkedItems = select.multiselect('getChecked');
+            if (checkedItems.length > 0) {
+                if (filterValue.length > 0) {
+                    filterValue = filterValue + ',,';
+                }
+                filterValue = filterValue + select.attr('name') + '=';
+                for (var i = 0; i < checkedItems.length; ++i) {
+                    if (i > 0) {
+                        filterValue = filterValue + '||';
+                    }
+                    filterValue = filterValue + (checkedItems[i]).value;
+                }
+            }
+        }));
+        if (this.filter !== filterValue) {
+            this.filter = filterValue;
+            if (postBack) {
+                this.postBack(0);
+            }
+        }
+    }
+}
+
+
+////////////////////////////////////////////////////////////////////////////////
 // SportsLinkScript.Controls.UserDetails
 
 SportsLinkScript.Controls.UserDetails = function SportsLinkScript_Controls_UserDetails(element) {
@@ -83,12 +136,15 @@ SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_P
     /// </param>
     /// <param name="serviceName" type="String">
     /// </param>
-    /// <field name="_page$1" type="Number" integer="true">
+    /// <field name="page" type="Number" integer="true">
     /// </field>
     /// <field name="serviceName" type="String">
     /// </field>
+    /// <field name="filter" type="String">
+    /// </field>
+    this.filter = String.Empty;
     SportsLinkScript.Controls.PaginatedModule.initializeBase(this, [ element ]);
-    this._page$1 = parseInt(this.obj.find('.page').val());
+    this.page = parseInt(this.obj.find('.page').val());
     this.serviceName = serviceName;
     var prev = this.obj.find('.prev');
     var next = this.obj.find('.next');
@@ -98,26 +154,26 @@ SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_P
     next.click(ss.Delegate.create(this, this._pageNext$1));
 }
 SportsLinkScript.Controls.PaginatedModule.prototype = {
-    _page$1: 0,
+    page: 0,
     serviceName: null,
     
     _pagePrev$1: function SportsLinkScript_Controls_PaginatedModule$_pagePrev$1(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-        var button = $(e.currentTarget);
-        var parameters = { page: this._page$1 - 1 };
-        $.post('/services/' + this.serviceName + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
-            SportsLinkScript.Shared.Utility.processResponse(data);
-        }));
+        this.postBack(this.page - 1);
     },
     
     _pageNext$1: function SportsLinkScript_Controls_PaginatedModule$_pageNext$1(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
+        this.postBack(this.page + 1);
+    },
+    
+    postBack: function SportsLinkScript_Controls_PaginatedModule$postBack(page) {
+        /// <param name="page" type="Number" integer="true">
+        /// </param>
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
-        var button = $(e.currentTarget);
-        var parameters = { page: this._page$1 + 1 };
+        var parameters = { page: page, filter: this.filter };
         $.post('/services/' + this.serviceName + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         }));
@@ -189,47 +245,61 @@ SportsLinkScript.Controls.UserOffers.prototype = {
 SportsLinkScript.Controls.Players = function SportsLinkScript_Controls_Players(element) {
     /// <param name="element" type="Object" domElement="true">
     /// </param>
-    SportsLinkScript.Controls.Players.initializeBase(this, [ element, 'Players' ]);
+    SportsLinkScript.Controls.Players.initializeBase(this, [ element ]);
+    var moreButton = this.obj.find('.more');
     var requestMatch = this.obj.find('.requestMatch');
     requestMatch.button({ text: true, icons: { secondary: 'ui-icon-carat-1-e' } });
-    requestMatch.click(ss.Delegate.create(this, this._requestMatch$2));
+    requestMatch.click(SportsLinkScript.Controls.Players.requestMatch);
+    moreButton.click(ss.Delegate.create(this, this._moreClick$1));
+}
+SportsLinkScript.Controls.Players.requestMatch = function SportsLinkScript_Controls_Players$requestMatch(e) {
+    /// <param name="e" type="jQueryEvent">
+    /// </param>
+    var button = $(e.currentTarget);
+    var dialog = $('#challengeDialog');
+    var datePicker = dialog.find('.datepicker');
+    SportsLinkScript.Shared.Utility._wireAutoComplete(dialog.find('.placesAutoFill'), dialog.find('.placesAutoValue'));
+    var id = button.get(0).id;
+    datePicker.datepicker('disable');
+    dialog.dialog({ width: '260', height: '324', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': function(ex) {
+        SportsLinkScript.Controls.Players._createMatch$1(id);
+    } }, open: function() {
+        dialog.find('.comments').focus();
+        datePicker.datepicker('enable');
+    } });
+}
+SportsLinkScript.Controls.Players._createMatch$1 = function SportsLinkScript_Controls_Players$_createMatch$1(id) {
+    /// <param name="id" type="String">
+    /// </param>
+    var dialog = $('#challengeDialog');
+    var date = dialog.find('.datepicker').val();
+    var time = dialog.find('.time').val();
+    var ampm = dialog.find('.ampm').val();
+    var comments = dialog.find('.comments').val();
+    var datetime = date + ' ' + time + ampm;
+    var ids = [];
+    dialog.find('.cities input').each(function(index, element) {
+        ids.add((element).value);
+    });
+    var parameters = { date: datetime, locations: ids, comments: comments, opponentId: 0 };
+    SportsLinkScript.Controls.QuickMatch.doCreateMatch(dialog, datetime, ids, comments, id, function() {
+        dialog.dialog('close');
+    });
 }
 SportsLinkScript.Controls.Players.prototype = {
     
-    _requestMatch$2: function SportsLinkScript_Controls_Players$_requestMatch$2(e) {
+    _moreClick$1: function SportsLinkScript_Controls_Players$_moreClick$1(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
-        var button = $(e.currentTarget);
-        var dialog = $('#challengeDialog');
-        var datePicker = dialog.find('.datepicker');
-        SportsLinkScript.Shared.Utility._wireAutoComplete(dialog.find('.placesAutoFill'), dialog.find('.placesAutoValue'));
-        var id = button.get(0).id;
-        datePicker.datepicker('disable');
-        dialog.dialog({ width: '260', height: '324', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': ss.Delegate.create(this, function(ex) {
-            this._createMatch$2(id);
-        }) }, open: ss.Delegate.create(this, function() {
+        var dialog = $('#playerGridCard');
+        dialog.children().first().html('Loading...');
+        var parameters = { page: 0 };
+        $.post('/services/PlayerGrid?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), ss.Delegate.create(this, function(data, textStatus, request) {
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        }));
+        dialog.dialog({ width: $(window).width() - 40, height: $(window).height() - 20, modal: true, title: 'Similar Players', open: ss.Delegate.create(this, function() {
             dialog.find('.comments').focus();
-            datePicker.datepicker('enable');
         }) });
-    },
-    
-    _createMatch$2: function SportsLinkScript_Controls_Players$_createMatch$2(id) {
-        /// <param name="id" type="String">
-        /// </param>
-        var dialog = $('#challengeDialog');
-        var date = dialog.find('.datepicker').val();
-        var time = dialog.find('.time').val();
-        var ampm = dialog.find('.ampm').val();
-        var comments = dialog.find('.comments').val();
-        var datetime = date + ' ' + time + ampm;
-        var ids = [];
-        dialog.find('.cities input').each(ss.Delegate.create(this, function(index, element) {
-            ids.add((element).value);
-        }));
-        var parameters = { date: datetime, locations: ids, comments: comments, opponentId: 0 };
-        SportsLinkScript.Controls.QuickMatch.doCreateMatch(dialog, datetime, ids, comments, id, ss.Delegate.create(this, function() {
-            dialog.dialog('close');
-        }));
     }
 }
 
@@ -703,10 +773,11 @@ SportsLinkScript.Controls.Module.registerClass('SportsLinkScript.Controls.Module
 SportsLinkScript.Controls.PaginatedModule.registerClass('SportsLinkScript.Controls.PaginatedModule', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.PotentialOffers.registerClass('SportsLinkScript.Controls.PotentialOffers', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.Calendar.registerClass('SportsLinkScript.Controls.Calendar', SportsLinkScript.Controls.PotentialOffers);
+SportsLinkScript.Controls.PlayerGrid.registerClass('SportsLinkScript.Controls.PlayerGrid', SportsLinkScript.Controls.PaginatedModule);
 SportsLinkScript.Controls.UserDetails.registerClass('SportsLinkScript.Controls.UserDetails', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.PlayerDetails.registerClass('SportsLinkScript.Controls.PlayerDetails', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.UserOffers.registerClass('SportsLinkScript.Controls.UserOffers', SportsLinkScript.Controls.PaginatedModule);
-SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.PaginatedModule);
+SportsLinkScript.Controls.Players.registerClass('SportsLinkScript.Controls.Players', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.ModuleInstance.registerClass('SportsLinkScript.Controls.ModuleInstance');
 SportsLinkScript.Controls.Results.registerClass('SportsLinkScript.Controls.Results', SportsLinkScript.Controls.Module);
 SportsLinkScript.Controls.QuickMatch.registerClass('SportsLinkScript.Controls.QuickMatch', SportsLinkScript.Controls.Module);

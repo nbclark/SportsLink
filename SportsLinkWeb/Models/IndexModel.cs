@@ -28,11 +28,21 @@ namespace SportsLinkWeb.Models
             return ModelUtils.GetModel<T>(this.TennisUser, this.DB);
         }
 
+        public static string GetAgeGroup(int age)
+        {
+            return string.Format("{0}-{1}", age, age + 5);
+        }
+
+        public static int GetAge(DateTime birthday)
+        {
+            int plusOne = (DateTime.Now.DayOfYear < birthday.DayOfYear) ? -1 : 0;
+
+            return (DateTime.Now.Year - birthday.Year + plusOne);
+        }
+
         public static string FormatAge(DateTime birthday)
         {
-            int plusOne = (DateTime.Now.DayOfYear >= birthday.DayOfYear) ? 1 : 0;
-
-            return (DateTime.Now.Year - birthday.Year + plusOne).ToString();
+            return GetAge(birthday).ToString();
         }
 
         public static string FormatRating(double rating)

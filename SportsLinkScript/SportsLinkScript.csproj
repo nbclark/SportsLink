@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\Calendar.cs" />
+    <Compile Include="Controls\PlayerGrid.cs" />
     <Compile Include="Controls\UserDetails.cs" />
     <Compile Include="Controls\PaginatedModule.cs" />
     <Compile Include="Controls\PlayerDetails.cs" />

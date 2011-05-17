@@ -9,7 +9,7 @@
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">
                 Similar Players
-                <a href="#" class="edit ui-icon ui-icon-person" style="display: inline; float:right" title="View More"></a>
+                <a href="#" class="more" style="display: inline; float:right; white-space:nowrap" title="View More"><span style="float:left">All</span> <span class="ui-icon ui-icon-person" style="display: inline; float:right;"></span></a>
             </h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">

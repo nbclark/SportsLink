@@ -467,3 +467,24 @@ body
 {
     color: White !important;
 }
+
+.grid table
+{
+    width: 100%;
+    border-spacing: 0;
+}
+
+.grid table th
+{
+    text-align: left;
+}
+
+.grid table th, .grid table td
+{
+    padding: 2px;
+}
+
+.ui-multiselect-checkboxes
+{
+    overflow: hidden !important;
+}
