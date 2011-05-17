@@ -6,11 +6,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/ui-lightness/jquery-ui-1.8.12.custom.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/ui-lightness/jquery.ui.selectmenu.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/ui-lightness/jquery.ui.multiselect.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/redmond/jquery-ui-1.8.13.custom.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/redmond/jquery.ui.selectmenu.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/redmond/jquery.ui.multiselect.css" rel="stylesheet" type="text/css" />
     <script src="/scripts/jquery-1.5.1.min.js"></script>
-    <script src="/scripts/jquery-ui-1.8.12.custom.min.js"></script>
+    <script src="/scripts/jquery-ui-1.8.13.custom.min.js"></script>
     <script src="/scripts/jquery.ui.selectmenu.js"></script>
     <script src="/scripts/jquery.multiselect.min.js"></script>
     <script src="/scripts/mscorlib.js"></script>
@@ -32,7 +32,7 @@
     <%: Html.FacebookSignedRequest() %>
     <div id="fb-root"></div>
     <div class="page">
-        <table id="header">
+        <table id="header" class="ui-widget-header ui-corner-all">
             <tr>
                 <td>TennisLink</td>
                 <td class="cal"><a href="#" class="calendar">Calendar</a></td>
