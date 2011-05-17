@@ -1,8 +1,0 @@
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Release\net40\Facebook.Web.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Bin\Release\net40\Facebook.Web.pdb
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\ResolveAssemblyReference.cache
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\Facebook.Web.Properties.Resources.resources
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\GenerateResource.read.1.tlog
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\GenerateResource.write.1.tlog
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\Facebook.Web.dll
-C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\FacebookApi\Facebook.Web\obj\Release\Facebook.Web.pdb
