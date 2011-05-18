@@ -131,64 +131,108 @@ namespace SportsLinkScript.Shared
             }
         }
 
+        /// <summary>
+        /// Generic response handler for post completions for loaded modules
+        /// The index page consists of various modules which have an id of the form "module_ModuleName"
+        /// The key ModuleName must be in the dictionary object. 
+        /// If we find a matching jQuery object/DOM element with that id, we update the module corresponding to that element.
+        /// </summary>
+        /// <param name="obj"></param>
         public static void ProcessResponse(Dictionary obj)
         {
             Array keys = StaticUtility.GetKeys(obj);
 
             for (int i = 0; i <keys.Length; ++i)
             {
+                // Try each key and check if the module exists
                 string keyId = (string)keys[i];
                 string name = "#module_" + keyId;
+
+                // Get the element with the matching name if it exists
                 jQueryObject content = jQuery.Select(name);
 
                 if (content.Length > 0)
                 {
+                    // If element exists, update the element passing in the data which to update it
                     UpdateModule(content, (string)obj[keyId]);
+
+                    // BUGBUG: do we need to break out or can there be multiple modules for which this message is meant for?
                 }
             }
         }
 
+        /// <summary>
+        /// Creates / loads the JS object (module) corresonding to the HTML element that handles the behavior of the element
+        /// </summary>
+        /// <param name="element"></param>
         internal static void LoadModule(Element element)
         {
+            // The type of the module is embedded in the data-type attribute
             string dataType = (string)element.GetAttribute("data-type");
 
             if (null != dataType)
             {
+                // Construct the type name
                 Type type = Type.Parse("SportsLinkScript.Controls." + dataType);
 
                 if (!Script.IsNullOrUndefined(type))
                 {
+                    // use script# to construct the module
                     Type.CreateInstance(type, element);
                 }
             }
         }
 
+        /// <summary>
+        /// Updats the HTML element with new HTML
+        /// Also, loads the new JS object (module) to handle the behavior
+        /// </summary>
+        /// <param name="content">The element to be updated</param>
+        /// <param name="value">The HTML with which to update it</param>
         private static void UpdateModule(jQueryObject content, string value)
         {
-            jQueryObject dataTypes = content.Children("*[data-type]");
             Module module = null;
 
+            // Find elements which have data-type attribute with any value
+            // The attribute is applied to elements that can be updated
+            jQueryObject dataTypes = content.Children("*[data-type]");
+
+            // If updatable elements exist, 
             if (dataTypes.Length > 0)
             {
+                // Get the first element found
                 Element element = dataTypes.First().GetElement(0);
+
+                // Find the corresponding module
                 module = Module.GetModule(element);
+
+                // Now we have the module which should be unloaded and then updated
             }
 
+            // Fade the element out and update with the new HTML
             content.FadeOut(500, delegate()
             {
+                // Unload the module
+                // BUGBUG: when can this be NULL
                 if (null != module)
                 {
                     module.Unload();
                 }
 
+                // Update the content
                 content.Html(value);
+
                 content.FadeIn(500);
 
+                // Check if it has any child modules to be loaded
                 dataTypes = content.Children("*[data-type]");
 
                 if (dataTypes.Length > 0)
                 {
+                    // Load only the first
                     LoadModule(dataTypes.First().GetElement(0));
+
+                    // BUGBUG: do we care about the rest?
                 }
             });
         }

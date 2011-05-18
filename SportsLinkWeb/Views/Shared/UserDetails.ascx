@@ -24,7 +24,7 @@
                     <td>
                         <div class="value"><%=IndexModel.FormatRating(userModel.TennisUser.Rating)%></div>
                         <div class="edit">
-                            <select>
+                            <select class="ntrp">
                             <% for (double i = 1.5; i <= 5.0; i += 0.25) { %>
                                 <option value='<%=i %>' <%=(i==userModel.TennisUser.Rating) ? "selected=selected" : "" %>><%=IndexModel.FormatRating(i)%></option>
                             <% } %>
@@ -37,7 +37,7 @@
                     <td>
                         <div class="value"><%=userModel.TennisUser.SinglesDoubles%></div>
                         <div class="edit">
-                            <select>
+                            <select class="preference">
                             <% foreach (string pref in new string[] { "Singles", "Doubles", "Either" }) { %>
                                 <option value='<%=pref %>' <%=(pref==userModel.TennisUser.SinglesDoubles) ? "selected=selected" : "" %>><%=pref%></option>
                             <% } %>

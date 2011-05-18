@@ -47,6 +47,32 @@ namespace SportsLinkWeb.Controllers
             }
         }
 
+        /// <summary>
+        /// This method is called when user edits the user profile containing NTRP/Preference & other tennis user data
+        /// </summary>
+        /// <param name="ntrp"></param>
+        /// <param name="preference"></param>
+        /// <returns></returns>
+        public ActionResult PostTennisUserDetails(string ntrp, string preference)
+        {
+            var fbContext = FacebookWebContext.Current;
+
+            TennisUser tennisUser = this.DB.TennisUser.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+
+            tennisUser.Rating = Convert.ToDouble(ntrp);
+            tennisUser.SinglesDoubles = preference;
+
+            this.DB.SubmitChanges();
+
+            return Json(
+                new
+                { 
+                    UserDetails =  RenderPartialViewToString("UserDetails", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB))
+                }
+            );
+        }
+        
+        
         public ActionResult PostScore(string offerId, string comments, string scores)
         {
             Guid offerGuid;
