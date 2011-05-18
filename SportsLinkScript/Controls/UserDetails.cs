@@ -24,6 +24,10 @@ namespace SportsLinkScript.Controls
 
             SaveButton = (jQueryUIObject)this.Obj.Find("a.save");
             SaveButton.Click(SaveDetails);
+
+            ((jQueryUIObject)this.Obj.Find("select")).SelectMenu();
+            Utility.WireLocationAutoComplete((jQueryUIObject)this.Obj.Find(".placesAutoFill"), (jQueryUIObject)this.Obj.Find(".placesAutoValue"));
+
         }
 
         private void EditDetails(jQueryEvent e)
@@ -39,27 +43,40 @@ namespace SportsLinkScript.Controls
 
         private void SaveDetails(jQueryEvent e)
         {
+            this.EditButton.Hide(EffectDuration.Fast);
+            this.Obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
+
             // Find the objects with the .edit class that are descendants of objects with .keyvaluerow class
             // These are the editable key/value pairs
             jQueryObject edits = this.Obj.Find(".keyvaluerow .edit");
 
             string ntrp = edits.Find(".ntrp").GetValue();
-            string preference = edits.Find(".preference").GetValue();
+            string court = edits.Find(".placesAutoValue").GetValue();
+            string playPreference = edits.Find(".preference").GetValue();
+            string style = edits.Find(".style").GetValue();
 
-            JsonObject parameters = new JsonObject("ntrp", ntrp, "preference", preference);
+            JsonObject parameters = new JsonObject
+            (
+                "ntrp", ntrp,
+                "preference", playPreference,
+                "courtData", court,
+                "style", style
+            );
 
             // Post the user data to the service
             jQuery.Post("/services/PostTennisUserDetails" + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
+                // this.Obj.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 Utility.ProcessResponse((Dictionary)data);
-            });
- 
-            // BUGBUG: Disable the UI until posted back
-            edits.Hide(EffectDuration.Fast);
-            edits.Prev(".value").Show(EffectDuration.Fast);
 
-            this.EditButton.Show(EffectDuration.Fast);
-            this.SaveButton.Hide(EffectDuration.Fast);
+                /*
+                edits.Hide(EffectDuration.Fast);
+                edits.Prev(".value").Show(EffectDuration.Fast);
+
+                this.EditButton.Show(EffectDuration.Fast);
+                this.SaveButton.Hide(EffectDuration.Fast);
+                */
+            });
         }
     }
 }

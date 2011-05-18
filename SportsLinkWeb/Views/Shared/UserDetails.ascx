@@ -33,6 +33,17 @@
                     </td>
                 </tr>
                 <tr class="keyvaluerow">
+                    <td class="name" title="Your Court Preference">Court</td>
+                    <td>
+                        <% var courtName = (null != userModel.TennisUser.Court) ? userModel.TennisUser.Court.Name : ""; %>
+                        <div class="value"><%= courtName %></div>
+                        <div class="edit">
+                            <input type="hidden" class="placesAutoValue" value='<%=CourtJson.FromCourt(userModel.TennisUser.Court).ToJson() %>' />
+                            <input class="placesAutoFill" value="<%= courtName %>" data-location='<%= string.Concat(userModel.TennisUser.City.Latitude, ",", userModel.TennisUser.City.Longitude) %>' data-accesstoken='<%=ConfigurationManager.AppSettings["GoogleAccessToken"] %>' />
+                        </div>
+                    </td>
+                </tr>
+                <tr class="keyvaluerow">
                     <td class="name">Type</td>
                     <td>
                         <div class="value"><%=userModel.TennisUser.SinglesDoubles%></div>
@@ -49,7 +60,7 @@
                     <td class="name">Style</td>
                     <td>
                         <div class="value"><%=userModel.TennisUser.PlayStyle%></div>
-                        <div class="edit"><input type="text" value='<%=userModel.TennisUser.PlayStyle%>' /></div>
+                        <div class="edit"><input type="text" class="style" value='<%=userModel.TennisUser.PlayStyle%>' /></div>
                     </td>
                 </tr>
             </table>

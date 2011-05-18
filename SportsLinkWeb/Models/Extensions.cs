@@ -8,11 +8,14 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SportsLink;
+using System.Web.Script.Serialization;
 
 namespace SportsLinkWeb.Models
 {
     public static class Extensions
     {
+        public static JavaScriptSerializer Serializer = new JavaScriptSerializer();
+
         private static double EarthRadiusInMiles = 3963.1;
 
         public static double GetDistanceInMiles(this City a, City b)
@@ -27,6 +30,16 @@ namespace SportsLinkWeb.Models
             Math.Cos(lat1Radians) * Math.Sin(long1Radians) * Math.Cos(lat2Radians) * Math.Sin(long2Radians) +
             Math.Sin(lat1Radians) * Math.Sin(lat2Radians)
             ) * EarthRadiusInMiles, 1);
+        }
+
+        public static string GetMapLink(this LocationModel a)
+        {
+            return string.Format(@"http://maps.google.com/maps?q={0}&sll={1},{2}&iwloc=A", HttpUtility.UrlEncode(a.Name), a.Latitude, a.Longitude);
+        }
+
+        public static string ToJson(this object a)
+        {
+            return Serializer.Serialize(a);
         }
     }
 }

@@ -103,6 +103,7 @@ body
 {
     height: 1em;
     padding:4px;
+    padding-right: 0;
     margin-bottom: 4px;
 }
 
@@ -110,7 +111,7 @@ body
 {
     font-weight: bold;
     white-space:nowrap;
-    width: 60px;
+    width: 50px;
 }
 
 .keyvaluerow .value
@@ -126,9 +127,19 @@ body
     display: none;
 }
 
+.keyvaluerow .edit select
+{
+    width: 100%;
+}
+
+.keyvaluerow .edit input
+{
+    width: 95%;
+}
+
 #userdetails .data
 {
-    width: 200px;
+    width: 100%;
     table-layout: fixed;
 }
 

@@ -17,7 +17,7 @@
                             <%=IndexModel.FormatDate(request.MatchDateUtc, userOffersModel.TennisUser.TimeZoneOffset).Replace(",", "<br />")%>
                         </td>
                         <td class="location">
-                            <%=request.City.Name%>
+                            <%=request.GetLocationLink()%>
                         </td>
                         <td class="accept">
                             <a class="cancelMatch" href="#" data-offerid='<%=request.OfferId %>'>Cancel</a>

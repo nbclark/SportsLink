@@ -101,6 +101,8 @@ SportsLinkScript.Controls.UserDetails = function SportsLinkScript_Controls_UserD
     this._editButton$1.click(ss.Delegate.create(this, this._editDetails$1));
     this._saveButton$1 = this.obj.find('a.save');
     this._saveButton$1.click(ss.Delegate.create(this, this._saveDetails$1));
+    (this.obj.find('select')).selectmenu();
+    SportsLinkScript.Shared.Utility._wireLocationAutoComplete(this.obj.find('.placesAutoFill'), this.obj.find('.placesAutoValue'));
 }
 SportsLinkScript.Controls.UserDetails.prototype = {
     _editButton$1: null,
@@ -119,17 +121,17 @@ SportsLinkScript.Controls.UserDetails.prototype = {
     _saveDetails$1: function SportsLinkScript_Controls_UserDetails$_saveDetails$1(e) {
         /// <param name="e" type="jQueryEvent">
         /// </param>
+        this._editButton$1.hide('fast');
+        this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
         var edits = this.obj.find('.keyvaluerow .edit');
         var ntrp = edits.find('.ntrp').val();
-        var preference = edits.find('.preference').val();
-        var parameters = { ntrp: ntrp, preference: preference };
+        var court = edits.find('.placesAutoValue').val();
+        var playPreference = edits.find('.preference').val();
+        var style = edits.find('.style').val();
+        var parameters = { ntrp: ntrp, preference: playPreference, courtData: court, style: style };
         $.post('/services/PostTennisUserDetails' + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         });
-        edits.hide('fast');
-        edits.prev('.value').show('fast');
-        this._editButton$1.show('fast');
-        this._saveButton$1.hide('fast');
     }
 }
 
@@ -715,7 +717,7 @@ SportsLinkScript.Shared.Utility._wireLocationAutoComplete = function SportsLinkS
     /// </param>
     var accessToken = autoFill.attr('data-accesstoken');
     var location = autoFill.attr('data-location');
-    autoFill.autocomplete({ minLength: 2, open: function() {
+    autoFill.autocomplete({ minLength: 2, position: { my: 'right top', at: 'right bottom' }, open: function() {
         $(this).removeClass('ui-corner-all').addClass('ui-corner-top');
     }, close: function() {
         $(this).removeClass('ui-corner-top').addClass('ui-corner-all');
@@ -740,7 +742,6 @@ SportsLinkScript.Shared.Utility._wireLocationAutoComplete = function SportsLinkS
                 for (var i = 0; i < placesData.results.length; ++i) {
                     var item = placesData.results[i];
                     var placeJson = { id: item.id, name: item.name, latitude: item.geometry.location.lat, longitude: item.geometry.location.lng };
-                    alert(JSON.stringify(placeJson));
                     places.add({ value: JSON.stringify(placeJson), label: item.name, icon: item.icon, description: item.vicinity });
                 }
                 SportsLinkScript.Shared.Utility._cache[term] = places;

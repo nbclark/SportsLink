@@ -8,16 +8,37 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using SportsLink;
+using System.Web.Script.Serialization;
 
 namespace SportsLinkWeb.Models
 {
     public class CourtJson
     {
+        public CourtJson()
+        {
+        }
+
+        public static CourtJson FromCourt(Court court)
+        {
+            CourtJson json = new CourtJson();
+
+            if (null != court)
+            {
+                json.id = court.CourtId.ToString().Replace("-", "");
+                json.name = court.Name;
+                json.latitude = court.Latitude.Value;
+                json.longitude = court.Longitude.Value;
+            }
+
+            return json;
+        }
+
         public string id;
         public string name;
-        public float latitude;
-        public float longitude;
+        public double latitude;
+        public double longitude;
 
+        [ScriptIgnore]
         public Guid GuidId
         {
             get

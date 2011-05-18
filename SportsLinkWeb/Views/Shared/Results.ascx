@@ -19,7 +19,7 @@
                         </td>
                         <td class="opponent">
                             <a class="name" href="javascript:SportsLinkScript.Shared.Utility.showPlayerDetails('playerDetailsCard', '<%=opponent.Name %>', '<%=opponent.FacebookId %>');"><%=opponent.Name%></a>
-                            <div class="location"><%=o.City.Name %></div>
+                            <div class="location"><%=o.GetLocationLink()%></div>
                             <br />
                             <i><%=(isRequestor) ? o.RequestComments : o.AcceptComments %></i>
                         </td>

@@ -105,6 +105,7 @@
     <Compile Include="WebRole.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\MatchCancelled.htm" />
     <Content Include="Content\MatchAcceptOffer.htm" />
     <Content Include="Content\redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\redmond\images\ui-bg_flat_55_fbec88_40x100.png" />

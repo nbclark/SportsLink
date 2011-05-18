@@ -32,6 +32,7 @@ namespace SportsLinkScript.Shared
                 new JsonObject
                 (
                     "minLength", 2,
+                    "position", new JsonObject("my", "right top", "at", "right bottom"), 
                     "open", (Callback)delegate()
                     {
                         jQuery.This.RemoveClass("ui-corner-all").AddClass("ui-corner-top");
@@ -79,7 +80,6 @@ namespace SportsLinkScript.Shared
                                     {
                                         PlacesItem item = (PlacesItem)placesData.Results[i];
                                         JsonObject placeJson = new JsonObject("id", item.Id, "name", item.Name, "latitude", item.Geometry.Location.Latitude, "longitude", item.Geometry.Location.Longitude);
-                                        Script.Alert(Json.Stringify(placeJson));
                                         places.Add(new JsonObject("value", Json.Stringify(placeJson), "label", item.Name, "icon", item.Icon, "description", item.Vicinity));
                                     }
 

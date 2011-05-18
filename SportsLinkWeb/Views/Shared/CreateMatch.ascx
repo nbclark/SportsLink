@@ -22,8 +22,9 @@
     </div>
     <div class="label">Location (optional):</div>
     <div class="input full">
-        <input type="hidden" class="placesAutoValue" />
-        <input class="placesAutoFill" data-location='<%= string.Concat(model.TennisUser.City.Latitude, ",", model.TennisUser.City.Longitude) %>' data-accesstoken='<%=ConfigurationManager.AppSettings["GoogleAccessToken"] %>' />
+        <% var courtName = (null != model.TennisUser.Court) ? model.TennisUser.Court.Name : ""; %>
+        <input type="hidden" class="placesAutoValue" value='<%=CourtJson.FromCourt(model.TennisUser.Court).ToJson() %>' />
+        <input class="placesAutoFill" value="<%= courtName %>" data-location='<%= string.Concat(model.TennisUser.City.Latitude, ",", model.TennisUser.City.Longitude) %>' data-accesstoken='<%=ConfigurationManager.AppSettings["GoogleAccessToken"] %>' />
     </div>
     <div class="label">Comments (optional):</div>
     <div class="input full">

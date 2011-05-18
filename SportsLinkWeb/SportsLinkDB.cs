@@ -336,6 +336,8 @@ namespace SportsLink
 		
 		private EntitySet<Offer> _Offer;
 		
+		private EntitySet<TennisUser> _TennisUser;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -353,6 +355,7 @@ namespace SportsLink
 		public Court()
 		{
 			this._Offer = new EntitySet<Offer>(new Action<Offer>(this.attach_Offer), new Action<Offer>(this.detach_Offer));
+			this._TennisUser = new EntitySet<TennisUser>(new Action<TennisUser>(this.attach_TennisUser), new Action<TennisUser>(this.detach_TennisUser));
 			OnCreated();
 		}
 		
@@ -449,6 +452,19 @@ namespace SportsLink
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_TennisUser_Court", Storage="_TennisUser", ThisKey="CourtId", OtherKey="PreferredCourtId", DeleteRule="NO ACTION")]
+		public EntitySet<TennisUser> TennisUser
+		{
+			get
+			{
+				return this._TennisUser;
+			}
+			set
+			{
+				this._TennisUser.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -476,6 +492,18 @@ namespace SportsLink
 		}
 		
 		private void detach_Offer(Offer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Court = null;
+		}
+		
+		private void attach_TennisUser(TennisUser entity)
+		{
+			this.SendPropertyChanging();
+			entity.Court = this;
+		}
+		
+		private void detach_TennisUser(TennisUser entity)
 		{
 			this.SendPropertyChanging();
 			entity.Court = null;
@@ -1044,6 +1072,10 @@ namespace SportsLink
 		
 		private bool _CurrentAvailability;
 		
+		private System.Nullable<System.Guid> _PreferredCourtId;
+		
+		private EntityRef<Court> _Court;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -1062,10 +1094,13 @@ namespace SportsLink
     partial void OnSinglesDoublesChanged();
     partial void OnCurrentAvailabilityChanging(bool value);
     partial void OnCurrentAvailabilityChanged();
+    partial void OnPreferredCourtIdChanging(System.Nullable<System.Guid> value);
+    partial void OnPreferredCourtIdChanged();
     #endregion
 		
 		public TennisUser()
 		{
+			this._Court = default(EntityRef<Court>);
 			OnCreated();
 		}
 		
@@ -1205,6 +1240,64 @@ namespace SportsLink
 					this._CurrentAvailability = value;
 					this.SendPropertyChanged("CurrentAvailability");
 					this.OnCurrentAvailabilityChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreferredCourtId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> PreferredCourtId
+		{
+			get
+			{
+				return this._PreferredCourtId;
+			}
+			set
+			{
+				if ((this._PreferredCourtId != value))
+				{
+					if (this._Court.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPreferredCourtIdChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredCourtId = value;
+					this.SendPropertyChanged("PreferredCourtId");
+					this.OnPreferredCourtIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_TennisUser_Court", Storage="_Court", ThisKey="PreferredCourtId", OtherKey="CourtId", IsForeignKey=true)]
+		public Court Court
+		{
+			get
+			{
+				return this._Court.Entity;
+			}
+			set
+			{
+				Court previousValue = this._Court.Entity;
+				if (((previousValue != value) 
+							|| (this._Court.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Court.Entity = null;
+						previousValue.TennisUser.Remove(this);
+					}
+					this._Court.Entity = value;
+					if ((value != null))
+					{
+						value.TennisUser.Add(this);
+						this._PreferredCourtId = value.CourtId;
+					}
+					else
+					{
+						this._PreferredCourtId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Court");
 				}
 			}
 		}

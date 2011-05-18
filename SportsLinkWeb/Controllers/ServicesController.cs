@@ -14,6 +14,7 @@ using System.Net;
 using Facebook.Web;
 using Facebook.Web.Mvc;
 using SportsLink;
+using System.Text.RegularExpressions;
 
 namespace SportsLinkWeb.Controllers
 {
@@ -22,15 +23,20 @@ namespace SportsLinkWeb.Controllers
     [HandleError]
     public class ServicesController : HomeController
     {
-        private const string FeedUrl = "https://graph.facebook.com/feed";
+        private static object LockObject = new object();
+        private static DateTime AccessTokenExpiry = DateTime.MinValue;
         private static string AccessToken = string.Empty;
         private const string AccessTokenUrl = "https://graph.facebook.com/oauth/access_token";
-        private const string FqlApiUrl = "https://api.facebook.com/method/fql.query?access_token={0}&query={1}";
-        private const string PageLikesUrl = "https://api.facebook.com/method/pages.getinfo?fields=page_id%2C+name%2C+page_url%2C+fan_count&format=xml&access_token=";
-        private const string AccessTokenResponsePrefix = "access_token=";
-        private const string FacebookAppId = "121654811241938";
-        private const string FacebookAppSecret = "02b1fc02ef9c2a48510331eac380ecab";
+        private const string AccessTokenResponsePrefix = "access_token";
+        private const string AccessTokenExpiryPrefix = "expires";
 
+        /// <summary>
+        /// This method is used to call external web services from the client side.
+        /// We need to use a proxy due to cross-site scripting issues.
+        /// NOTE: if you can use JSONP instead, use that instead of the proxy
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public ActionResult ServiceProxy(string url)
         {
             WebRequest request = WebRequest.Create(url);
@@ -53,26 +59,37 @@ namespace SportsLinkWeb.Controllers
         /// <param name="ntrp"></param>
         /// <param name="preference"></param>
         /// <returns></returns>
-        public ActionResult PostTennisUserDetails(string ntrp, string preference)
+        public ActionResult PostTennisUserDetails(string ntrp, string preference, string courtData, string style)
         {
             var fbContext = FacebookWebContext.Current;
 
             TennisUser tennisUser = this.DB.TennisUser.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+            Court court = ProcessCourtData(courtData);
 
             tennisUser.Rating = Convert.ToDouble(ntrp);
             tennisUser.SinglesDoubles = preference;
+            tennisUser.Court = court;
+            tennisUser.PlayStyle = style;
 
             this.DB.SubmitChanges();
 
             return Json(
                 new
-                { 
-                    UserDetails =  RenderPartialViewToString("UserDetails", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB))
+                {
+                    UserDetails = RenderPartialViewToString("UserDetails", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB)),
+                    QuickMatch =  RenderPartialViewToString("QuickMatch", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB))
                 }
             );
         }
         
         
+        /// <summary>
+        /// This service is called from the client to post the score for a match
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <param name="comments"></param>
+        /// <param name="scores"></param>
+        /// <returns></returns>
         public ActionResult PostScore(string offerId, string comments, string scores)
         {
             Guid offerGuid;
@@ -83,15 +100,15 @@ namespace SportsLinkWeb.Controllers
 
                 if (null != offer)
                 {
-                    var app = new FacebookApp();
+                    var ctx = FacebookWebContext.Current;
 
                     offer.Score = scores;
 
-                    if (offer.FacebookId == app.Session.UserId)
+                    if (offer.FacebookId == ctx.UserId)
                     {
                         offer.RequestComments = comments;
                     }
-                    else if (offer.AcceptedById == app.Session.UserId)
+                    else if (offer.AcceptedById == ctx.UserId)
                     {
                         offer.AcceptComments = comments;
                     }
@@ -116,6 +133,12 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
+        /// <summary>
+        /// This method is called from the client (or from an email link) to accept an offer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         public ActionResult AcceptOffer(string id, long uid)
         {
             Guid offerGuid;
@@ -187,6 +210,13 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
+        /// <summary>
+        /// When a user requests a match to a group of people, when a user accepts, the original poster
+        /// is sent an email asking for confirmation.  The link in the confirmation redirects here.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         public ActionResult ConfirmOffer(string id, long uid)
         {
             Guid offerGuid;
@@ -208,12 +238,18 @@ namespace SportsLinkWeb.Controllers
             return new RedirectResult("/");
         }
 
+        /// <summary>
+        /// This method will send a confirmation mail to both players in a match
+        /// </summary>
+        /// <param name="offer"></param>
         private void SendMatchConfirmation(Offer offer)
         {
             var fbContext = FacebookWebContext.Current;
             var tennisUsers = ModelUtils.GetTennisUsers(this.DB);
             TennisUserModel tennisUser1 = tennisUsers.Where(u => u.FacebookId == offer.FacebookId).FirstOrDefault();
             TennisUserModel tennisUser2 = tennisUsers.Where(u => u.FacebookId == offer.AcceptedById).FirstOrDefault();
+
+            string location = OfferModel.GetLocationLink(LocationModel.Create(offer));
 
             Dictionary<string, string> tokens = new Dictionary<string, string>();
             tokens.Add("FacebookId1", tennisUser1.FacebookId.ToString());
@@ -224,7 +260,7 @@ namespace SportsLinkWeb.Controllers
             tokens.Add("Name2", tennisUser2.Name.ToString());
 
             tokens.Add("Date", IndexModel.FormatDate(offer.MatchDateUtc, tennisUser1.TimeZoneOffset).Replace(",", " @ "));
-            tokens.Add("Location", tennisUser1.City.Name);
+            tokens.Add("Location", location);
             tokens.Add("Comments", offer.Message);
             tokens.Add("OfferId", offer.OfferId.ToString());
 
@@ -234,6 +270,12 @@ namespace SportsLinkWeb.Controllers
             SendMessage(new long[] { tennisUser1.FacebookId, tennisUser2.FacebookId }, subject, template, tokens);
         }
 
+        /// <summary>
+        /// This method is called from the client to cancel a match request. If the match has been accepted
+        /// we need to send mail to both parties.
+        /// </summary>
+        /// <param name="offerId"></param>
+        /// <returns></returns>
         public ActionResult CancelOffer(string offerId)
         {
             Guid offerGuid;
@@ -244,21 +286,19 @@ namespace SportsLinkWeb.Controllers
 
                 if (null != offer)
                 {
-                    this.DB.Offer.DeleteOnSubmit(offer);
-                    this.DB.SubmitChanges();
-
                     if (null != offer.AcceptedById)
                     {
-                        /*
                         var fbContext = FacebookWebContext.Current;
                         TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
 
-                        string subject = "Match Cancelled";
+                        string subject = "TennisLink: Match Cancelled";
                         string template = Server.MapPath("/content/matchcancelled.htm");
 
                         SendMessage(new long[] { offer.AcceptedById.Value }, subject, template, offer, tennisUser);
-                        */
                     }
+
+                    this.DB.Offer.DeleteOnSubmit(offer);
+                    this.DB.SubmitChanges();
 
                     return Json
                     (
@@ -274,24 +314,58 @@ namespace SportsLinkWeb.Controllers
             return Json("");
         }
 
+        /// <summary>
+        /// This method contacts FB to get an access token for our application.  The token is used for
+        /// sending emails, or doing other activities.
+        /// </summary>
+        /// <returns></returns>
         public static string GetAccessToken()
         {
-            string urlString = string.Concat(AccessTokenUrl, "?type=client_cred&client_id=", FacebookApplication.Current.AppId, "&client_secret=", FacebookApplication.Current.AppSecret);
-
-            HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(urlString);
-            WebResponse response = request.GetResponse();
-
-            using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
+            lock (LockObject)
             {
-                string responseText = responseStream.ReadToEnd();
-
-                if (responseText.StartsWith(AccessTokenResponsePrefix))
+                if (DateTime.Now < AccessTokenExpiry)
                 {
-                    return responseText.Substring(AccessTokenResponsePrefix.Length);
+                    return AccessToken;
                 }
-                else
+
+                AccessToken = string.Empty;
+                AccessTokenExpiry = DateTime.MinValue;
+
+                string urlString = string.Concat(AccessTokenUrl, "?grant_type=client_credentials&client_id=", FacebookApplication.Current.AppId, "&client_secret=", FacebookApplication.Current.AppSecret);
+
+                HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(urlString);
+                WebResponse response = request.GetResponse();
+
+                using (StreamReader responseStream = new StreamReader(response.GetResponseStream()))
                 {
-                    return null;
+                    string responseText = responseStream.ReadToEnd();
+
+                    string[] tokens = responseText.Split('&');
+
+                    foreach (string token in tokens)
+                    {
+                        string[] tokenParts = token.Split('=');
+
+                        if (tokenParts.Length > 1)
+                        {
+                            string name = tokenParts[0];
+                            string value = tokenParts[1];
+
+                            if (string.Equals(name, AccessTokenResponsePrefix, StringComparison.OrdinalIgnoreCase))
+                            {
+                                AccessToken = value;
+                            }
+                            else if (string.Equals(name, AccessTokenExpiryPrefix, StringComparison.OrdinalIgnoreCase))
+                            {
+                                int seconds = Convert.ToInt32(value);
+
+                                // Get the expiration time and buffer it a little
+                                AccessTokenExpiry = DateTime.Now.AddSeconds(seconds - 60);
+                            }
+                        }
+                    }
+
+                    return AccessToken;
                 }
             }
         }
@@ -305,7 +379,7 @@ namespace SportsLinkWeb.Controllers
             if (null != tennisUser)
             {
                 List<long> pushIds = new List<long>();
-                Court court = null;
+                Court court = ProcessCourtData(courtData);
 
                 if (!string.IsNullOrEmpty(courtData))
                 {
@@ -336,6 +410,7 @@ namespace SportsLinkWeb.Controllers
                 offer.PostDateUtc = DateTime.UtcNow;
                 offer.Message = comments;
                 offer.PreferredLocationId = tennisUser.City.LocationId;
+                offer.Court = court;
                 offer.Completed = false;
 
                 User opponent = null;
@@ -411,12 +486,14 @@ namespace SportsLinkWeb.Controllers
 
         private static bool SendMessage(IEnumerable<long> pushIds, string subject, string templatePath, Offer offer, TennisUserModel tennisUser)
         {
+            string location = OfferModel.GetLocationLink(LocationModel.Create(offer));
+
             Dictionary<string, string> tokens = new Dictionary<string, string>();
             tokens.Add("FacebookId", tennisUser.FacebookId.ToString());
             tokens.Add("Rating", IndexModel.FormatRating(tennisUser.Rating));
             tokens.Add("Date", IndexModel.FormatDate(offer.MatchDateUtc, tennisUser.TimeZoneOffset).Replace(",", " @ "));
             tokens.Add("Name", tennisUser.Name.ToString());
-            tokens.Add("Location", tennisUser.City.Name);
+            tokens.Add("Location", location);
             tokens.Add("Comments", offer.Message);
             tokens.Add("OfferId", offer.OfferId.ToString());
 
@@ -425,8 +502,11 @@ namespace SportsLinkWeb.Controllers
 
         private static bool SendMessage(IEnumerable<long> pushIds, string subject, string templatePath, Dictionary<string, string> tokens)
         {
-            string accessToken = GetAccessToken();
-            FacebookApp postApp = new FacebookApp(accessToken);
+            FacebookOAuthClient oAuth = new FacebookOAuthClient(FacebookApplication.Current);
+            dynamic tokenResponse = oAuth.GetApplicationAccessToken();
+            string accessToken = tokenResponse.access_token;
+
+            FacebookWebClient postApp = new FacebookWebClient(accessToken);
 
             string body = System.IO.File.ReadAllText(templatePath);
 
@@ -440,7 +520,7 @@ namespace SportsLinkWeb.Controllers
             parameters.Add("recipients", string.Join(",", pushIds));
             parameters.Add("subject", subject);
             parameters.Add("fbml", body);
-            dynamic messageResult = postApp.Api("/", parameters, HttpMethod.Post);
+            dynamic messageResult = postApp.Post(parameters);
 
             return true;
         }
@@ -548,6 +628,34 @@ namespace SportsLinkWeb.Controllers
                     PlayerGrid = RenderPartialViewToString("PlayerGrid", model)
                 }
              );
+        }
+
+        private Court ProcessCourtData(string courtData)
+        {
+            Court court = null;
+
+            if (!string.IsNullOrEmpty(courtData))
+            {
+                CourtJson courtJson = JsonSerializer.Current.DeserializeObject<CourtJson>(courtData);
+
+                if (null != courtJson && !string.IsNullOrEmpty(courtJson.name))
+                {
+                    court = this.DB.Court.Where(c => c.CourtId == courtJson.GuidId).FirstOrDefault();
+
+                    if (null == court)
+                    {
+                        court = new Court();
+                        court.CourtId = courtJson.GuidId;
+                        court.Name = courtJson.name;
+                        court.Latitude = courtJson.latitude;
+                        court.Longitude = courtJson.longitude;
+
+                        this.DB.Court.InsertOnSubmit(court);
+                    }
+                }
+            }
+
+            return court;
         }
 
     }

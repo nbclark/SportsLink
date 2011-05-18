@@ -10,7 +10,7 @@
         </td>
         <td class="details">
             <a class="name" href="javascript:SportsLinkScript.Shared.Utility.showPlayerDetails('playerDetailsCard', '<%=o.RequestUser.Name %>', '<%=o.RequestUser.FacebookId %>');"><%=o.RequestUser.Name %></a>
-            <div class="location"><%=o.City.Name %></div>
+            <div class="location"><%=o.GetLocationLink()%></div>
         </td>
         <td><div class="rating"><%=IndexModel.FormatRating(user.Rating)%></div><div>ntrp</div></td>
         <td><div class="age"><%=IndexModel.FormatAge(user.Birthday)%></div><div class="years">years</td>

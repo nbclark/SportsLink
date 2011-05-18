@@ -68,6 +68,7 @@ namespace SportsLinkWeb.Models
                        USTAId = tu.USTAId,
                        CurrentAvailability = tu.CurrentAvailability,
                        City = u.City,
+                       Court = tu.Court,
                        TimeZoneOffset = u.TimeZoneOffset,
                        Age = (DateTime.Now.Year - u.Birthday.Year - ((DateTime.Now.DayOfYear < u.Birthday.Year) ? 1 : 0))
                    };
