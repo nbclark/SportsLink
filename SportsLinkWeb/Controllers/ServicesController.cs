@@ -296,7 +296,7 @@ namespace SportsLinkWeb.Controllers
             }
         }
 
-        public ActionResult CreateOffer(DateTime date, long[] locations, string comments, long? opponentId)
+        public ActionResult CreateOffer(DateTime date, long[] locations, string courtData, string comments, long? opponentId)
         {
             var fbContext = FacebookWebContext.Current;
             
@@ -305,6 +305,28 @@ namespace SportsLinkWeb.Controllers
             if (null != tennisUser)
             {
                 List<long> pushIds = new List<long>();
+                Court court = null;
+
+                if (!string.IsNullOrEmpty(courtData))
+                {
+                    CourtJson courtJson = JsonSerializer.Current.DeserializeObject<CourtJson>(courtData);
+
+                    if (null != courtJson && !string.IsNullOrEmpty(courtJson.name))
+                    {
+                        court = this.DB.Court.Where(c => c.CourtId == courtJson.GuidId).FirstOrDefault();
+
+                        if (null == court)
+                        {
+                            court = new Court();
+                            court.CourtId = courtJson.GuidId;
+                            court.Name = courtJson.name;
+                            court.Latitude = courtJson.latitude;
+                            court.Longitude = courtJson.longitude;
+
+                            this.DB.Court.InsertOnSubmit(court);
+                        }
+                    }
+                }
 
                 //Add the entry, send out the messages
                 Offer offer = new Offer();

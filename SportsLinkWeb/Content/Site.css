@@ -245,7 +245,7 @@ body
     border-top: 0px solid #ccc;
 }
 
-#players .image, .offer .image
+#players .image, .offer .image, .result .image
 {
     width: 54px;
     text-align: left;

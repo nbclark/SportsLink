@@ -22,6 +22,7 @@ namespace SportsLinkWeb.Models
         public string RequestComments;
         public string AcceptComments;
 
+        public Court Court;
         public City City;
         public TennisUserModel RequestUser;
         public TennisUserModel AcceptUser;

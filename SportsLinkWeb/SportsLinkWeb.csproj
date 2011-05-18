@@ -84,6 +84,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CalendarModel.cs" />
+    <Compile Include="Models\CourtJson.cs" />
     <Compile Include="Models\PlayersDataGridModel.cs" />
     <Compile Include="Models\DataGridModel.cs" />
     <Compile Include="Models\WeekPageModel.cs" />

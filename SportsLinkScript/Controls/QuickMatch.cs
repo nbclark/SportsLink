@@ -21,7 +21,7 @@ namespace SportsLinkScript.Controls
             ((jQueryUIObject)this.Obj.Find(".findMatch")).Button();
             ((jQueryUIObject)this.Obj.Find("select")).SelectMenu();
 
-            Utility.WireAutoComplete((jQueryUIObject)this.Obj.Find(".placesAutoFill"), (jQueryUIObject)this.Obj.Find(".placesAutoValue"));
+            Utility.WireLocationAutoComplete((jQueryUIObject)this.Obj.Find(".placesAutoFill"), (jQueryUIObject)this.Obj.Find(".placesAutoValue"));
         }
 
         private void CreateMatch(jQueryEvent e)
@@ -33,6 +33,7 @@ namespace SportsLinkScript.Controls
             string time = module.Find(".time").GetValue();
             string ampm = module.Find(".ampm").GetValue();
             string comments = module.Find(".comments").GetValue();
+            string courtData = module.Find(".placesAutoValue").GetValue();
 
             string datetime = date + " " + time + ampm;
 
@@ -42,12 +43,12 @@ namespace SportsLinkScript.Controls
                 ids.Add(((CheckBoxElement)element).Value);
             });
 
-            DoCreateMatch(this.Obj, datetime, ids, comments, 0, null);
+            DoCreateMatch(this.Obj, datetime, ids, courtData, comments, 0, null);
         }
 
-        public static void DoCreateMatch(jQueryObject obj, string datetime, object ids, string comments, object opponentId, Callback callback)
+        public static void DoCreateMatch(jQueryObject obj, string datetime, object ids, string courtData, string comments, object opponentId, Callback callback)
         {
-            JsonObject parameters = new JsonObject("date", datetime, "locations", ids, "comments", comments, "opponentId", opponentId);
+            JsonObject parameters = new JsonObject("date", datetime, "locations", ids, "courtData", courtData, "comments", comments, "opponentId", opponentId);
 
             obj.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
             jQuery.Post("/services/CreateOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)

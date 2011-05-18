@@ -59,7 +59,7 @@ namespace SportsLinkScript.Controls
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#challengeDialog");
             jQueryUIObject datePicker = (jQueryUIObject)dialog.Find(".datepicker");
 
-            Utility.WireAutoComplete((jQueryUIObject)dialog.Find(".placesAutoFill"), (jQueryUIObject)dialog.Find(".placesAutoValue"));
+            Utility.WireLocationAutoComplete((jQueryUIObject)dialog.Find(".placesAutoFill"), (jQueryUIObject)dialog.Find(".placesAutoValue"));
 
             string id = button.GetElement(0).ID;
 
@@ -94,6 +94,7 @@ namespace SportsLinkScript.Controls
             string time = dialog.Find(".time").GetValue();
             string ampm = dialog.Find(".ampm").GetValue();
             string comments = dialog.Find(".comments").GetValue();
+            string courtData = dialog.Find(".placesAutoValue").GetValue();
 
             string datetime = date + " " + time + ampm;
 
@@ -104,7 +105,7 @@ namespace SportsLinkScript.Controls
             });
 
             JsonObject parameters = new JsonObject("date", datetime, "locations", ids, "comments", comments, "opponentId", 0);
-            QuickMatch.DoCreateMatch(dialog, datetime, ids, comments, id, (Callback)delegate() { dialog.Dialog("close"); });
+            QuickMatch.DoCreateMatch(dialog, datetime, ids, courtData, comments, id, (Callback)delegate() { dialog.Dialog("close"); });
         }
     }
 }

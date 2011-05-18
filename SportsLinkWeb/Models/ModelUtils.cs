@@ -28,6 +28,9 @@ namespace SportsLinkWeb.Models
                          join c in db.City on o.PreferredLocationId equals c.LocationId
                          into tempCity
                          from city in tempCity.DefaultIfEmpty()
+                         join ct in db.Court on o.PreferredCourtId equals ct.CourtId
+                         into tempCourt
+                         from court in tempCourt.DefaultIfEmpty()
 
                          where user.Gender == u1.Gender && u1.CurrentAvailability
 
@@ -36,6 +39,7 @@ namespace SportsLinkWeb.Models
                              OfferId = o.OfferId,
                              PostDateUtc = o.PostDateUtc,
                              MatchDateUtc = o.MatchDateUtc,
+                             Court = court,
                              City = city,
                              Completed = o.Completed,
                              Score = o.Score,

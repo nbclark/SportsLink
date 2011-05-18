@@ -9,16 +9,17 @@
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Recent Results</h3>
             <div class="data">
-                <table>
+                <table width="100%" cellpadding="0" cellspacing="0">
                 <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>
                     <% var isRequestor = (o.RequestUser.FacebookId == results.TennisUser.FacebookId); %>
                     <% var opponent = (!isRequestor) ? o.RequestUser : o.AcceptUser; %>
                     <tr class="result">
-                        <td>
+                        <td class="image">
                             <img src="http://graph.facebook.com/<%=opponent.FacebookId %>/picture" />
                         </td>
                         <td class="opponent">
                             <a class="name" href="javascript:SportsLinkScript.Shared.Utility.showPlayerDetails('playerDetailsCard', '<%=opponent.Name %>', '<%=opponent.FacebookId %>');"><%=opponent.Name%></a>
+                            <div class="location"><%=o.City.Name %></div>
                             <br />
                             <i><%=(isRequestor) ? o.RequestComments : o.AcceptComments %></i>
                         </td>

@@ -33,6 +33,9 @@ namespace SportsLink
     partial void InsertCity(City instance);
     partial void UpdateCity(City instance);
     partial void DeleteCity(City instance);
+    partial void InsertCourt(Court instance);
+    partial void UpdateCourt(Court instance);
+    partial void DeleteCourt(Court instance);
     partial void InsertMessage(Message instance);
     partial void UpdateMessage(Message instance);
     partial void DeleteMessage(Message instance);
@@ -76,6 +79,14 @@ namespace SportsLink
 			get
 			{
 				return this.GetTable<City>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Court> Court
+		{
+			get
+			{
+				return this.GetTable<Court>();
 			}
 		}
 		
@@ -309,6 +320,168 @@ namespace SportsLink
 		}
 	}
 	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Court")]
+	public partial class Court : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _CourtId;
+		
+		private System.Nullable<double> _Latitude;
+		
+		private System.Nullable<double> _Longitude;
+		
+		private string _Name;
+		
+		private EntitySet<Offer> _Offer;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCourtIdChanging(System.Guid value);
+    partial void OnCourtIdChanged();
+    partial void OnLatitudeChanging(System.Nullable<double> value);
+    partial void OnLatitudeChanged();
+    partial void OnLongitudeChanging(System.Nullable<double> value);
+    partial void OnLongitudeChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public Court()
+		{
+			this._Offer = new EntitySet<Offer>(new Action<Offer>(this.attach_Offer), new Action<Offer>(this.detach_Offer));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CourtId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid CourtId
+		{
+			get
+			{
+				return this._CourtId;
+			}
+			set
+			{
+				if ((this._CourtId != value))
+				{
+					this.OnCourtIdChanging(value);
+					this.SendPropertyChanging();
+					this._CourtId = value;
+					this.SendPropertyChanged("CourtId");
+					this.OnCourtIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Latitude", DbType="Float")]
+		public System.Nullable<double> Latitude
+		{
+			get
+			{
+				return this._Latitude;
+			}
+			set
+			{
+				if ((this._Latitude != value))
+				{
+					this.OnLatitudeChanging(value);
+					this.SendPropertyChanging();
+					this._Latitude = value;
+					this.SendPropertyChanged("Latitude");
+					this.OnLatitudeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Longitude", DbType="Float")]
+		public System.Nullable<double> Longitude
+		{
+			get
+			{
+				return this._Longitude;
+			}
+			set
+			{
+				if ((this._Longitude != value))
+				{
+					this.OnLongitudeChanging(value);
+					this.SendPropertyChanging();
+					this._Longitude = value;
+					this.SendPropertyChanged("Longitude");
+					this.OnLongitudeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(150) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Offer_Court", Storage="_Offer", ThisKey="CourtId", OtherKey="PreferredCourtId", DeleteRule="NO ACTION")]
+		public EntitySet<Offer> Offer
+		{
+			get
+			{
+				return this._Offer;
+			}
+			set
+			{
+				this._Offer.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Offer(Offer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Court = this;
+		}
+		
+		private void detach_Offer(Offer entity)
+		{
+			this.SendPropertyChanging();
+			entity.Court = null;
+		}
+	}
+	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Message")]
 	public partial class Message : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -449,7 +622,11 @@ namespace SportsLink
 		
 		private System.Nullable<long> _SpecificOpponentId;
 		
+		private System.Nullable<System.Guid> _PreferredCourtId;
+		
 		private EntityRef<City> _City;
+		
+		private EntityRef<Court> _Court;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -479,11 +656,14 @@ namespace SportsLink
     partial void OnAcceptCommentsChanged();
     partial void OnSpecificOpponentIdChanging(System.Nullable<long> value);
     partial void OnSpecificOpponentIdChanged();
+    partial void OnPreferredCourtIdChanging(System.Nullable<System.Guid> value);
+    partial void OnPreferredCourtIdChanged();
     #endregion
 		
 		public Offer()
 		{
 			this._City = default(EntityRef<City>);
+			this._Court = default(EntityRef<Court>);
 			OnCreated();
 		}
 		
@@ -731,6 +911,30 @@ namespace SportsLink
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreferredCourtId", DbType="UniqueIdentifier")]
+		public System.Nullable<System.Guid> PreferredCourtId
+		{
+			get
+			{
+				return this._PreferredCourtId;
+			}
+			set
+			{
+				if ((this._PreferredCourtId != value))
+				{
+					if (this._Court.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPreferredCourtIdChanging(value);
+					this.SendPropertyChanging();
+					this._PreferredCourtId = value;
+					this.SendPropertyChanged("PreferredCourtId");
+					this.OnPreferredCourtIdChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Offer_City", Storage="_City", ThisKey="PreferredLocationId", OtherKey="LocationId", IsForeignKey=true)]
 		public City City
 		{
@@ -761,6 +965,40 @@ namespace SportsLink
 						this._PreferredLocationId = default(long);
 					}
 					this.SendPropertyChanged("City");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="FK_Offer_Court", Storage="_Court", ThisKey="PreferredCourtId", OtherKey="CourtId", IsForeignKey=true)]
+		public Court Court
+		{
+			get
+			{
+				return this._Court.Entity;
+			}
+			set
+			{
+				Court previousValue = this._Court.Entity;
+				if (((previousValue != value) 
+							|| (this._Court.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Court.Entity = null;
+						previousValue.Offer.Remove(this);
+					}
+					this._Court.Entity = value;
+					if ((value != null))
+					{
+						value.Offer.Add(this);
+						this._PreferredCourtId = value.CourtId;
+					}
+					else
+					{
+						this._PreferredCourtId = default(Nullable<System.Guid>);
+					}
+					this.SendPropertyChanged("Court");
 				}
 			}
 		}

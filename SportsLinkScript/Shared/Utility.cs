@@ -22,7 +22,7 @@ namespace SportsLinkScript.Shared
             return (string)Document.GetElementById("signed_request").GetAttribute("value");
         }
 
-        internal static void WireAutoComplete(jQueryUIObject autoFill, jQueryUIObject hiddenField)
+        internal static void WireLocationAutoComplete(jQueryUIObject autoFill, jQueryUIObject hiddenField)
         {
             string accessToken = autoFill.GetAttribute("data-accesstoken");
             string location = autoFill.GetAttribute("data-location");
@@ -78,7 +78,9 @@ namespace SportsLinkScript.Shared
                                     for (int i = 0; i < placesData.Results.Length; ++i)
                                     {
                                         PlacesItem item = (PlacesItem)placesData.Results[i];
-                                        places.Add(new JsonObject("value", item.Id, "label", item.Name, "icon", item.Icon, "description", item.Vicinity));
+                                        JsonObject placeJson = new JsonObject("id", item.Id, "name", item.Name, "latitude", item.Geometry.Location.Latitude, "longitude", item.Geometry.Location.Longitude);
+                                        Script.Alert(Json.Stringify(placeJson));
+                                        places.Add(new JsonObject("value", Json.Stringify(placeJson), "label", item.Name, "icon", item.Icon, "description", item.Vicinity));
                                     }
 
                                     Cache[term] = places;

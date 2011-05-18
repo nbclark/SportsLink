@@ -282,7 +282,7 @@ SportsLinkScript.Controls.Players.requestMatch = function SportsLinkScript_Contr
     var button = $(e.currentTarget);
     var dialog = $('#challengeDialog');
     var datePicker = dialog.find('.datepicker');
-    SportsLinkScript.Shared.Utility._wireAutoComplete(dialog.find('.placesAutoFill'), dialog.find('.placesAutoValue'));
+    SportsLinkScript.Shared.Utility._wireLocationAutoComplete(dialog.find('.placesAutoFill'), dialog.find('.placesAutoValue'));
     var id = button.get(0).id;
     datePicker.datepicker('disable');
     dialog.dialog({ width: '260', height: '324', modal: true, title: button.attr('Title'), buttons: { 'Challenge!': function(ex) {
@@ -300,13 +300,14 @@ SportsLinkScript.Controls.Players._createMatch$1 = function SportsLinkScript_Con
     var time = dialog.find('.time').val();
     var ampm = dialog.find('.ampm').val();
     var comments = dialog.find('.comments').val();
+    var courtData = dialog.find('.placesAutoValue').val();
     var datetime = date + ' ' + time + ampm;
     var ids = [];
     dialog.find('.cities input').each(function(index, element) {
         ids.add((element).value);
     });
     var parameters = { date: datetime, locations: ids, comments: comments, opponentId: 0 };
-    SportsLinkScript.Controls.QuickMatch.doCreateMatch(dialog, datetime, ids, comments, id, function() {
+    SportsLinkScript.Controls.QuickMatch.doCreateMatch(dialog, datetime, ids, courtData, comments, id, function() {
         dialog.dialog('close');
     });
 }
@@ -549,14 +550,16 @@ SportsLinkScript.Controls.QuickMatch = function SportsLinkScript_Controls_QuickM
     (this.obj.find('.datepicker')).datepicker();
     (this.obj.find('.findMatch')).button();
     (this.obj.find('select')).selectmenu();
-    SportsLinkScript.Shared.Utility._wireAutoComplete(this.obj.find('.placesAutoFill'), this.obj.find('.placesAutoValue'));
+    SportsLinkScript.Shared.Utility._wireLocationAutoComplete(this.obj.find('.placesAutoFill'), this.obj.find('.placesAutoValue'));
 }
-SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_Controls_QuickMatch$doCreateMatch(obj, datetime, ids, comments, opponentId, callback) {
+SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_Controls_QuickMatch$doCreateMatch(obj, datetime, ids, courtData, comments, opponentId, callback) {
     /// <param name="obj" type="jQueryObject">
     /// </param>
     /// <param name="datetime" type="String">
     /// </param>
     /// <param name="ids" type="Object">
+    /// </param>
+    /// <param name="courtData" type="String">
     /// </param>
     /// <param name="comments" type="String">
     /// </param>
@@ -564,7 +567,7 @@ SportsLinkScript.Controls.QuickMatch.doCreateMatch = function SportsLinkScript_C
     /// </param>
     /// <param name="callback" type="SportsLinkScript.Callback">
     /// </param>
-    var parameters = { date: datetime, locations: ids, comments: comments, opponentId: opponentId };
+    var parameters = { date: datetime, locations: ids, courtData: courtData, comments: comments, opponentId: opponentId };
     obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
     $.post('/services/CreateOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
         obj.attr('disabled', '').removeClass('ui-state-disabled');
@@ -585,12 +588,13 @@ SportsLinkScript.Controls.QuickMatch.prototype = {
         var time = module.find('.time').val();
         var ampm = module.find('.ampm').val();
         var comments = module.find('.comments').val();
+        var courtData = module.find('.placesAutoValue').val();
         var datetime = date + ' ' + time + ampm;
         var ids = [];
         module.find('.cities input').each(function(index, element) {
             ids.add((element).value);
         });
-        SportsLinkScript.Controls.QuickMatch.doCreateMatch(this.obj, datetime, ids, comments, 0, null);
+        SportsLinkScript.Controls.QuickMatch.doCreateMatch(this.obj, datetime, ids, courtData, comments, 0, null);
     }
 }
 
@@ -704,7 +708,7 @@ SportsLinkScript.Shared.Utility._getSignedRequest = function SportsLinkScript_Sh
     /// <returns type="String"></returns>
     return document.getElementById('signed_request').getAttribute('value');
 }
-SportsLinkScript.Shared.Utility._wireAutoComplete = function SportsLinkScript_Shared_Utility$_wireAutoComplete(autoFill, hiddenField) {
+SportsLinkScript.Shared.Utility._wireLocationAutoComplete = function SportsLinkScript_Shared_Utility$_wireLocationAutoComplete(autoFill, hiddenField) {
     /// <param name="autoFill" type="jQueryUIObject">
     /// </param>
     /// <param name="hiddenField" type="jQueryUIObject">
@@ -735,7 +739,9 @@ SportsLinkScript.Shared.Utility._wireAutoComplete = function SportsLinkScript_Sh
                 var places = [];
                 for (var i = 0; i < placesData.results.length; ++i) {
                     var item = placesData.results[i];
-                    places.add({ value: item.id, label: item.name, icon: item.icon, description: item.vicinity });
+                    var placeJson = { id: item.id, name: item.name, latitude: item.geometry.location.lat, longitude: item.geometry.location.lng };
+                    alert(JSON.stringify(placeJson));
+                    places.add({ value: JSON.stringify(placeJson), label: item.name, icon: item.icon, description: item.vicinity });
                 }
                 SportsLinkScript.Shared.Utility._cache[term] = places;
                 response(places);
