@@ -39,8 +39,22 @@ namespace SportsLinkScript.Controls
 
         private void SaveDetails(jQueryEvent e)
         {
+            // Find the objects with the .edit class that are descendants of objects with .keyvaluerow class
+            // These are the editable key/value pairs
             jQueryObject edits = this.Obj.Find(".keyvaluerow .edit");
 
+            string ntrp = edits.Find(".ntrp").GetValue();
+            string preference = edits.Find(".preference").GetValue();
+
+            JsonObject parameters = new JsonObject("ntrp", ntrp, "preference", preference);
+
+            // Post the user data to the service
+            jQuery.Post("/services/PostTennisUserDetails" + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
+            {
+                Utility.ProcessResponse((Dictionary)data);
+            });
+ 
+            // BUGBUG: Disable the UI until posted back
             edits.Hide(EffectDuration.Fast);
             edits.Prev(".value").Show(EffectDuration.Fast);
 

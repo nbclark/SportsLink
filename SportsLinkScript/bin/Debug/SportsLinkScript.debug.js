@@ -120,6 +120,12 @@ SportsLinkScript.Controls.UserDetails.prototype = {
         /// <param name="e" type="jQueryEvent">
         /// </param>
         var edits = this.obj.find('.keyvaluerow .edit');
+        var ntrp = edits.find('.ntrp').val();
+        var preference = edits.find('.preference').val();
+        var parameters = { ntrp: ntrp, preference: preference };
+        $.post('/services/PostTennisUserDetails' + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
+            SportsLinkScript.Shared.Utility.processResponse(data);
+        });
         edits.hide('fast');
         edits.prev('.value').show('fast');
         this._editButton$1.show('fast');
@@ -132,15 +138,23 @@ SportsLinkScript.Controls.UserDetails.prototype = {
 // SportsLinkScript.Controls.PaginatedModule
 
 SportsLinkScript.Controls.PaginatedModule = function SportsLinkScript_Controls_PaginatedModule(element, serviceName) {
+    /// <summary>
+    /// Represents a module that displays content in pages
+    /// - contains the functionality to get the new content upon user navigating to a new page
+    /// - the paginated module depends upon a hidden input element being present with class "page" and a value equal to the page requested
+    /// </summary>
     /// <param name="element" type="Object" domElement="true">
     /// </param>
     /// <param name="serviceName" type="String">
     /// </param>
     /// <field name="page" type="Number" integer="true">
+    /// The current page that the user is being shown
     /// </field>
     /// <field name="serviceName" type="String">
+    /// Service to which to post the request
     /// </field>
     /// <field name="filter" type="String">
+    /// Filter for the service request
     /// </field>
     this.filter = String.Empty;
     SportsLinkScript.Controls.PaginatedModule.initializeBase(this, [ element ]);
@@ -158,18 +172,28 @@ SportsLinkScript.Controls.PaginatedModule.prototype = {
     serviceName: null,
     
     _pagePrev$1: function SportsLinkScript_Controls_PaginatedModule$_pagePrev$1(e) {
+        /// <summary>
+        /// Handles the button click event - simply posts a request to the service get the requested page
+        /// </summary>
         /// <param name="e" type="jQueryEvent">
         /// </param>
         this.postBack(this.page - 1);
     },
     
     _pageNext$1: function SportsLinkScript_Controls_PaginatedModule$_pageNext$1(e) {
+        /// <summary>
+        /// Handles the button click event - simply posts a request to the service get the requested page
+        /// </summary>
         /// <param name="e" type="jQueryEvent">
         /// </param>
         this.postBack(this.page + 1);
     },
     
     postBack: function SportsLinkScript_Controls_PaginatedModule$postBack(page) {
+        /// <summary>
+        /// Posts the service request with the requested page
+        /// Uses the filter with which it was initialized
+        /// </summary>
         /// <param name="page" type="Number" integer="true">
         /// </param>
         this.obj.attr('disabled', 'disabled').addClass('ui-state-disabled');
@@ -434,17 +458,30 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
 // SportsLinkScript.Controls.Module
 
 SportsLinkScript.Controls.Module = function SportsLinkScript_Controls_Module(element) {
+    /// <summary>
+    /// This class acts as a base class for loadable/unloadable HTML modules that wraps a HTML element
+    /// Associated with the module are the following
+    /// - the wrapper JQuery object
+    /// - the System.Html.Element object from Script# that represents the DOM element wrapped by the module
+    /// - currently unused loading element
+    /// - static list of elements in the system
+    /// </summary>
     /// <param name="element" type="Object" domElement="true">
     /// </param>
     /// <field name="obj" type="jQueryObject">
+    /// The wrapper JQuery object
     /// </field>
     /// <field name="_element" type="Object" domElement="true">
+    /// The script# Html.Element wrapper for the DOM element
     /// </field>
     /// <field name="loadingElement" type="Object" domElement="true">
+    /// Unused
     /// </field>
     /// <field name="needsData" type="Boolean">
+    /// Unused
     /// </field>
     /// <field name="instances" type="Array" static="true">
+    /// Overall list of modules in the current Javascript execution context.
     /// </field>
     SportsLinkScript.Controls.Module.instances.add(new SportsLinkScript.Controls.ModuleInstance(element, this));
     this._element = element;
@@ -460,6 +497,9 @@ SportsLinkScript.Controls.Module = function SportsLinkScript_Controls_Module(ele
     }
 }
 SportsLinkScript.Controls.Module.getModule = function SportsLinkScript_Controls_Module$getModule(element) {
+    /// <summary>
+    /// Gets the loaded module corresponding to the HTML element if it has been loaded
+    /// </summary>
     /// <param name="element" type="Object" domElement="true">
     /// </param>
     /// <returns type="SportsLinkScript.Controls.Module"></returns>
@@ -478,9 +518,15 @@ SportsLinkScript.Controls.Module.prototype = {
     needsData: false,
     
     loadData: function SportsLinkScript_Controls_Module$loadData() {
+        /// <summary>
+        /// Currently unused
+        /// </summary>
     },
     
     unload: function SportsLinkScript_Controls_Module$unload() {
+        /// <summary>
+        /// When a DOM element needs to be updated with new HTML, the existing module associated with the element is unloaded
+        /// </summary>
         for (var i = 0; i < SportsLinkScript.Controls.Module.instances.length; ++i) {
             var instance = SportsLinkScript.Controls.Module.instances[i];
             if (instance.element === this._element) {
@@ -720,6 +766,12 @@ SportsLinkScript.Shared.Utility.showPlayerDetails = function SportsLinkScript_Sh
     }
 }
 SportsLinkScript.Shared.Utility.processResponse = function SportsLinkScript_Shared_Utility$processResponse(obj) {
+    /// <summary>
+    /// Generic response handler for post completions for loaded modules
+    /// The index page consists of various modules which have an id of the form "module_ModuleName"
+    /// The key ModuleName must be in the dictionary object.
+    /// If we find a matching jQuery object/DOM element with that id, we update the module corresponding to that element.
+    /// </summary>
     /// <param name="obj" type="Object">
     /// </param>
     var keys = ss.getKeys(obj);
@@ -733,6 +785,9 @@ SportsLinkScript.Shared.Utility.processResponse = function SportsLinkScript_Shar
     }
 }
 SportsLinkScript.Shared.Utility._loadModule = function SportsLinkScript_Shared_Utility$_loadModule(element) {
+    /// <summary>
+    /// Creates / loads the JS object (module) corresonding to the HTML element that handles the behavior of the element
+    /// </summary>
     /// <param name="element" type="Object" domElement="true">
     /// </param>
     var dataType = element.getAttribute('data-type');
@@ -744,12 +799,18 @@ SportsLinkScript.Shared.Utility._loadModule = function SportsLinkScript_Shared_U
     }
 }
 SportsLinkScript.Shared.Utility._updateModule = function SportsLinkScript_Shared_Utility$_updateModule(content, value) {
+    /// <summary>
+    /// Updats the HTML element with new HTML
+    /// Also, loads the new JS object (module) to handle the behavior
+    /// </summary>
     /// <param name="content" type="jQueryObject">
+    /// The element to be updated
     /// </param>
     /// <param name="value" type="String">
+    /// The HTML with which to update it
     /// </param>
-    var dataTypes = content.children('*[data-type]');
     var module = null;
+    var dataTypes = content.children('*[data-type]');
     if (dataTypes.length > 0) {
         var element = dataTypes.first().get(0);
         module = SportsLinkScript.Controls.Module.getModule(element);
