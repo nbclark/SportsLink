@@ -76,11 +76,14 @@ namespace SportsLinkWeb.Controllers
 
             this.DB.SubmitChanges();
 
+            // Given the user details has changed, update all modules that are potentially impacted besides the UserDetails module itself
             return Json(
                 new
                 {
                     UserDetails = RenderPartialViewToString("UserDetails", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB)),
-                    QuickMatch =  RenderPartialViewToString("QuickMatch", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB))
+                    QuickMatch =  RenderPartialViewToString("QuickMatch", ModelUtils.GetModel<ModuleModel>(fbContext.UserId, this.DB)),
+                    Players = RenderPartialViewToString("Players", ModelUtils.GetModel<PlayersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                    PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                 }
             );
         }
