@@ -48,6 +48,10 @@ namespace SportsLinkScript.Pages
             );
         }
 
+        /// <summary>
+        /// Popup for the calendar page showing potential and accepted offers by date.
+        /// </summary>
+        /// <param name="ev"></param>
         public static void Calendar(jQueryEvent ev)
         {
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#calendarCard");
@@ -61,16 +65,14 @@ namespace SportsLinkScript.Pages
             }
             );
 
+            // BUGBUG: currently the sizes are hard-coded and too big - need to fix this.
             dialog.Dialog(
                 new JsonObject(
                     "width", jQuery.Window.GetWidth() / 1.5,
                     "height", jQuery.Window.GetHeight() - 60,
                     "modal", true,
+                    "closeOnEscape", true,
                     "title", "Calendar",
-                    "open", (Callback)delegate()
-                    {
-                        dialog.Find(".comments").Focus();
-                    },
                     "position", "top"
                 )
             );
