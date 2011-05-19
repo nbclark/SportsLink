@@ -30,6 +30,9 @@ namespace SportsLink
 		
     #region Extensibility Method Definitions
     partial void OnCreated();
+    partial void InsertAccept(Accept instance);
+    partial void UpdateAccept(Accept instance);
+    partial void DeleteAccept(Accept instance);
     partial void InsertCity(City instance);
     partial void UpdateCity(City instance);
     partial void DeleteCity(City instance);
@@ -72,6 +75,14 @@ namespace SportsLink
 				base(connection, mappingSource)
 		{
 			OnCreated();
+		}
+		
+		public System.Data.Linq.Table<Accept> Accept
+		{
+			get
+			{
+				return this.GetTable<Accept>();
+			}
 		}
 		
 		public System.Data.Linq.Table<City> City
@@ -127,6 +138,92 @@ namespace SportsLink
 		public System.Nullable<double> CoordinateDistanceMiles([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Latitude1", DbType="Float")] System.Nullable<double> latitude1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Longitude1", DbType="Float")] System.Nullable<double> longitude1, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Latitude2", DbType="Float")] System.Nullable<double> latitude2, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Longitude2", DbType="Float")] System.Nullable<double> longitude2)
 		{
 			return ((System.Nullable<double>)(this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), latitude1, longitude1, latitude2, longitude2).ReturnValue));
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Accept")]
+	public partial class Accept : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private System.Guid _OfferId;
+		
+		private long _FacebookId;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnOfferIdChanging(System.Guid value);
+    partial void OnOfferIdChanged();
+    partial void OnFacebookIdChanging(long value);
+    partial void OnFacebookIdChanged();
+    #endregion
+		
+		public Accept()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OfferId", DbType="UniqueIdentifier NOT NULL", IsPrimaryKey=true)]
+		public System.Guid OfferId
+		{
+			get
+			{
+				return this._OfferId;
+			}
+			set
+			{
+				if ((this._OfferId != value))
+				{
+					this.OnOfferIdChanging(value);
+					this.SendPropertyChanging();
+					this._OfferId = value;
+					this.SendPropertyChanged("OfferId");
+					this.OnOfferIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FacebookId", DbType="BigInt NOT NULL", IsPrimaryKey=true)]
+		public long FacebookId
+		{
+			get
+			{
+				return this._FacebookId;
+			}
+			set
+			{
+				if ((this._FacebookId != value))
+				{
+					this.OnFacebookIdChanging(value);
+					this.SendPropertyChanging();
+					this._FacebookId = value;
+					this.SendPropertyChanged("FacebookId");
+					this.OnFacebookIdChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 	
@@ -1343,6 +1440,8 @@ namespace SportsLink
 		
 		private int _TimeZoneOffset;
 		
+		private bool _EmailOffers;
+		
 		private EntityRef<City> _City;
 		
     #region Extensibility Method Definitions
@@ -1363,6 +1462,8 @@ namespace SportsLink
     partial void OnEmailChanged();
     partial void OnTimeZoneOffsetChanging(int value);
     partial void OnTimeZoneOffsetChanged();
+    partial void OnEmailOffersChanging(bool value);
+    partial void OnEmailOffersChanged();
     #endregion
 		
 		public User()
@@ -1511,6 +1612,26 @@ namespace SportsLink
 					this._TimeZoneOffset = value;
 					this.SendPropertyChanged("TimeZoneOffset");
 					this.OnTimeZoneOffsetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailOffers", DbType="Bit NOT NULL")]
+		public bool EmailOffers
+		{
+			get
+			{
+				return this._EmailOffers;
+			}
+			set
+			{
+				if ((this._EmailOffers != value))
+				{
+					this.OnEmailOffersChanging(value);
+					this.SendPropertyChanging();
+					this._EmailOffers = value;
+					this.SendPropertyChanged("EmailOffers");
+					this.OnEmailOffersChanged();
 				}
 			}
 		}

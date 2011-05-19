@@ -54,28 +54,21 @@ namespace SportsLinkScript.Controls
             string court = edits.Find(".placesAutoValue").GetValue();
             string playPreference = edits.Find(".preference").GetValue();
             string style = edits.Find(".style").GetValue();
+            string email = ((CheckBoxElement)edits.Find(".email").GetElement(0)).Checked ? "true" : "false";
 
             JsonObject parameters = new JsonObject
             (
                 "ntrp", ntrp,
                 "preference", playPreference,
                 "courtData", court,
-                "style", style
+                "style", style,
+                "emailOffers", email
             );
 
             // Post the user data to the service
             jQuery.Post("/services/PostTennisUserDetails" + "?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
-                // this.Obj.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 Utility.ProcessResponse((Dictionary)data);
-
-                /*
-                edits.Hide(EffectDuration.Fast);
-                edits.Prev(".value").Show(EffectDuration.Fast);
-
-                this.EditButton.Show(EffectDuration.Fast);
-                this.SaveButton.Hide(EffectDuration.Fast);
-                */
             });
         }
     }

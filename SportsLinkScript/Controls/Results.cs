@@ -53,7 +53,8 @@ namespace SportsLinkScript.Controls
                         {
                             PostResults(dialog, offerId);
                         }
-                    )
+                    ),
+                    "position", "top"
                 )
             );
         }

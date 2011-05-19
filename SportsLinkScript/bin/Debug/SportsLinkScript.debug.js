@@ -128,7 +128,8 @@ SportsLinkScript.Controls.UserDetails.prototype = {
         var court = edits.find('.placesAutoValue').val();
         var playPreference = edits.find('.preference').val();
         var style = edits.find('.style').val();
-        var parameters = { ntrp: ntrp, preference: playPreference, courtData: court, style: style };
+        var email = ((edits.find('.email').get(0)).checked) ? 'true' : 'false';
+        var parameters = { ntrp: ntrp, preference: playPreference, courtData: court, style: style, emailOffers: email };
         $.post('/services/PostTennisUserDetails' + '?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
             SportsLinkScript.Shared.Utility.processResponse(data);
         });
@@ -433,6 +434,7 @@ SportsLinkScript.Controls.PotentialOffers = function SportsLinkScript_Controls_P
     rejectMatch.button({ text: false, icons: { primary: 'ui-icon-closethick' } });
     acceptMatch.click(ss.Delegate.create(this, this._acceptMatch$2));
     rejectMatch.click(ss.Delegate.create(this, this._rejectMatch$2));
+    this.obj.find('.more').click(SportsLinkScript.Pages._index.calendar);
 }
 SportsLinkScript.Controls.PotentialOffers.prototype = {
     
@@ -446,6 +448,7 @@ SportsLinkScript.Controls.PotentialOffers.prototype = {
         $.post('/services/AcceptOffer?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify({ id: offerId }), function(data, textStatus, request) {
             parentRow.attr('disabled', '').removeClass('ui-state-disabled');
             button.parent().children('a').fadeOut('slow');
+            SportsLinkScript.Shared.Utility.processResponse(data);
         });
     },
     
@@ -549,7 +552,7 @@ SportsLinkScript.Controls.QuickMatch = function SportsLinkScript_Controls_QuickM
     /// </param>
     SportsLinkScript.Controls.QuickMatch.initializeBase(this, [ element ]);
     this.obj.find('.findMatch').click(ss.Delegate.create(this, this._createMatch$1));
-    (this.obj.find('.datepicker')).datepicker();
+    (this.obj.find('.datepicker')).datepicker({ minDate: 0 });
     (this.obj.find('.findMatch')).button();
     (this.obj.find('select')).selectmenu();
     SportsLinkScript.Shared.Utility._wireLocationAutoComplete(this.obj.find('.placesAutoFill'), this.obj.find('.placesAutoValue'));
@@ -608,7 +611,7 @@ Type.registerNamespace('SportsLinkScript.Pages');
 
 SportsLinkScript.Pages._index = function SportsLinkScript_Pages__index() {
 }
-SportsLinkScript.Pages._index._calendar = function SportsLinkScript_Pages__index$_calendar(ev) {
+SportsLinkScript.Pages._index.calendar = function SportsLinkScript_Pages__index$calendar(ev) {
     /// <param name="ev" type="jQueryEvent">
     /// </param>
     var dialog = $('#calendarCard');
@@ -617,7 +620,7 @@ SportsLinkScript.Pages._index._calendar = function SportsLinkScript_Pages__index
     $.post('/services/Calendar?signed_request=' + SportsLinkScript.Shared.Utility._getSignedRequest(), JSON.stringify(parameters), function(data, textStatus, request) {
         SportsLinkScript.Shared.Utility.processResponse(data);
     });
-    dialog.dialog({ width: $(window).width() / 1.5, height: $(window).height() - 20, modal: true, title: 'Calendar', open: function() {
+    dialog.dialog({ width: $(window).width() / 1.5, height: $(window).height() - 60, modal: true, title: 'Calendar', open: function() {
         dialog.find('.comments').focus();
     } });
 }
@@ -862,7 +865,7 @@ SportsLinkScript.Controls.Module.instances = [];
             SportsLinkScript.Shared.Utility._loadModule(element);
             return true;
         });
-        $('#header .calendar').click(SportsLinkScript.Pages._index._calendar);
+        $('#header .calendar').click(SportsLinkScript.Pages._index.calendar);
     });
 })();
 SportsLinkScript.Pages.Login.accessToken = null;

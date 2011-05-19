@@ -26,7 +26,7 @@ namespace SportsLinkWeb.Models
             this.Offers = ModelUtils.GetOffers(db, tennisUser)
                 .Where(o => o.RequestUser.FacebookId != tennisUser.FacebookId)
                 .Where(o => o.SpecificOpponent == null || o.SpecificOpponent.FacebookId == tennisUser.FacebookId)
-                .Where(o => o.MatchDateUtc >= this.StartDate)
+                .Where(o => o.MatchDateUtc >= this.StartDate && o.MatchDateUtc >= DateTime.UtcNow)
                 .Where(o => o.MatchDateUtc < this.EndDate).ToList();
         }
 

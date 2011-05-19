@@ -52,6 +52,7 @@ namespace SportsLinkWeb.Controllers
         {
             var app = new FacebookWebClient();
             var fbContext = FacebookWebContext.Current;
+            ViewData["FirstRun"] = false;
 
             TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
 
@@ -102,6 +103,7 @@ namespace SportsLinkWeb.Controllers
                 user.Gender = regInfo.GetValue<string>("gender") == "male";
                 user.City = city;
                 user.TimeZoneOffset = timeZoneOffset;
+                user.EmailOffers = true;
 
                 TennisUser tennisUser = new TennisUser();
                 tennisUser.FacebookId = fbContext.UserId;
@@ -114,7 +116,9 @@ namespace SportsLinkWeb.Controllers
 
                 this.DB.SubmitChanges();
 
-                return new RedirectResult(Facebook.FacebookApplication.Current.ReturnUrlPath);
+                //return new RedirectResult(Facebook.FacebookApplication.Current.ReturnUrlPath);
+                existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+                ViewData["FirstRun"] = true;
             }
 
             if (null == existingUser)

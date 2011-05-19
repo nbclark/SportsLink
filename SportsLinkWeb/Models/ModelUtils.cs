@@ -48,7 +48,8 @@ namespace SportsLinkWeb.Models
                              AcceptComments = o.AcceptComments,
                              RequestUser = u1,
                              AcceptUser = acceptedUser,
-                             SpecificOpponent = specificUser
+                             SpecificOpponent = specificUser,
+                             UserPending = db.Accept.Any(a => a.FacebookId == user.FacebookId && a.OfferId == o.OfferId)
                          };
         }
 
@@ -70,6 +71,7 @@ namespace SportsLinkWeb.Models
                        City = u.City,
                        Court = tu.Court,
                        TimeZoneOffset = u.TimeZoneOffset,
+                       EmailOffers = u.EmailOffers,
                        Age = (DateTime.Now.Year - u.Birthday.Year - ((DateTime.Now.DayOfYear < u.Birthday.Year) ? 1 : 0))
                    };
         }

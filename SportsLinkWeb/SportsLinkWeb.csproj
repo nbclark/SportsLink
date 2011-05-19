@@ -125,6 +125,7 @@
     <Content Include="Content\redmond\jquery-ui-1.8.13.custom.css" />
     <Content Include="Content\redmond\jquery.ui.multiselect.css" />
     <Content Include="Content\redmond\jquery.ui.selectmenu.css" />
+    <Content Include="Content\ui-anim_basic_16x16.gif" />
     <Content Include="Content\ui-lightness\jquery.ui.multiselect.css" />
     <Content Include="Content\UserMessage.htm" />
     <Content Include="Content\MatchAccepted.htm" />
@@ -162,6 +163,7 @@
     <Content Include="Scripts\fb.js" />
     <Content Include="Scripts\jquery-1.5.1.min.js" />
     <Content Include="Scripts\jquery-ui-1.8.12.custom.min.js" />
+    <Content Include="Scripts\jquery-ui-1.8.13.custom.min.js" />
     <Content Include="Scripts\jquery.jsonp-2.1.4.min.js" />
     <Content Include="Scripts\jquery.multiselect.min.js" />
     <Content Include="Scripts\jquery.simpletip-1.3.1.pack.js" />

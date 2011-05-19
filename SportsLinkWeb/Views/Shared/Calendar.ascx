@@ -7,12 +7,14 @@
 <div class="module" data-type="Calendar">
 <table class="calendar" cellpadding="0" cellspacing="0">
     <% for (int i = 0; i < 7; ++i) { %>
+        <% var dayOffers = model.GetOffers(i); %>
+
+        <% if (model.UserStartDate.AddDays(i) >= DateTime.UtcNow.Date.AddHours(model.TennisUser.TimeZoneOffset)) { %>
         <tr>
             <th colspan="5">
                 <%= model.UserStartDate.AddDays(i).ToShortDateString() %>
             </th>
         </tr>
-        <% var dayOffers = model.GetOffers(i); %>
 
         <% if (dayOffers.Count() == 0) { %>
         <tr>
@@ -22,6 +24,7 @@
 
         <% foreach (OfferModel o in dayOffers) { %>
         <% Html.RenderPartial("Offer", o); %>
+        <% } %>
         <% } %>
     <% } %>
 </table>

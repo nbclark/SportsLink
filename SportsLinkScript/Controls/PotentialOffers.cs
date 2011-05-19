@@ -7,6 +7,8 @@ using System.Net;
 using jQueryApi;
 using SportsLinkScript.Shared;
 using System.Serialization;
+using System.Collections;
+using SportsLinkScript.Pages;
 
 namespace SportsLinkScript.Controls
 {
@@ -23,6 +25,8 @@ namespace SportsLinkScript.Controls
 
             acceptMatch.Click(AcceptMatch);
             rejectMatch.Click(RejectMatch);
+
+            this.Obj.Find(".more").Click(Index.Calendar);
         }
 
         private void AcceptMatch(jQueryEvent e)
@@ -37,6 +41,8 @@ namespace SportsLinkScript.Controls
             {
                 parentRow.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 button.Parent().Children("a").FadeOut(EffectDuration.Slow);
+
+                Utility.ProcessResponse((Dictionary)data);
             });
         }
 

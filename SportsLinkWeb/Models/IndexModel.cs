@@ -87,11 +87,11 @@ namespace SportsLinkWeb.Models
 
             if (dayDiff < 1)
             {
-                return string.Format("today,{0:h:mm tt}", matchDate);
+                return string.Format("today @ {0:h:mm tt}", matchDate);
             }
             else
             {
-                return string.Format("{0:dddd,h:mm tt}", matchDate);
+                return string.Format("{0:dddd, MMMM d @ h:mm tt}", matchDate);
             }
         }
     }

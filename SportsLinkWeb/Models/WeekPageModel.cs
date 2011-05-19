@@ -35,7 +35,7 @@ namespace SportsLinkWeb.Models
         {
             get
             {
-                return true;
+                return this.Page > 0;
             }
         }
     }

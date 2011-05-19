@@ -21,18 +21,20 @@
         </div>
     </div>
 
+    <div id="welcomeCard" style="display:none">
+        <% Html.RenderPartial("Overview", indexModel); %>
+    </div>
+
     <table id="content">
     <tr>
     <td class="left">
-    
-    <% Html.RenderPartial("Overview", indexModel); %>
-    
-    <div id="module_PotentialOffers">
-    <% Html.RenderPartial("PotentialOffers", indexModel.GetModel<PotentialOffersModel>()); %>
-    </div>
 
     <div id="module_Results">
     <% Html.RenderPartial("Results", indexModel.GetModel<ResultsModel>()); %>
+    </div>
+    
+    <div id="module_PotentialOffers">
+    <% Html.RenderPartial("PotentialOffers", indexModel.GetModel<PotentialOffersModel>()); %>
     </div>
 
     <div id="module_Players">
@@ -60,4 +62,10 @@
     </td>
     </tr>
     </table>
+
+    <% if ((bool)ViewData["FirstRun"]) { %>
+        <script>
+            SportsLinkScript.Pages.Index.firstRun();
+        </script>
+    <% } %>
 </asp:Content>

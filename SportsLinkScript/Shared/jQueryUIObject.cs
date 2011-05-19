@@ -16,6 +16,7 @@ namespace SportsLinkScript.Shared
     [Imported]
     public class jQueryUIObject : jQueryObject
     {
+        public jQueryUIObject Offset(params object[] nameValuePairs) { return null; }
         public jQueryUIObject Dialog(params object[] nameValuePairs) { return null; }
         public jQueryUIObject Button(params object[] nameValuePairs) { return null; }
 

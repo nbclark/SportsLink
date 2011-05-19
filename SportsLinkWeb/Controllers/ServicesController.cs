@@ -59,13 +59,16 @@ namespace SportsLinkWeb.Controllers
         /// <param name="ntrp"></param>
         /// <param name="preference"></param>
         /// <returns></returns>
-        public ActionResult PostTennisUserDetails(string ntrp, string preference, string courtData, string style)
+        public ActionResult PostTennisUserDetails(string ntrp, string preference, string courtData, string style, bool emailOffers)
         {
             var fbContext = FacebookWebContext.Current;
 
             TennisUser tennisUser = this.DB.TennisUser.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+            User user = this.DB.User.Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+
             Court court = ProcessCourtData(courtData);
 
+            user.EmailOffers = emailOffers;
             tennisUser.Rating = Convert.ToDouble(ntrp);
             tennisUser.SinglesDoubles = preference;
             tennisUser.Court = court;
@@ -139,7 +142,7 @@ namespace SportsLinkWeb.Controllers
         /// <param name="id"></param>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public ActionResult AcceptOffer(string id, long uid)
+        public ActionResult AcceptOffer(string id, long? uid)
         {
             Guid offerGuid;
 
@@ -151,7 +154,7 @@ namespace SportsLinkWeb.Controllers
                 {
                     var fbContext = FacebookWebContext.Current;
 
-                    if (fbContext.UserId != uid)
+                    if (null != uid && fbContext.UserId != uid.Value)
                     {
                         ViewData.Model = "Wrong User Account...";
                         return View("Redirect");
@@ -177,12 +180,21 @@ namespace SportsLinkWeb.Controllers
                     else
                     {
                         // Accepts must be confirmed by original poster
+                        if (!DB.Accept.Any(a => a.FacebookId == fbContext.UserId && a.OfferId == offer.OfferId))
+                        {
+                            Accept accept = new Accept();
+                            accept.FacebookId = fbContext.UserId;
+                            accept.OfferId = offer.OfferId;
 
-                        string subject = string.Format("TennisLink: <fb:name uid='{0}' capitalize='true'></fb:name> Interested in Match", tennisUser.FacebookId);
-                        string template = Server.MapPath("/content/matchacceptoffer.htm");
+                            this.DB.Accept.InsertOnSubmit(accept);
+                            this.DB.SubmitChanges();
 
-                        SendMessage(new long[] { offer.FacebookId }, subject, template, offer, tennisUser);
-                        message = "Match requestor notified.  You will be contacted if he/she accepts...";
+                            string subject = string.Format("TennisLink: <fb:name uid='{0}' capitalize='true'></fb:name> Interested in Match", tennisUser.FacebookId);
+                            string template = Server.MapPath("/content/matchacceptoffer.htm");
+
+                            SendMessage(new long[] { offer.FacebookId }, subject, template, offer, tennisUser);
+                            message = "Match requestor notified.  You will be contacted if he/she accepts...";
+                        }
                     }
 
                     if (!Request.IsAjaxRequest())
@@ -259,7 +271,7 @@ namespace SportsLinkWeb.Controllers
             tokens.Add("Rating2", IndexModel.FormatRating(tennisUser2.Rating));
             tokens.Add("Name2", tennisUser2.Name.ToString());
 
-            tokens.Add("Date", IndexModel.FormatDate(offer.MatchDateUtc, tennisUser1.TimeZoneOffset).Replace(",", " @ "));
+            tokens.Add("Date", IndexModel.FormatLongDate(offer.MatchDateUtc, tennisUser1.TimeZoneOffset));
             tokens.Add("Location", location);
             tokens.Add("Comments", offer.Message);
             tokens.Add("OfferId", offer.OfferId.ToString());
@@ -433,7 +445,8 @@ namespace SportsLinkWeb.Controllers
                         this.DB.CoordinateDistanceMiles(u.City.Latitude, u.City.Longitude, tennisUser.City.Latitude, tennisUser.City.Longitude) < 15 &&
                         Math.Abs(tennisUser.Rating - u.Rating) <= 0.25 &&
                         u.Gender == tennisUser.Gender &&
-                        u.FacebookId != tennisUser.FacebookId
+                        u.FacebookId != tennisUser.FacebookId &&
+                        u.EmailOffers
                     );
 
                     foreach (var tu in matchUsers)
@@ -491,7 +504,7 @@ namespace SportsLinkWeb.Controllers
             Dictionary<string, string> tokens = new Dictionary<string, string>();
             tokens.Add("FacebookId", tennisUser.FacebookId.ToString());
             tokens.Add("Rating", IndexModel.FormatRating(tennisUser.Rating));
-            tokens.Add("Date", IndexModel.FormatDate(offer.MatchDateUtc, tennisUser.TimeZoneOffset).Replace(",", " @ "));
+            tokens.Add("Date", IndexModel.FormatLongDate(offer.MatchDateUtc, tennisUser.TimeZoneOffset).Replace(",", " @ "));
             tokens.Add("Name", tennisUser.Name.ToString());
             tokens.Add("Location", location);
             tokens.Add("Comments", offer.Message);
@@ -509,6 +522,8 @@ namespace SportsLinkWeb.Controllers
             FacebookWebClient postApp = new FacebookWebClient(accessToken);
 
             string body = System.IO.File.ReadAllText(templatePath);
+
+            tokens.Add("CanvasUrl", FacebookApplication.Current.ReturnUrlPath);
 
             foreach (string key in tokens.Keys)
             {

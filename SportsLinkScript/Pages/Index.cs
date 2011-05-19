@@ -12,7 +12,7 @@ using SportsLinkScript.Shared.Google;
 
 namespace SportsLinkScript.Pages
 {
-    internal static class Index
+    public static class Index
     {
         static Index()
         {
@@ -33,7 +33,22 @@ namespace SportsLinkScript.Pages
             });
         }
 
-        static void Calendar(jQueryEvent ev)
+        public static void FirstRun()
+        {
+            jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#welcomeCard");
+
+            dialog.Dialog(
+                new JsonObject(
+                    "width", jQuery.Window.GetWidth() / 1.5,
+                    "height", jQuery.Window.GetHeight() - 120,
+                    "modal", true,
+                    "title", "Welcome to TennisLink",
+                    "position", "top"
+                )
+            );
+        }
+
+        public static void Calendar(jQueryEvent ev)
         {
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#calendarCard");
             dialog.Children().First().Html("Loading...");
@@ -49,13 +64,14 @@ namespace SportsLinkScript.Pages
             dialog.Dialog(
                 new JsonObject(
                     "width", jQuery.Window.GetWidth() / 1.5,
-                    "height", jQuery.Window.GetHeight() - 20,
+                    "height", jQuery.Window.GetHeight() - 60,
                     "modal", true,
                     "title", "Calendar",
                     "open", (Callback)delegate()
                     {
                         dialog.Find(".comments").Focus();
-                    }
+                    },
+                    "position", "top"
                 )
             );
         }

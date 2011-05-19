@@ -17,6 +17,7 @@ namespace SportsLinkWeb.Models
         public DateTime PostDateUtc;
         public DateTime MatchDateUtc;
         public bool Completed;
+        public bool UserPending;
         public string Score;
         public string Message;
         public string RequestComments;
@@ -61,6 +62,7 @@ namespace SportsLinkWeb.Models
         public City City;
         public int TimeZoneOffset;
         public int Age;
+        public bool EmailOffers;
     }
 
     public class LocationModel

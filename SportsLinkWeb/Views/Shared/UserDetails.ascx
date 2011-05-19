@@ -63,9 +63,13 @@
                         <div class="edit"><input type="text" class="style" value='<%=userModel.TennisUser.PlayStyle%>' /></div>
                     </td>
                 </tr>
+                <tr class="keyvaluerow">
+                    <td class="name">Email</td>
+                    <td>
+                        <div class="value"><%=userModel.TennisUser.EmailOffers ? "yes" : "no thanks"  %></div>
+                        <div class="edit"><input id="emailoffers" type="checkbox" class="email" style="width: auto" <%=userModel.TennisUser.EmailOffers ? "checked" : ""%> /><label for="emailoffers">Receive Offer Emails?</label></div>
+                    </td>
+                </tr>
             </table>
-            <div class="form" style="display:none">
-            edit me
-            </div>
         </div>
     </div>

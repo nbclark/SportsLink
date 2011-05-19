@@ -37,7 +37,7 @@ body
 
 .page
 {
-    width:741px;
+    width:746px;
     left: 0;
     position: relative;
 }
@@ -111,7 +111,7 @@ body
 {
     font-weight: bold;
     white-space:nowrap;
-    width: 55px;
+    width: 54px;
 }
 
 .keyvaluerow .value
@@ -129,7 +129,7 @@ body
 
 .keyvaluerow .edit select
 {
-    width: 100%;
+    width: 134px;
 }
 
 .keyvaluerow .edit input
@@ -187,7 +187,7 @@ body
 
 .quickmatch .time
 {
-    width:75px;
+    width:72px;
 }
 
 .quickmatch .ampm
@@ -266,6 +266,14 @@ body
 {
     vertical-align: top;
     text-align: right;
+}
+
+.offer .accept .pending
+{
+    width: 86px;
+    font-style: italic;
+    height: 50px;
+    line-height: 18px;
 }
 
 .offer .acceptMatch, #players .requestMatch

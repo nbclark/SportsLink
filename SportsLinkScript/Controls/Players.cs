@@ -48,7 +48,8 @@ namespace SportsLinkScript.Controls
                     "open", (Callback)delegate()
                     {
                         dialog.Find(".comments").Focus();
-                    }
+                    },
+                    "position", "top"
                 )
             );
         }
@@ -81,7 +82,8 @@ namespace SportsLinkScript.Controls
                     {
                         dialog.Find(".comments").Focus();
                         datePicker.DatePicker("enable");
-                    }
+                    },
+                    "position", "top"
                 )
             );
         }

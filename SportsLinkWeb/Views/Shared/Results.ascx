@@ -7,12 +7,14 @@
     
     <div class="module" id="results" data-type="Results" style='display:<%=(results.UserResults.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
-            <h3 class="ui-widget-header ui-corner-all">Recent Results</h3>
+            <h3 class="ui-widget-header ui-corner-all">Recent & Upcoming Results</h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">
                 <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>
                     <% var isRequestor = (o.RequestUser.FacebookId == results.TennisUser.FacebookId); %>
                     <% var opponent = (!isRequestor) ? o.RequestUser : o.AcceptUser; %>
+                    <% var inFuture = o.MatchDateUtc > DateTime.UtcNow; %>
+
                     <tr class="result">
                         <td class="image">
                             <img src="http://graph.facebook.com/<%=opponent.FacebookId %>/picture" />
@@ -28,7 +30,11 @@
                             <input type="hidden" class="score" value="<%=o.Score %>" />
                             <input type="hidden" class="requestName" value="<%=o.AcceptUser.Name %>" />
                             <input type="hidden" class="acceptName" value="<%=o.RequestUser.Name %>" />
-                            <% if (string.IsNullOrEmpty(o.Score)) { %>
+
+                            <% if (inFuture) { %>
+                                Cancel
+                            <% } %>
+                            <% else if (string.IsNullOrEmpty(o.Score)) { %>
                                 <a href="#" class="inputScore">Input Score</a>
                             <% } %>
                             <% else { %>
@@ -36,7 +42,13 @@
                             <% } %>
                         </div>
                         <td class="time">
-                            <%=IndexModel.FormatDate(o.MatchDateUtc, results.TennisUser.TimeZoneOffset).Replace(",", "<br />")%>
+                            <% var time = IndexModel.FormatDate(o.MatchDateUtc, results.TennisUser.TimeZoneOffset).Replace(",", "<br />"); %>
+                            <% if (inFuture) { %>
+                                <b><%=time %></b>
+                            <% } %>
+                            <% else { %>
+                                <%=time %>
+                            <% } %>
                         </div>
                     </tr>
                 <% } %>

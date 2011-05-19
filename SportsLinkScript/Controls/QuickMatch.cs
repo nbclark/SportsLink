@@ -17,7 +17,7 @@ namespace SportsLinkScript.Controls
             : base(element)
         {
             this.Obj.Find(".findMatch").Click(CreateMatch);
-            ((jQueryUIObject)this.Obj.Find(".datepicker")).DatePicker();
+            ((jQueryUIObject)this.Obj.Find(".datepicker")).DatePicker(new JsonObject("minDate", 0));
             ((jQueryUIObject)this.Obj.Find(".findMatch")).Button();
             ((jQueryUIObject)this.Obj.Find("select")).SelectMenu();
 

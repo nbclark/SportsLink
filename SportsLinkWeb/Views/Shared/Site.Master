@@ -41,7 +41,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.CanvasUrl) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
+            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.ReturnUrlPath) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
             </div>
         </div>
     </div>
