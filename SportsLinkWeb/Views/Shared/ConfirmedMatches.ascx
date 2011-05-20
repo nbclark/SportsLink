@@ -25,16 +25,22 @@
                             <br />
                             <i><%=(isRequestor) ? o.RequestComments : o.AcceptComments %></i>
                         </td>
-                        <td class="cancelOrScore">
-                            <input type="hidden" class="offerId" value="<%=o.OfferId %>" />
-                            <input type="hidden" class="score" value="<%=o.Score %>" />
-                            <% if (inFuture) { %>
+
+                        <% if (inFuture)
+                           { %>
+                            <td class="cancel">
+                                <input type="hidden" class="offerId" value="<%=o.OfferId %>" />
                                 <a href="#" class="cancelMatch">Cancel</a>
-                            <% } %>
-                            <% else if (string.IsNullOrEmpty(o.Score)) { %>
+                            </td>
+                        <% }
+                           else
+                           { %>
+                            <td class="score">
+                                <input type="hidden" class="offerId" value="<%=o.OfferId %>" />
+                                <input type="hidden" class="score" value="<%=o.Score %>" />
                                 <a href="#" class="inputScore">Input Score</a>
-                            <% } %>
-                        </div>
+                            </td>
+                        <% } %>
                         <td class="time">
                             <% var time = IndexModel.FormatDate(o.MatchDateUtc, confirmedMatches.TennisUser.TimeZoneOffset).Replace(",", "<br />"); %>
                             <b><%=time %></b>
@@ -45,4 +51,7 @@
                 <% Html.RenderPartial("Paginator", pageModel); %>
             </div>
         </div>
+    </div>
+
+    <div id="canceldialog" title="Cancel Match" style="display:none;">
     </div>
