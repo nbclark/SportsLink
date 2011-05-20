@@ -310,7 +310,7 @@ namespace SportsLinkWeb.Controllers
                         string subject = "TennisLink: Match Cancelled";
                         string template = Server.MapPath("/content/matchcancelled.htm");
 
-                        SendMessage(new long[] { offer.AcceptedById.Value }, subject, template, offer, tennisUser);
+                        SendMessage(new long[] { offer.FacebookId, offer.AcceptedById.Value }, subject, template, offer, tennisUser);
                     }
 
                     this.DB.Offer.DeleteOnSubmit(offer);
