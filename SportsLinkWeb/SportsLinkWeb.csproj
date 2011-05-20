@@ -84,6 +84,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\CalendarModel.cs" />
+    <Compile Include="Models\ConfirmedMatchesModel.cs" />
     <Compile Include="Models\CourtJson.cs" />
     <Compile Include="Models\PlayersDataGridModel.cs" />
     <Compile Include="Models\DataGridModel.cs" />
@@ -174,6 +175,7 @@
     <Content Include="Scripts\SportsLinkScript.js" />
     <Content Include="Scripts\ss.shared.js" />
     <Content Include="Views\Shared\Calendar.ascx" />
+    <Content Include="Views\Shared\ConfirmedMatches.ascx" />
     <Content Include="Views\Shared\Redirect.aspx" />
     <Content Include="Views\Shared\PlayerGrid.ascx" />
     <Content Include="Views\Shared\DataGrid.ascx" />

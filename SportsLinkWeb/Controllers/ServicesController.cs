@@ -129,6 +129,7 @@ namespace SportsLinkWeb.Controllers
                     (
                         new
                         {
+                            ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB)),
                             Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB)),
                             UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                         }

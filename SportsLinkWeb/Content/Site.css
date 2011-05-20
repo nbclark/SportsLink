@@ -170,6 +170,12 @@ body
     text-align:right;
 }
 
+.confirmedMatch .cancelOrScore
+{
+    width:30%;
+    text-align:center;
+}
+
 .ui-selectmenu
 {
     height: 21px !important;

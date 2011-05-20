@@ -16,7 +16,7 @@
         <td><div class="age"><%=IndexModel.FormatAge(user.Birthday)%></div><div class="years">years</td>
         <td class="accept" align="right">
             <% if (o.UserPending) { %>
-                <div class="pending">pending<br /><%=IndexModel.FormatDate(o.MatchDateUtc, user.TimeZoneOffset).Replace(",", " ")%></div>
+                <div class="pending">Pending Confirmation<br /><%=IndexModel.FormatDate(o.MatchDateUtc, user.TimeZoneOffset).Replace(",", " ")%></div>
             <% } %>
             <% else { %>
             <input type="hidden" name="offerid" value="<%=o.OfferId %>" />

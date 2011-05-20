@@ -7,7 +7,7 @@
     
     <div class="module" id="results" data-type="Results" style='display:<%=(results.UserResults.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
-            <h3 class="ui-widget-header ui-corner-all">Recent & Upcoming Results</h3>
+            <h3 class="ui-widget-header ui-corner-all">Previous Results</h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">
                 <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>

@@ -29,6 +29,10 @@
     <tr>
     <td class="left">
 
+    <div id="module_ConfirmedMatches">
+    <% Html.RenderPartial("ConfirmedMatches", indexModel.GetModel<ConfirmedMatchesModel>()); %>
+    </div>
+
     <div id="module_Results">
     <% Html.RenderPartial("Results", indexModel.GetModel<ResultsModel>()); %>
     </div>

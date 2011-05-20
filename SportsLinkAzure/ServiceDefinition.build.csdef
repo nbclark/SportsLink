@@ -9,7 +9,7 @@
   **********************************************************************************************
 -->
 <ServiceDefinition name="SportsLinkAzure" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
-  <WebRole name="SportsLinkWeb">
+  <WebRole name="SportsLinkWeb" vmsize="ExtraSmall">
     <Sites>
       <Site name="Web">
         <Bindings>
