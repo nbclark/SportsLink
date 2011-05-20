@@ -287,6 +287,38 @@ namespace SportsLinkWeb.Controllers
         }
 
         /// <summary>
+        /// This method will send a cancellation mail to both players in a confirmed match
+        /// </summary>
+        /// <param name="offer"></param>
+        private void SendMatchCancellation(Offer offer)
+        {
+            var fbContext = FacebookWebContext.Current;
+            var tennisUsers = ModelUtils.GetTennisUsers(this.DB);
+            TennisUserModel tennisUser1 = tennisUsers.Where(u => u.FacebookId == offer.FacebookId).FirstOrDefault();
+            TennisUserModel tennisUser2 = tennisUsers.Where(u => u.FacebookId == offer.AcceptedById).FirstOrDefault();
+
+            string location = OfferModel.GetLocationLink(LocationModel.Create(offer));
+
+            Dictionary<string, string> tokens = new Dictionary<string, string>();
+            tokens.Add("FacebookId1", tennisUser1.FacebookId.ToString());
+            tokens.Add("Rating1", IndexModel.FormatRating(tennisUser1.Rating));
+            tokens.Add("Name1", tennisUser1.Name.ToString());
+            tokens.Add("FacebookId2", tennisUser2.FacebookId.ToString());
+            tokens.Add("Rating2", IndexModel.FormatRating(tennisUser2.Rating));
+            tokens.Add("Name2", tennisUser2.Name.ToString());
+
+            tokens.Add("Date", IndexModel.FormatLongDate(offer.MatchDateUtc, tennisUser1.TimeZoneOffset));
+            tokens.Add("Location", location);
+            tokens.Add("Comments", offer.Message);
+            tokens.Add("OfferId", offer.OfferId.ToString());
+
+            string subject = string.Format("TennisLink: Match Cancelled");
+            string template = Server.MapPath("/content/matchcancelled.htm");
+
+            SendMessage(new long[] { tennisUser1.FacebookId, tennisUser2.FacebookId }, subject, template, tokens);
+        }
+        
+        /// <summary>
         /// This method is called from the client to cancel a match request. If the match has been accepted
         /// we need to send mail to both parties.
         /// </summary>
@@ -304,13 +336,12 @@ namespace SportsLinkWeb.Controllers
                 {
                     if (null != offer.AcceptedById)
                     {
-                        var fbContext = FacebookWebContext.Current;
-                        TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
-
-                        string subject = "TennisLink: Match Cancelled";
-                        string template = Server.MapPath("/content/matchcancelled.htm");
-
-                        SendMessage(new long[] { offer.FacebookId, offer.AcceptedById.Value }, subject, template, offer, tennisUser);
+                        //var fbContext = FacebookWebContext.Current;
+                        //TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+                        //string subject = "TennisLink: Match Cancelled";
+                        //string template = Server.MapPath("/content/matchcancelled.htm");
+                        //SendMessage(new long[] { offer.FacebookId, offer.AcceptedById.Value }, subject, template, offer, tennisUser);
+                        SendMatchCancellation(offer);
                     }
 
                     this.DB.Offer.DeleteOnSubmit(offer);
