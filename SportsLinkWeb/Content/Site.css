@@ -382,6 +382,31 @@ body
     text-align:right;
 }
 
+#userChallenges table
+{
+    width:100%;
+}
+
+#userChallenges table td
+{
+    vertical-align:top;
+}
+
+#userChallenges table .time
+{
+    white-space: nowrap;
+    padding-right: 5px;
+    font-size: 16px;
+}
+
+#userChallenges .confirmOffers
+{
+    width: 86px;
+    font-style: italic;
+    height: 50px;
+    line-height: 18px;
+}
+
 #players td, .offer td
 {
     vertical-align: top;

@@ -16,7 +16,7 @@
         </div>
     </div>
 
-    <div id="playerGridCard" style="display:none">
+    <div id="playerGridCard" data-offerId="" style="display:none">
         <div id="module_PlayerGrid">
         </div>
     </div>
@@ -33,16 +33,20 @@
     <% Html.RenderPartial("ConfirmedMatches", indexModel.GetModel<ConfirmedMatchesModel>()); %>
     </div>
 
-    <div id="module_Results">
-    <% Html.RenderPartial("Results", indexModel.GetModel<ResultsModel>()); %>
+    <div id="module_UserChallenges">
+    <% Html.RenderPartial("UserChallenges", indexModel.GetModel<UserOffersModel>()); %>
     </div>
-    
+
     <div id="module_PotentialOffers">
     <% Html.RenderPartial("PotentialOffers", indexModel.GetModel<PotentialOffersModel>()); %>
     </div>
 
     <div id="module_Players">
     <% Html.RenderPartial("Players", indexModel.GetModel<PlayersModel>()); %>
+    </div>
+    
+    <div id="module_Results">
+    <% Html.RenderPartial("Results", indexModel.GetModel<ResultsModel>()); %>
     </div>
     
 
@@ -53,10 +57,10 @@
     <div id="module_QuickMatch">
     <% Html.RenderPartial("QuickMatch", indexModel); %>
     </div>
-    <div id="module_UserOffers">
+<%--    <div id="module_UserOffers">
     <% Html.RenderPartial("UserOffers", indexModel.GetModel<UserOffersModel>()); %>
     </div>
-    <div id="module_UserDetails">
+--%>    <div id="module_UserDetails">
     <% Html.RenderPartial("UserDetails", indexModel); %>
     </div>
 

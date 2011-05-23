@@ -18,13 +18,11 @@ namespace SportsLinkWeb.Models
         public ConfirmedMatchesModel(TennisUserModel tennisUser, SportsLinkDB db)
             : base(tennisUser)
         {
-            // Select confirmed matchs which do not have a score yet 
-            // BUGBUG: eliminate matches that are too old and no score have been reported into 
-            // BUGBUG: need to make sure match is confirmed
-            // AcceptUser != null may not be sufficient
+            // Select confirmed matchs which do not have a score yet where the current user is either a requestor or an acceptor
+            // BUGBUG: we might want to eliminate confirmed matches that way older than current time (user might have forgotten to enter a score)
             this.ConfirmedMatches = ModelUtils.GetOffers(db, tennisUser)
-                                              .Where(o => o.AcceptUser != null)
-                                              .Where(o => (o.AcceptUser.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId))
+                                              .Where(o => o.ConfirmedUser != null)
+                                              .Where(o => (o.ConfirmedUser.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId))
                                               .Where(o => (o.Score == null || o.Score == ""))
                                               .OrderByDescending(o => o.MatchDateUtc);
         }

@@ -48,10 +48,12 @@
     <Compile Include="Controls\Calendar.cs" />
     <Compile Include="Controls\ConfirmedMatches.cs" />
     <Compile Include="Controls\PlayerGrid.cs" />
+    <Compile Include="Controls\UserChallenges.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Controls\UserDetails.cs" />
     <Compile Include="Controls\PaginatedModule.cs" />
     <Compile Include="Controls\PlayerDetails.cs" />
-    <Compile Include="Controls\UserOffers.cs" />
     <Compile Include="Controls\Players.cs" />
     <Compile Include="Controls\ModuleInstance.cs" />
     <Compile Include="Controls\Results.cs" />

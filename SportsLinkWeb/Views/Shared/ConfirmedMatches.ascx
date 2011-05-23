@@ -12,7 +12,7 @@
                 <table width="100%" cellpadding="0" cellspacing="0">
                 <% foreach (OfferModel o in confirmedMatches.ConfirmedMatches.Skip(pageModel.Skip).Take(perPage)) { %>
                     <% var isRequestor = (o.RequestUser.FacebookId == confirmedMatches.TennisUser.FacebookId); %>
-                    <% var opponent = (!isRequestor) ? o.RequestUser : o.AcceptUser; %>
+                    <% var opponent = (!isRequestor) ? o.RequestUser : o.ConfirmedUser; %>
                     <% var inFuture = o.MatchDateUtc > DateTime.UtcNow; %>
 
                     <tr class="confirmedMatch">
@@ -30,7 +30,7 @@
                            { %>
                             <td class="cancel">
                                 <input type="hidden" class="offerId" value="<%=o.OfferId %>" />
-                                <a href="#" class="cancelMatch">Cancel</a>
+                                <a href="#" class="cancelConfirmedMatch">Cancel</a>
                             </td>
                         <% }
                            else

@@ -11,6 +11,14 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
+    /// <summary>
+    /// Represents offers that are potentially interesting to a tennis user
+    /// - the offer was not posted by the user himself
+    /// - where the offerer is of same gender as the user
+    /// - where the offer is still active (not confirmed)
+    /// - the offer was posted by someone who is within a range of the user's NTRP rating
+    /// - the offer location (BUGBUG: check this) is within a radius of the user's location
+    /// </summary>
     public class PotentialOffersModel : ModuleModel
     {
         public PotentialOffersModel() { }
@@ -18,9 +26,10 @@ namespace SportsLinkWeb.Models
         public PotentialOffersModel(TennisUserModel tennisUser, SportsLinkDB db)
             : base(tennisUser)
         {
+            // BUGBUG: get rid of the hard-coded values
             this.PotentialOffers = ModelUtils.GetOffers(db, tennisUser).Where
                 (o =>
-                        o.AcceptUser == null &&
+                        o.ConfirmedUser == null &&
                         (o.SpecificOpponent == null || o.SpecificOpponent.FacebookId == tennisUser.FacebookId) &&
                         o.RequestUser.FacebookId != tennisUser.FacebookId &&
                         o.MatchDateUtc >= DateTime.UtcNow &&

@@ -11,6 +11,12 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
+    ///<summary>
+    ///Offers ordered by the proposed match time
+    ///- made by the user 
+    ///- not confirmed 
+    ///- the offer time is in the future
+    ///</summary>
     public class UserOffersModel : ModuleModel
     {
         public UserOffersModel() { }
@@ -18,8 +24,12 @@ namespace SportsLinkWeb.Models
         public UserOffersModel(TennisUserModel tennisUser, SportsLinkDB db)
             : base(tennisUser)
         {
-            // Outstanding offers by the user
-            this.UserOffers = ModelUtils.GetOffers(db, tennisUser).Where(o => o.AcceptUser == null).Where(o => o.RequestUser.FacebookId == tennisUser.FacebookId && !o.Completed && o.MatchDateUtc > DateTime.UtcNow).OrderBy(o => o.MatchDateUtc);
+            // BUGBUG: what about offers which were not confirmed and where the offer time is past - we need to eliminate those from the db
+            this.UserOffers = ModelUtils.GetOffers(db, tennisUser)
+                                        .Where(o => o.ConfirmedUser == null)
+                                        .Where(o => o.RequestUser.FacebookId == tennisUser.FacebookId 
+                                                    && o.MatchDateUtc > DateTime.UtcNow)
+                                        .OrderBy(o => o.MatchDateUtc);
         }
 
         public IQueryable<OfferModel> UserOffers { get; private set; }

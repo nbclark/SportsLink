@@ -16,7 +16,7 @@ namespace SportsLinkScript.Controls
         public ConfirmedMatches(Element element)
             : base(element)
         {
-            jQueryObject cancelObject = jQuery.Select(".confirmedMatch .cancelMatch");
+            jQueryObject cancelObject = jQuery.Select(".confirmedMatch .cancelConfirmedMatch");
             jQueryObject reportScoreObject = jQuery.Select(".confirmedMatch .inputScore");
             if (cancelObject != null)
                 cancelObject.Click(CancelMatch);

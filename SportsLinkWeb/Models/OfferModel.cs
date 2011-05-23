@@ -26,8 +26,9 @@ namespace SportsLinkWeb.Models
         public Court Court;
         public City City;
         public TennisUserModel RequestUser;
-        public TennisUserModel AcceptUser;
+        public TennisUserModel ConfirmedUser;
         public TennisUserModel SpecificOpponent;
+        public IEnumerable<Accept> AcceptedUsers;
 
         public LocationModel GetLocation()
         {

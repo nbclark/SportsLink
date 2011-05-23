@@ -120,6 +120,7 @@ namespace SportsLinkWeb.Controllers
                     }
                     else
                     {
+                        // BUGBUG: return an unexpected error message
                         return Json("");
                     }
 
@@ -131,10 +132,13 @@ namespace SportsLinkWeb.Controllers
                         {
                             ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB)),
                             Results = RenderPartialViewToString("Results", ModelUtils.GetModel<ResultsModel>(FacebookWebContext.Current.UserId, this.DB)),
-                            UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                         }
                      );
                 }
+            }
+            else
+            {
+                // BUGBUG: return an unexpted error mesage
             }
 
             return Json("");
@@ -152,6 +156,7 @@ namespace SportsLinkWeb.Controllers
 
             if (Guid.TryParse(id, out offerGuid))
             {
+                // Select this offer id if not confirmed yet
                 Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
 
                 if (null != offer)
@@ -167,25 +172,33 @@ namespace SportsLinkWeb.Controllers
                     TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
                     string message = "Unknown Error";
 
+                    // Check if this was an offer for a specific opponent
                     if (offer.SpecificOpponentId != null)
                     {
+                        // Confirm it is the specific opponent who is accepting
                         if (fbContext.UserId == offer.SpecificOpponentId)
                         {
+                            // Set the accepted by id
                             offer.AcceptedById = fbContext.UserId;
+
                             this.DB.SubmitChanges();
 
+                            // given this is a specific user offer, confirm immediately
                             SendMatchConfirmation(offer);
 
-                            message = "Offer Accepted...";
+                            message = "Offer Confirmed.";
                         }
-
-                        // else someone is being sneaky...
+                        else
+                        {
+                            // Unexpected since this offer id was meant for a different opponent
+                            message = "This offer is not valid. Please submit feedback if you keep getting this message.";
+                        }
                     }
                     else
                     {
-                        // Accepts must be confirmed by original poster
                         if (!DB.Accept.Any(a => a.FacebookId == fbContext.UserId && a.OfferId == offer.OfferId))
                         {
+                            // Create an accept entry and add to the accept table
                             Accept accept = new Accept();
                             accept.FacebookId = fbContext.UserId;
                             accept.OfferId = offer.OfferId;
@@ -199,8 +212,13 @@ namespace SportsLinkWeb.Controllers
                             SendMessage(new long[] { offer.FacebookId }, subject, template, offer, tennisUser);
                             message = "Match requestor notified.  You will be contacted if he/she accepts...";
                         }
+                        else
+                        {
+                            message = "You have accepted this offer already - please wait for confirmation from match requestor. Redirecting you to homepage.";
+                        }
                     }
 
+                    // BUGBUG: when will it not be an ajax request?
                     if (!Request.IsAjaxRequest())
                     {
                         ViewData.Model = message;
@@ -216,14 +234,23 @@ namespace SportsLinkWeb.Controllers
                         }
                      );
                 }
+                else
+                {
+                    // BUGBUG: return message that the offer might have already been taken or might have been revoked
+                    ViewData.Model = "Invalid offer - the offer might have been revoked or no longer exists";
+                    return View("Redirect");
+                }
             }
-
-            if (!Request.IsAjaxRequest())
+            else // Unparseable offer id
             {
-                return new RedirectResult("/");
-            }
+                if (!Request.IsAjaxRequest())
+                {
+                    ViewData.Model = "This offer is not valid. Please submit feedback if you keep getting this message.";
+                    return View("Redirect");
+                }
 
-            return Json("");
+                return Json("");
+            }
         }
 
         /// <summary>
@@ -233,27 +260,83 @@ namespace SportsLinkWeb.Controllers
         /// <param name="id"></param>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public ActionResult ConfirmOffer(string id, long uid)
+        public ActionResult ConfirmOffer(string offerId, long uid)
         {
             Guid offerGuid;
 
-            if (Guid.TryParse(id, out offerGuid))
+            if (Guid.TryParse(offerId, out offerGuid))
             {
                 var fbContext = FacebookWebContext.Current;
+
+                // AcceptedById is set when the specific opponent requested accepts (where there is no need for further confirmation)
+                // Or it is set when the match requestor confirms a specific offer in email
                 Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
 
                 if (null != offer && fbContext.UserId == offer.FacebookId)
                 {
+                    // Set the accepted by id of the final FB user who accepted
                     offer.AcceptedById = uid;
+
                     this.DB.SubmitChanges();
 
                     SendMatchConfirmation(offer);
+                }
+                else
+                {
+                    // BUGBUG: send error message
                 }
             }
 
             return new RedirectResult("/");
         }
 
+        /// <summary>
+        /// When a user requests a match to a group of people, when a user accepts, the original poster
+        /// is sent an email asking for confirmation.  The link in the confirmation redirects here.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public ActionResult ConfirmOfferFromPage(string offerId, long uid)
+        {
+            Guid offerGuid;
+
+            if (Guid.TryParse(offerId, out offerGuid))
+            {
+                var fbContext = FacebookWebContext.Current;
+
+                // AcceptedById is set when the specific opponent requested accepts (where there is no need for further confirmation)
+                // Or it is set when the match requestor confirms a specific offer in email
+                Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
+
+                if (null != offer && fbContext.UserId == offer.FacebookId)
+                {
+                    // Set the accepted by id of the final FB user who accepted
+                    offer.AcceptedById = uid;
+
+                    this.DB.SubmitChanges();
+
+                    SendMatchConfirmation(offer);
+
+                    return Json
+                    (
+                        new
+                        {
+                            PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            UserChallenges = RenderPartialViewToString("UserChallenges", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
+                        }
+                     );
+                }
+                else
+                {
+                    // BUGBUG: send error message
+                }
+            }
+
+            return new RedirectResult("/");
+        }
+        
         /// <summary>
         /// This method will send a confirmation mail to both players in a match
         /// </summary>
@@ -334,6 +417,9 @@ namespace SportsLinkWeb.Controllers
 
                 if (null != offer)
                 {
+                    // AcceptedById indicates if a match has been confirmed or not
+                    // If not null, we need to send a match cancellation notice to the confirmed user
+                    // BUGBUG: we may need to send mail to all users who accepted an offer but may not have been confirmed
                     if (null != offer.AcceptedById)
                     {
                         //var fbContext = FacebookWebContext.Current;
@@ -353,9 +439,18 @@ namespace SportsLinkWeb.Controllers
                         {
                             ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB)),
                             UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            UserChallenges = RenderPartialViewToString("UserChallenges", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
                         }
                      );
                 }
+                else
+                {
+                    // BUGBUG: error message
+                }
+            }
+            else
+            {
+                // BUGBUG: error message
             }
 
             return Json("");
@@ -458,6 +553,7 @@ namespace SportsLinkWeb.Controllers
                 offer.Message = comments;
                 offer.PreferredLocationId = tennisUser.City.LocationId;
                 offer.Court = court;
+                // BUGBUG: we dont' seem to set the completed flag anywhere currently
                 offer.Completed = false;
 
                 User opponent = null;
@@ -503,7 +599,8 @@ namespace SportsLinkWeb.Controllers
                 (
                     new
                     {
-                        UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
+                        UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                        UserChallenges = RenderPartialViewToString("UserChallenges", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                     }
                  );
             }
@@ -620,7 +717,8 @@ namespace SportsLinkWeb.Controllers
             (
                 new
                 {
-                    UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
+                    UserOffers = RenderPartialViewToString("UserOffers", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                    UserChallenges = RenderPartialViewToString("UserChallenges", ModelUtils.GetModel<UserOffersModel>(FacebookWebContext.Current.UserId, this.DB))
                 }
              );
         }
@@ -679,6 +777,37 @@ namespace SportsLinkWeb.Controllers
              );
         }
 
+        public ActionResult AcceptPlayerGrid(int page, string offerId)
+        {
+            Guid offerGuid;
+
+            if (Guid.TryParse(offerId, out offerGuid))
+            {
+
+                ViewData["Page"] = page;
+
+
+                var app = new FacebookWebClient();
+                var fbContext = FacebookWebContext.Current;
+
+                TennisUserModel existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
+                var model = new AcceptPlayersDataGridModel(offerGuid, existingUser, this.DB);
+                model.IsPostBack = false;
+
+                return Json
+                (
+                    new
+                    {
+                        PlayerGrid = RenderPartialViewToString("PlayerGrid", model)
+                    }
+                 );
+            }
+            else
+            {
+                // BUGBUG: return error
+            }
+            return Json("");
+        }
         private Court ProcessCourtData(string courtData)
         {
             Court court = null;

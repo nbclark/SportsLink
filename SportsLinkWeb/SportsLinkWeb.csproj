@@ -85,6 +85,7 @@
     </Compile>
     <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\ConfirmedMatchesModel.cs" />
+    <Compile Include="Models\AcceptPlayersDataGridModel.cs" />
     <Compile Include="Models\CourtJson.cs" />
     <Compile Include="Models\PlayersDataGridModel.cs" />
     <Compile Include="Models\DataGridModel.cs" />
@@ -176,6 +177,7 @@
     <Content Include="Scripts\ss.shared.js" />
     <Content Include="Views\Shared\Calendar.ascx" />
     <Content Include="Views\Shared\ConfirmedMatches.ascx" />
+    <Content Include="Views\Shared\PlayerGrid\UserSelect.ascx" />
     <Content Include="Views\Shared\Redirect.aspx" />
     <Content Include="Views\Shared\PlayerGrid.ascx" />
     <Content Include="Views\Shared\DataGrid.ascx" />
@@ -187,6 +189,7 @@
     <Content Include="Views\Shared\PlayerGrid\UserPicture.ascx" />
     <Content Include="Views\Shared\Players.ascx" />
     <Content Include="Views\Shared\PotentialOffers.ascx" />
+    <Content Include="Views\Shared\UserChallenges.ascx" />
     <Content Include="Views\Shared\UserOffers.ascx" />
     <Content Include="Views\Shared\QuickMatch.ascx" />
     <Content Include="Views\Shared\Results.ascx" />

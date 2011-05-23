@@ -16,6 +16,12 @@ namespace SportsLinkScript.Controls
         public PlayerGrid(Element element)
             : base(element, "PlayerGrid")
         {
+            // Wire up the select user even for confirming a user
+            jQueryUIObject selectUser = (jQueryUIObject)this.Obj.Find(".selectUser");
+            selectUser.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-carat-1-e")));
+            selectUser.Click(UserChallenges.SelectUser);
+
+            // Wire up the challenge event for a specific user
             jQueryUIObject requestMatch = (jQueryUIObject)this.Obj.Find(".requestMatch");
             requestMatch.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-carat-1-e")));
             requestMatch.Click(Players.RequestMatch);
@@ -23,7 +29,13 @@ namespace SportsLinkScript.Controls
             jQueryUIObject selects = (jQueryUIObject)this.Obj.Find("th select");
             selects.Each((ElementIterationCallback)delegate(int index, Element el)
             {
-                ((jQueryUIObject)jQuery.FromElement(el)).MultiSelect(new JsonObject("header", false, "minWidth", "80", "height", "auto", "noneSelectedText", el.Title, "selectedText", el.Title, "close", (Callback)delegate() { DoFilter(this.Obj, true); }));
+                ((jQueryUIObject)jQuery.FromElement(el)).MultiSelect(new JsonObject(
+                    "header", false, 
+                    "minWidth", "80", 
+                    "height", "auto", 
+                    "noneSelectedText", el.Title, 
+                    "selectedText", el.Title, 
+                    "close", (Callback)delegate() { DoFilter(this.Obj, true); }));
             });
 
             this.DoFilter(this.Obj, false);

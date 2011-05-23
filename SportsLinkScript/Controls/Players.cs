@@ -45,10 +45,7 @@ namespace SportsLinkScript.Controls
                     "height", jQuery.Window.GetHeight() - 20,
                     "modal", true,
                     "title", "Similar Players",
-                    "open", (Callback)delegate()
-                    {
-                        dialog.Find(".comments").Focus();
-                    },
+                    "closeOnEscape", true,
                     "position", "top"
                 )
             );

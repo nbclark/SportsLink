@@ -11,6 +11,9 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
+    /// <summary>
+    /// Represents all offers for a tennis user where there was a non-empty result.
+    /// </summary>
     public class ResultsModel : ModuleModel
     {
         public ResultsModel() { }
@@ -18,10 +21,9 @@ namespace SportsLinkWeb.Models
         public ResultsModel(TennisUserModel tennisUser, SportsLinkDB db)
             : base(tennisUser)
         {
-            // Select confirmed offers which have a result
             this.UserResults = ModelUtils.GetOffers(db, tennisUser)
-                                            .Where(o => o.AcceptUser != null)
-                                            .Where(o => (o.AcceptUser.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId))
+                                            .Where(o => o.ConfirmedUser != null)
+                                            .Where(o => (o.ConfirmedUser.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId))
                                             .Where(o => (o.Score != null && o.Score != ""))
                                             .OrderByDescending(o => o.MatchDateUtc);
         }

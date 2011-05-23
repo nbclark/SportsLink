@@ -12,7 +12,7 @@
                 <table width="100%" cellpadding="0" cellspacing="0">
                 <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>
                     <% var isRequestor = (o.RequestUser.FacebookId == results.TennisUser.FacebookId); %>
-                    <% var opponent = (!isRequestor) ? o.RequestUser : o.AcceptUser; %>
+                    <% var opponent = (!isRequestor) ? o.RequestUser : o.ConfirmedUser; %>
                     <% var inFuture = o.MatchDateUtc > DateTime.UtcNow; %>
 
                     <tr class="result">
@@ -28,7 +28,7 @@
                         <td class="score">
                             <input type="hidden" class="offerId" value="<%=o.OfferId %>" />
                             <input type="hidden" class="score" value="<%=o.Score %>" />
-                            <input type="hidden" class="requestName" value="<%=o.AcceptUser.Name %>" />
+                            <input type="hidden" class="requestName" value="<%=o.ConfirmedUser.Name %>" />
                             <input type="hidden" class="acceptName" value="<%=o.RequestUser.Name %>" />
 
                             <% if (inFuture) { %>
