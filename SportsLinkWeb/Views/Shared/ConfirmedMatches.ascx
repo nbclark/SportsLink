@@ -5,7 +5,7 @@
     <% var perPage = 3; %>
     <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, confirmedMatches.ConfirmedMatches.Count()); %>
     
-    <div class="module" id="confirmedMatches" data-type="ConfirmedMatches" style='display:block'>
+    <div class="module" id="confirmedMatches" data-type="ConfirmedMatches" style='display:<%=confirmedMatches.ConfirmedMatches.Count() > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Confirmed Matches</h3>
             <div class="data">
@@ -54,4 +54,5 @@
     </div>
 
     <div id="canceldialog" title="Cancel Match" style="display:none;">
+        Are you sure you want to cancel this match?
     </div>

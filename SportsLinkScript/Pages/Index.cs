@@ -39,8 +39,8 @@ namespace SportsLinkScript.Pages
 
             dialog.Dialog(
                 new JsonObject(
-                    "width", jQuery.Window.GetWidth() / 1.5,
-                    "height", jQuery.Window.GetHeight() - 120,
+                    "width", jQuery.Window.GetWidth() - 120,
+                    "height", jQuery.Window.GetHeight() - 40,
                     "modal", true,
                     "title", "Welcome to TennisLink",
                     "position", "top"
@@ -68,8 +68,8 @@ namespace SportsLinkScript.Pages
             // BUGBUG: currently the sizes are hard-coded and too big - need to fix this.
             dialog.Dialog(
                 new JsonObject(
-                    "width", jQuery.Window.GetWidth() / 1.5,
-                    "height", jQuery.Window.GetHeight() - 60,
+                    "width", jQuery.Window.GetWidth() - 120,
+                    "height", jQuery.Window.GetHeight() - 40,
                     "modal", true,
                     "closeOnEscape", true,
                     "title", "Calendar",

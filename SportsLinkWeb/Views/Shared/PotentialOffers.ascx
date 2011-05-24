@@ -18,7 +18,9 @@
                 <% Html.RenderPartial("Offer", o); %>
                 <% } %>
                 </table>
+                <!--
                 <% Html.RenderPartial("Paginator", pageModel); %>
+                -->
             </div>
         </div>
     </div>

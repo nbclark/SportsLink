@@ -26,7 +26,7 @@ namespace SportsLinkScript.Controls
             cancelMatch.Click(CancelOffer);
 
             jQueryUIObject confirmOffers = (jQueryUIObject)this.Obj.Find(".confirmOffers");
-            confirmOffers.Button();
+            confirmOffers.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-carat-1-e")));
             confirmOffers.Click(SelectUserDialog);
         }
 
@@ -71,10 +71,10 @@ namespace SportsLinkScript.Controls
             // Display the dialog in modal fashion
             dialog.Dialog(
                 new JsonObject(
-                    "width", jQuery.Window.GetWidth() - 40,
-                    "height", jQuery.Window.GetHeight() - 20,
+                    "width", jQuery.Window.GetWidth() - 120,
+                    "height", jQuery.Window.GetHeight() - 40,
                     "modal", true,
-                    "title", "Confirm the player you wish to play",
+                    "title", "Select Your Opponent",
                     "closeOnEscape", true,
                     "position", "top"
                 )
@@ -100,10 +100,10 @@ namespace SportsLinkScript.Controls
             // Post the confirmation - now that we have the offer id and the selected user 
             JsonObject parameters = new JsonObject("offerId", offerId, "uid", selectedUserId);
 
-            dialog.Dialog("close");
-
+            dialog.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
             jQuery.Post("/services/ConfirmOfferFromPage?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(parameters), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
             {
+                dialog.Dialog("close");
                 Utility.ProcessResponse((Dictionary)data);
             }
             );

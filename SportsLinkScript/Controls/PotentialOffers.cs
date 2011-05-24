@@ -1,6 +1,3 @@
-// HomePage.cs
-//
-
 using System;
 using System.Html;
 using System.Net;
@@ -41,6 +38,7 @@ namespace SportsLinkScript.Controls
             {
                 parentRow.Attribute("disabled", "").RemoveClass("ui-state-disabled");
                 button.Parent().Children("a").FadeOut(EffectDuration.Slow);
+                button.Parent().Children(".pending").FadeIn(EffectDuration.Fast);
 
                 Utility.ProcessResponse((Dictionary)data);
             });

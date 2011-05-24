@@ -18,7 +18,7 @@ namespace SportsLinkWeb.Models
             : base(null, tennisUser, db)
         {
             // No need for a header
-            this.ShowHeader = false;
+            this.ShowHeader = true;
 
             // Get list of users who have accepted the offer
             IQueryable<Accept> accepts = db.Accept.Where(a => a.OfferId == offerGuid);
@@ -36,9 +36,10 @@ namespace SportsLinkWeb.Models
 
             this.AddColumn("FacebookId", "", "PlayerGrid/UserPicture", null);
             this.AddColumn("Name", "Name");
-            this.AddColumn("Rating", "Rating");
+            this.AddColumn("Rating", "Rating", (o) => IndexModel.FormatRating((double)o));
+            this.AddColumn("Birthday", "Age", (o) => IndexModel.FormatAge((DateTime)o));
             this.AddColumn("City.Name", "Location");
-            this.AddColumn("FacebookId", "Select", "PlayerGrid/UserSelect", null);
+            this.AddColumn("FacebookId", "Select Opponent", "PlayerGrid/UserSelect", null);
         }
 
         private IQueryable<TennisUserModel> Data { get; set; }

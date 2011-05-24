@@ -2,7 +2,7 @@
 <%@ Import Namespace="SportsLink" %>
 
     <% var playerModel = (PlayersModel)Model; %>
-    <% var perPage = 5; %>
+    <% var perPage = 3; %>
     <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, playerModel.Players.Count()); %>
 
     <div class="module" id="players" data-type="Players" style='display:<%=(playerModel.Players.Count() > 0) ? "" : "none" %>'>
@@ -30,7 +30,9 @@
                     </tr>
                 <% } %>
                 </table>
+                <!--
                 <% Html.RenderPartial("Paginator", pageModel); %>
+                -->
             </div>
         </div>
     </div>

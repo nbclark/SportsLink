@@ -11,7 +11,7 @@
 
         <% if (model.UserStartDate.AddDays(i) >= DateTime.UtcNow.Date.AddHours(model.TennisUser.TimeZoneOffset)) { %>
         <tr>
-            <th colspan="5">
+            <th colspan="5" class="ui-widget-header">
                 <%= model.UserStartDate.AddDays(i).ToShortDateString() %>
             </th>
         </tr>

@@ -5,7 +5,7 @@
     <% var perPage = 5; %>
     <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, userOffersModel.UserOffers.Count()); %>
 
-    <div id="userChallenges" class="module" data-type="UserChallenges">
+    <div id="userChallenges" class="module" data-type="UserChallenges" style='display:<%=userOffersModel.UserOffers.Count() > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Your Match Requests</h3>
             <div class="data">
@@ -22,7 +22,7 @@
                             <%=request.GetLocationLink()%>
                         </td>
                         <td class="confirm">
-                            <a class="confirmOffers" href="#" data-offerId='<%=request.OfferId %>'><%=(request.AcceptedUsers != null) ? request.AcceptedUsers.Count() : 0 %> Players Accepted</a>
+                            <a class="confirmOffers" href="#" data-offerId='<%=request.OfferId %>'><%=(request.AcceptedUsers != null) ? request.AcceptedUsers.Count() : 0 %> Offers</a>
                         </td>
                     </tr>
                 <% } %>

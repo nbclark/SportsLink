@@ -37,10 +37,10 @@ namespace SportsLinkScript.Controls
                     "height", "370",
                     "modal", "true",
                     "buttons", new JsonObject(
-                        "Cancel Match", (jQueryEventHandler)delegate(jQueryEvent ex)
-                        {
-                            PostCancel(dialog, offerId);
-                        }
+                    "Cancel Match", (jQueryEventHandler)delegate(jQueryEvent ex)
+                    {
+                        PostCancel(dialog, offerId);
+                    }
                     ),
                     "position", "top"
                 )

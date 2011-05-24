@@ -37,7 +37,7 @@ body
 
 .page
 {
-    width:746px;
+    width:740px;
     left: 0;
     position: relative;
 }
@@ -250,9 +250,7 @@ body
 
 .offer td
 {
-    padding-bottom: 0.5em;
-    padding-top: 0.5em;
-    border-top: 1px solid #ccc;
+    border-top: 0px solid #ccc;
     vertical-align: top;
 }
 
@@ -262,10 +260,11 @@ body
     border-top: 0px solid #ccc;
 }
 
-#players .image, .offer .image, .result .image
+#players .image, .offer .image, .result .image, .confirmedMatch .image
 {
     width: 54px;
     text-align: left;
+    height: 54px;
 }
 
 .offer .accept
@@ -276,7 +275,6 @@ body
 
 .offer .accept .pending
 {
-    width: 86px;
     font-style: italic;
     height: 50px;
     line-height: 18px;
@@ -284,7 +282,7 @@ body
 
 .offer .acceptMatch, #players .requestMatch
 {
-    width: 86px;
+    width: 90px;
     margin-bottom: 2px;
 }
 
@@ -399,11 +397,14 @@ body
     font-size: 16px;
 }
 
+#userChallenges .confirm
+{
+    text-align: right;
+}
+
 #userChallenges .confirmOffers
 {
     width: 86px;
-    font-style: italic;
-    height: 50px;
     line-height: 18px;
 }
 
@@ -486,7 +487,6 @@ body
 .calendar th
 {
     text-align: left;
-    background-color: #C9C0B4;
 }
 
 .calendar tr td

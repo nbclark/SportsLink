@@ -11,10 +11,10 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class Players : Module
+    public class Players : PaginatedModule
     {
         public Players(Element element)
-            : base(element)
+            : base(element, "Players")
         {
             jQueryUIObject moreButton = (jQueryUIObject)this.Obj.Find(".more");
 
