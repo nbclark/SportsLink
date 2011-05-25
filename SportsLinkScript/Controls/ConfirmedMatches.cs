@@ -11,10 +11,10 @@ using System.Serialization;
 
 namespace SportsLinkScript.Controls
 {
-    public class ConfirmedMatches : Module
+    public class ConfirmedMatches : PaginatedModule
     {
         public ConfirmedMatches(Element element)
-            : base(element)
+            : base(element, "ConfirmedMatches")
         {
             jQueryObject cancelObject = jQuery.Select(".confirmedMatch .cancelConfirmedMatch");
             jQueryObject reportScoreObject = jQuery.Select(".confirmedMatch .inputScore");
@@ -24,7 +24,7 @@ namespace SportsLinkScript.Controls
                 reportScoreObject.Click(ReportScore);
         }
 
-        private void CancelMatch(jQueryEvent e)
+        public static void CancelMatch(jQueryEvent e)
         {
             jQueryObject button = jQuery.FromElement(e.CurrentTarget);
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#canceldialog");
@@ -34,7 +34,7 @@ namespace SportsLinkScript.Controls
             dialog.Dialog(
                 new JsonObject(
                     "width", "210",
-                    "height", "370",
+                    "height", "140",
                     "modal", "true",
                     "buttons", new JsonObject(
                     "Cancel Match", (jQueryEventHandler)delegate(jQueryEvent ex)
@@ -46,9 +46,9 @@ namespace SportsLinkScript.Controls
                 )
             );
         }
-        
-        
-        private void ReportScore(jQueryEvent e)
+
+
+        public static void ReportScore(jQueryEvent e)
         {
             jQueryObject button = jQuery.FromElement(e.CurrentTarget);
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#scoredialog");
@@ -75,7 +75,7 @@ namespace SportsLinkScript.Controls
             dialog.Dialog(
                 new JsonObject(
                     "width", "210",
-                    "height", "370",
+                    "height", "305",
                     "modal", "true",
                     "buttons", new JsonObject(
                         "Report Score", (jQueryEventHandler)delegate(jQueryEvent ex)
@@ -88,7 +88,7 @@ namespace SportsLinkScript.Controls
             );
         }
 
-        private void PostResults(jQueryUIObject dialog, string offerId)
+        public static void PostResults(jQueryUIObject dialog, string offerId)
         {
             string comments = jQuery.Select("#scoreComments").GetValue();
 
@@ -123,7 +123,7 @@ namespace SportsLinkScript.Controls
             );
         }
 
-        private void PostCancel(jQueryUIObject dialog, string offerId)
+        public static void PostCancel(jQueryUIObject dialog, string offerId)
         {
             JsonObject parameters = new JsonObject("offerId", offerId);
 

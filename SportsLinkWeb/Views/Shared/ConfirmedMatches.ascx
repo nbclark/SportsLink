@@ -2,7 +2,7 @@
 <%@ Import Namespace="SportsLink" %>
 
     <% var confirmedMatches = (ConfirmedMatchesModel)Model; %>
-    <% var perPage = 3; %>
+    <% var perPage = 4; %>
     <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, confirmedMatches.ConfirmedMatches.Count()); %>
     
     <div class="module" id="confirmedMatches" data-type="ConfirmedMatches" style='display:<%=confirmedMatches.ConfirmedMatches.Count() > 0 ? "" : "none" %>'>

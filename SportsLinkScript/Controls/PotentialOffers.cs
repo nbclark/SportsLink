@@ -16,12 +16,16 @@ namespace SportsLinkScript.Controls
         {
             jQueryUIObject acceptMatch = (jQueryUIObject)this.Obj.Find(".acceptMatch");
             jQueryUIObject rejectMatch = (jQueryUIObject)this.Obj.Find(".rejectMatch");
+            jQueryUIObject cancelConfirmedMatch = (jQueryUIObject)this.Obj.Find(".cancelConfirmedMatch");
+            jQueryUIObject inputScore = (jQueryUIObject)this.Obj.Find(".inputScore");
 
             acceptMatch.Button(new JsonObject("text", true, "icons", new JsonObject("secondary", "ui-icon-check")));
             rejectMatch.Button(new JsonObject("text", false, "icons", new JsonObject("primary", "ui-icon-closethick")));
 
             acceptMatch.Click(AcceptMatch);
             rejectMatch.Click(RejectMatch);
+            inputScore.Click(ConfirmedMatches.ReportScore);
+            cancelConfirmedMatch.Click(ConfirmedMatches.CancelMatch);
 
             this.Obj.Find(".more").Click(Index.Calendar);
         }

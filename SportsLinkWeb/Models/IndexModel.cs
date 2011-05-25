@@ -68,9 +68,13 @@ namespace SportsLinkWeb.Models
 
             double dayDiff = (matchDate.Date - localNow.Date).TotalDays;
 
-            if (dayDiff < 1)
+            if (matchDate.Date.DayOfYear == localNow.Date.DayOfYear)
             {
                 return string.Format("today,{0:h:mm tt}", matchDate);
+            }
+            else if (matchDate.DayOfYear < localNow.DayOfYear || (matchDate.Date - localNow.Date).TotalDays >= 7)
+            {
+                return string.Format("{0:MMM dd,h:mm tt}", matchDate);
             }
             else
             {

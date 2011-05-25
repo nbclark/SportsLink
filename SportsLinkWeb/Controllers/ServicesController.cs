@@ -736,6 +736,19 @@ namespace SportsLinkWeb.Controllers
              );
         }
 
+        public ActionResult ConfirmedMatches(int page)
+        {
+            ViewData["Page"] = page;
+
+            return Json
+            (
+                new
+                {
+                    ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB))
+                }
+             );
+        }
+
         public ActionResult Calendar(int page)
         {
             ViewData["Page"] = page;
@@ -808,6 +821,7 @@ namespace SportsLinkWeb.Controllers
             }
             return Json("");
         }
+
         private Court ProcessCourtData(string courtData)
         {
             Court court = null;

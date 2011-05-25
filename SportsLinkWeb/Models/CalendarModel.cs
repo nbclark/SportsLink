@@ -25,10 +25,12 @@ namespace SportsLinkWeb.Models
 
             this.Offers = ModelUtils.GetOffers(db, tennisUser)
                 .Where(o => o.RequestUser.FacebookId != tennisUser.FacebookId)
-                .Where(o => o.SpecificOpponent == null || o.SpecificOpponent.FacebookId == tennisUser.FacebookId)
-                .Where(o => o.ConfirmedUser == null)
-                .Where(o => o.MatchDateUtc >= this.StartDate && o.MatchDateUtc >= DateTime.UtcNow)
-                .Where(o => o.MatchDateUtc < this.EndDate).ToList();
+                .Where(o => o.SpecificOpponent == null || o.SpecificOpponent.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId)
+                .Where(o => o.ConfirmedUser == null || o.ConfirmedUser.FacebookId == tennisUser.FacebookId || o.RequestUser.FacebookId == tennisUser.FacebookId)
+                .Where(o => o.MatchDateUtc >= this.StartDate)
+                .Where(o => o.MatchDateUtc < this.EndDate)
+                .Where(o => o.MatchDateUtc >= DateTime.UtcNow || null != o.ConfirmedUser)
+                .OrderBy(o => o.MatchDateUtc);
         }
 
         public DateTime UserStartDate { get; private set; }
@@ -40,7 +42,8 @@ namespace SportsLinkWeb.Models
         {
             return this.Offers
                 .Where(o => o.MatchDateUtc >= this.StartDate.AddDays(dateOffset))
-                .Where(o => o.MatchDateUtc < this.StartDate.AddDays(dateOffset+1));
+                .Where(o => o.MatchDateUtc < this.StartDate.AddDays(dateOffset + 1))
+                .OrderBy(o => o.MatchDateUtc);
         }
     }
 }
