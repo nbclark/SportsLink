@@ -11,7 +11,7 @@
     <DeploymentEnableWebDeploy>False</DeploymentEnableWebDeploy>
     <DeploymentStorageService>instaplay</DeploymentStorageService>
     <DeploymentStorageServiceLabel>instaplay</DeploymentStorageServiceLabel>
-    <DeploymentLabel>SportsLinkAzure - 5/18/2011 7:54:12 PM</DeploymentLabel>
+    <DeploymentLabel>SportsLinkAzure - 5/24/2011 11:12:18 PM</DeploymentLabel>
     <DeploymentPromptBeforeDeleting>False</DeploymentPromptBeforeDeleting>
   </PropertyGroup>
 </Project>

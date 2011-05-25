@@ -38,12 +38,12 @@ namespace SportsLinkWeb.Models
 
         protected bool IsFilterChecked(string filterName, string value)
         {
-            if (!this.IsPostBack)
+            if (!this.FilterValues.ContainsKey(filterName))
             {
                 return true;
             }
 
-            return this.FilterValues.ContainsKey(filterName) && this.FilterValues[filterName].Contains(value);
+            return this.FilterValues[filterName].Contains(value);
         }
 
         public ColumnDefinition AddColumn(string name, string title)

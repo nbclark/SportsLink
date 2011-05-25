@@ -61,6 +61,22 @@ namespace SportsLinkWeb.Models
             }
         }
 
+        public static string RatingToString(double rating)
+        {
+            if (rating.ToString().EndsWith("25") || rating.ToString().EndsWith("75"))
+            {
+                return string.Format("{0:0.00}", rating);
+            }
+            else if (rating == 5.0)
+            {
+                return "5.0+";
+            }
+            else
+            {
+                return string.Format("{0:0.0}", rating);
+            }
+        }
+
         public static string FormatDate(DateTime date, int timeZoneOffset)
         {
             DateTime matchDate = date.AddHours(timeZoneOffset);
