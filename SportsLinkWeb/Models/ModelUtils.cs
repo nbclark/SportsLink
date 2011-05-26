@@ -63,11 +63,6 @@ namespace SportsLinkWeb.Models
                              UserPending = db.Accept.Any(a => a.FacebookId == user.FacebookId && a.OfferId == o.OfferId)
                          };
 
-            if (offers.FirstOrDefault().AcceptedUsers != null)
-            {
-                int count = offers.FirstOrDefault().AcceptedUsers.Count();
-            }
-
             return offers;
         }
 

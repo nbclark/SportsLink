@@ -44,6 +44,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
+                <a href="mailto:tennislinkfb@gmail.com">Contact Us</a>
             </div>
         </div>
         <div style="text-align:center; width:100%">

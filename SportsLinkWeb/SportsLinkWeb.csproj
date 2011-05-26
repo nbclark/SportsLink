@@ -127,6 +127,7 @@
     <Content Include="Content\redmond\jquery-ui-1.8.13.custom.css" />
     <Content Include="Content\redmond\jquery.ui.multiselect.css" />
     <Content Include="Content\redmond\jquery.ui.selectmenu.css" />
+    <Content Include="Content\tl2.png" />
     <Content Include="Content\ui-anim_basic_16x16.gif" />
     <Content Include="Content\ui-lightness\jquery.ui.multiselect.css" />
     <Content Include="Content\UserMessage.htm" />
