@@ -35,14 +35,19 @@
         <table id="header" class="ui-widget-header ui-corner-all">
             <tr>
                 <td>TennisLink</td>
-                <td class="cal"><a href="#" class="calendar">Calendar</a></td>
+                <td class="cal">
+                    <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.ReturnUrlPath) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
+                    |
+                    <a href="#" class="calendar">Calendar</a></td>
             </tr>
         </table>
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-            <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.ReturnUrlPath) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
             </div>
+        </div>
+        <div style="text-align:center; width:100%">
+            <img src="/Content/tl2.png" />
         </div>
     </div>
 </body>
