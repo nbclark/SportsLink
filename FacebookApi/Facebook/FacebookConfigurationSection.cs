@@ -104,6 +104,16 @@ namespace Facebook
         }
 
         /// <summary>
+        /// Gets or sets the url to return the user after they return authorization.
+        /// </summary>
+        [ConfigurationProperty("redirectUrlPath", IsRequired = false)]
+        public string RedirectUrlPath
+        {
+            get { return (string)this["redirectUrlPath"]; }
+            set { this["redirectUrlPath"] = value; }
+        }
+
+        /// <summary>
         /// Gets or sets a value indicating whether to use Facebook beta.
         /// </summary>
         [ConfigurationProperty("useFacebookBeta", IsRequired = false, DefaultValue = false)]

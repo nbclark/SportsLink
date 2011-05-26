@@ -55,6 +55,11 @@ namespace Facebook
         string ReturnUrlPath { get; }
 
         /// <summary>
+        /// Gets the url to return the user after they cancel authorization.
+        /// </summary>
+        string RedirectUrlPath { get; }
+
+        /// <summary>
         /// Gets a value indicating whether it is beta.
         /// </summary>
         bool UseFacebookBeta { get; }

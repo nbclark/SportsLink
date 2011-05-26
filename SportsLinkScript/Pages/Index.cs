@@ -36,16 +36,7 @@ namespace SportsLinkScript.Pages
         public static void FirstRun()
         {
             jQueryUIObject dialog = (jQueryUIObject)jQuery.Select("#welcomeCard");
-
-            dialog.Dialog(
-                new JsonObject(
-                    "width", jQuery.Window.GetWidth() - 120,
-                    "height", jQuery.Window.GetHeight() - 40,
-                    "modal", true,
-                    "title", "Welcome to TennisLink",
-                    "position", "top"
-                )
-            );
+            dialog.Show();
         }
 
         /// <summary>
