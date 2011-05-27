@@ -651,7 +651,7 @@ namespace SportsLinkWeb.Controllers
                 Offer offer = new Offer();
                 offer.OfferId = Guid.NewGuid();
                 offer.FacebookId = tennisUser.FacebookId;
-                offer.MatchDateUtc = date.AddHours(-tennisUser.TimeZoneOffset);
+                offer.MatchDateUtc = IndexModel.GetUtcDate(date, tennisUser.TimeZoneOffset);
                 offer.PostDateUtc = DateTime.UtcNow;
                 offer.Message = comments;
                 offer.PreferredLocationId = tennisUser.City.LocationId;

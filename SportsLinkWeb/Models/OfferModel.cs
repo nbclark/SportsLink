@@ -61,7 +61,7 @@ namespace SportsLinkWeb.Models
         public bool CurrentAvailability;
         public Court Court;
         public City City;
-        public int TimeZoneOffset;
+        public double TimeZoneOffset;
         public int Age;
         public bool EmailOffers;
     }

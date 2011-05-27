@@ -18,9 +18,9 @@ namespace SportsLinkWeb.Models
         public CalendarModel(DateTime startDate, TennisUserModel tennisUser, SportsLinkDB db)
             : base(tennisUser)
         {
-            this.UserStartDate = startDate.ToUniversalTime().AddHours(tennisUser.TimeZoneOffset);
+            this.UserStartDate = IndexModel.GetLocalDate(startDate.ToUniversalTime(), tennisUser.TimeZoneOffset);
             this.UserStartDate = this.UserStartDate.AddDays(-(int)this.UserStartDate.DayOfWeek);
-            this.StartDate = this.UserStartDate.AddHours(-tennisUser.TimeZoneOffset);
+            this.StartDate = IndexModel.GetUtcDate(this.UserStartDate, tennisUser.TimeZoneOffset);
             this.EndDate = this.StartDate.AddDays(7);
 
             this.Offers = ModelUtils.GetOffers(db, tennisUser)

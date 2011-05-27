@@ -77,10 +77,27 @@ namespace SportsLinkWeb.Models
             }
         }
 
-        public static string FormatDate(DateTime date, int timeZoneOffset)
+        public static DateTime GetUtcDate(DateTime date, double timeZoneOffset)
         {
-            DateTime matchDate = date.AddHours(timeZoneOffset);
-            DateTime localNow = DateTime.UtcNow.AddHours(timeZoneOffset);
+            return GetLocalDate(date, -timeZoneOffset);
+        }
+
+        public static DateTime GetLocalDate(DateTime date, double timeZoneOffset)
+        {
+            TimeZoneInfo timeZone = TimeZoneInfo.GetSystemTimeZones().Where(t => t.BaseUtcOffset.TotalHours == timeZoneOffset && t.SupportsDaylightSavingTime).FirstOrDefault();
+
+            if (null != timeZone)
+            {
+                return TimeZoneInfo.ConvertTimeFromUtc(date, timeZone);
+            }
+
+            return date.AddHours(timeZoneOffset);
+        }
+
+        public static string FormatDate(DateTime date, double timeZoneOffset)
+        {
+            DateTime matchDate = GetLocalDate(date, timeZoneOffset);
+            DateTime localNow = GetLocalDate(DateTime.UtcNow, timeZoneOffset);
 
             double dayDiff = (matchDate.Date - localNow.Date).TotalDays;
 
@@ -98,7 +115,7 @@ namespace SportsLinkWeb.Models
             }
         }
 
-        public static string FormatLongDate(DateTime date, int timeZoneOffset)
+        public static string FormatLongDate(DateTime date, double timeZoneOffset)
         {
             DateTime matchDate = date.AddHours(timeZoneOffset);
             DateTime localNow = DateTime.UtcNow.AddHours(timeZoneOffset);

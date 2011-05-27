@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <DeploymentBuildOnly>False</DeploymentBuildOnly>
@@ -11,7 +11,7 @@
     <DeploymentEnableWebDeploy>False</DeploymentEnableWebDeploy>
     <DeploymentStorageService>instaplay</DeploymentStorageService>
     <DeploymentStorageServiceLabel>instaplay</DeploymentStorageServiceLabel>
-    <DeploymentLabel>SportsLinkAzure - 5/26/2011 4:30:56 PM</DeploymentLabel>
+    <DeploymentLabel>SportsLinkAzure - 5/26/2011 4:56:53 PM</DeploymentLabel>
     <DeploymentPromptBeforeDeleting>False</DeploymentPromptBeforeDeleting>
   </PropertyGroup>
 </Project>

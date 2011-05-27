@@ -1462,7 +1462,7 @@ namespace SportsLink
 		
 		private string _Email;
 		
-		private int _TimeZoneOffset;
+		private double _TimeZoneOffset;
 		
 		private bool _EmailOffers;
 		
@@ -1484,7 +1484,7 @@ namespace SportsLink
     partial void OnBirthdayChanged();
     partial void OnEmailChanging(string value);
     partial void OnEmailChanged();
-    partial void OnTimeZoneOffsetChanging(int value);
+    partial void OnTimeZoneOffsetChanging(double value);
     partial void OnTimeZoneOffsetChanged();
     partial void OnEmailOffersChanging(bool value);
     partial void OnEmailOffersChanged();
@@ -1620,8 +1620,8 @@ namespace SportsLink
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeZoneOffset", DbType="Int NOT NULL")]
-		public int TimeZoneOffset
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeZoneOffset", DbType="Float NOT NULL")]
+		public double TimeZoneOffset
 		{
 			get
 			{

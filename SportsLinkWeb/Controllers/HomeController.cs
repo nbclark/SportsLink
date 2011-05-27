@@ -74,14 +74,14 @@ namespace SportsLinkWeb.Controllers
                 long locationId;
                 City city = GetCity(regInfo, out locationId);
 
-                int timeZoneOffset = 0;
+                double timeZoneOffset = 0;
 
                 JsonArray users = (JsonArray)app.Query("SELECT timezone FROM user WHERE uid = " + fbContext.UserId);
 
                 if (null != users && users.Count > 0)
                 {
                     dynamic userData = users[0];
-                    timeZoneOffset = Convert.ToInt32(userData.timezone);
+                    timeZoneOffset = Convert.ToDouble(userData.timezone);
                 }
 
                 if (null == city)
