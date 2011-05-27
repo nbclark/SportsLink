@@ -46,7 +46,7 @@ namespace SportsLinkScript.Controls
             dialog.Dialog(
                 new JsonObject(
                     "width", "210",
-                    "height", "370",
+                    "height", "305",
                     "modal", "true",
                     "buttons", new JsonObject(
                         "Report Score", (jQueryEventHandler)delegate(jQueryEvent ex)

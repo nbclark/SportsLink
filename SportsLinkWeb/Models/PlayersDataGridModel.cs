@@ -27,10 +27,23 @@ namespace SportsLinkWeb.Models
                 .OrderByDescending(p => db.CoordinateDistanceMiles(p.City.Latitude, p.City.Longitude, tennisUser.City.Latitude, tennisUser.City.Longitude));
 
             var rows = this.Data.Where
-            (p =>
-                Math.Abs(p.Rating - tennisUser.Rating) <= 0.25 &&
-                p.Gender == tennisUser.Gender
+            (
+                p =>
+                    /*Math.Abs(p.Rating - tennisUser.Rating) <= 0.25 &&*/
+                    p.Gender == tennisUser.Gender
             );
+
+            if (!this.FilterValues.ContainsKey("Rating"))
+            {
+                List<string> ratings = new List<string>();
+
+                for (double rating = this.TennisUser.Rating - 0.25; rating <= this.TennisUser.Rating + 0.25; rating += 0.25)
+                {
+                    ratings.Add(IndexModel.RatingToString(rating));
+                }
+
+                this.FilterValues.Add("Rating", ratings);
+            }
 
             foreach (string filterName in this.FilterValues.Keys)
             {
@@ -40,7 +53,7 @@ namespace SportsLinkWeb.Models
                 {
                     case "Rating":
                         {
-                            rows = rows.Where(u => values.Contains(u.Rating.ToString()));
+                            rows = rows.Where(u => values.Select(r => double.Parse(r)).Contains(u.Rating));
                         }
                         break;
                     case "Birthday":
@@ -74,7 +87,7 @@ namespace SportsLinkWeb.Models
             {
                 case "Rating":
                     {
-                        return this.Data.Select(u => u.Rating).Distinct().OrderBy(r => r).Select(r => new FilterOption(IndexModel.FormatRating(r), r.ToString(), this.IsFilterChecked(col.Name, r.ToString())));
+                        return this.Data.Select(u => u.Rating).Distinct().OrderBy(r => r).Select(r => new FilterOption(IndexModel.FormatRating(r), IndexModel.RatingToString(r), this.IsFilterChecked(col.Name, IndexModel.RatingToString(r))));
                     }
                 case "Birthday":
                     {

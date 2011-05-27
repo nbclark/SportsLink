@@ -21,13 +21,13 @@
         </div>
     </div>
 
-    <div id="welcomeCard" style="display:none">
-        <% Html.RenderPartial("Overview", indexModel); %>
-    </div>
-
     <table id="content">
     <tr>
     <td class="left">
+    
+    <div id="welcomeCard" style="display:none">
+        <% Html.RenderPartial("Overview", indexModel); %>
+    </div>
 
     <div id="module_ConfirmedMatches">
     <% Html.RenderPartial("ConfirmedMatches", indexModel.GetModel<ConfirmedMatchesModel>()); %>

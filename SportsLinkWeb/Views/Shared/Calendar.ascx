@@ -9,7 +9,6 @@
     <% for (int i = 0; i < 7; ++i) { %>
         <% var dayOffers = model.GetOffers(i); %>
 
-        <% if (model.UserStartDate.AddDays(i) >= DateTime.UtcNow.Date.AddHours(model.TennisUser.TimeZoneOffset)) { %>
         <tr>
             <th colspan="5" class="ui-widget-header">
                 <%= model.UserStartDate.AddDays(i).ToShortDateString() %>
@@ -24,7 +23,6 @@
 
         <% foreach (OfferModel o in dayOffers) { %>
         <% Html.RenderPartial("Offer", o); %>
-        <% } %>
         <% } %>
     <% } %>
 </table>

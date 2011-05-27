@@ -429,13 +429,13 @@ body
     text-align: right;
 }
 
-#players .name, .offer .name, .result .opponent .name
+#players .name, .offer .name, .result .opponent .name, .confirmedMatch .opponent .name
 {
     font-size: 125%;
     font-weight: bold;
 }
 
-#players .location, .offer .location
+#players .location, .offer .location, .confirmedMatch .location
 {
     margin-top: 0.25em;
 }

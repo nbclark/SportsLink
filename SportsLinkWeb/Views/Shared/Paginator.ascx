@@ -2,7 +2,7 @@
 <%@ Import Namespace="SportsLink" %>
 <% var pageModel = (PageModel)Model; %>
 <input type="hidden" class="page" value="<%=pageModel.Page %>" />
-<div>
+<div style="text-align: right">
     <% if (pageModel.HasPrev)
        { %>
     <a class="prev" href="#">Prev</a>

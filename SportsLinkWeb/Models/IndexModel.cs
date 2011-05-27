@@ -61,6 +61,22 @@ namespace SportsLinkWeb.Models
             }
         }
 
+        public static string RatingToString(double rating)
+        {
+            if (rating.ToString().EndsWith("25") || rating.ToString().EndsWith("75"))
+            {
+                return string.Format("{0:0.00}", rating);
+            }
+            else if (rating == 5.0)
+            {
+                return "5.0+";
+            }
+            else
+            {
+                return string.Format("{0:0.0}", rating);
+            }
+        }
+
         public static string FormatDate(DateTime date, int timeZoneOffset)
         {
             DateTime matchDate = date.AddHours(timeZoneOffset);
@@ -68,9 +84,13 @@ namespace SportsLinkWeb.Models
 
             double dayDiff = (matchDate.Date - localNow.Date).TotalDays;
 
-            if (dayDiff < 1)
+            if (matchDate.Date.DayOfYear == localNow.Date.DayOfYear)
             {
                 return string.Format("today,{0:h:mm tt}", matchDate);
+            }
+            else if (matchDate.DayOfYear < localNow.DayOfYear || (matchDate.Date - localNow.Date).TotalDays >= 7)
+            {
+                return string.Format("{0:MMM dd,h:mm tt}", matchDate);
             }
             else
             {

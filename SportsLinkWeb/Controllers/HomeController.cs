@@ -47,6 +47,12 @@ namespace SportsLinkWeb.Controllers
             return this.DB.City.Where(c => c.LocationId == locId).FirstOrDefault();
         }
 
+        public ActionResult Redirect()
+        {
+            return new RedirectResult(FacebookApplication.Current.ReturnUrlPath);
+        }
+
+
         [CanvasAuthorize(Permissions = "user_birthday,user_location,publish_stream,email")]
         public ActionResult Index()
         {
@@ -116,14 +122,17 @@ namespace SportsLinkWeb.Controllers
 
                 this.DB.SubmitChanges();
 
-                //return new RedirectResult(Facebook.FacebookApplication.Current.ReturnUrlPath);
-                existingUser = ModelUtils.GetTennisUsers(this.DB).Where(tu => tu.FacebookId == fbContext.UserId).FirstOrDefault();
-                ViewData["FirstRun"] = true;
+                return new RedirectResult(Facebook.FacebookApplication.Current.ReturnUrlPath + "?fr=1");
             }
 
             if (null == existingUser)
             {
                 return new RedirectResult("/home/register");
+            }
+
+            if (!string.IsNullOrEmpty(Request["fr"]))
+            {
+                ViewData["FirstRun"] = true;
             }
 
             ViewData.Model = new IndexModel(existingUser, this.DB);
