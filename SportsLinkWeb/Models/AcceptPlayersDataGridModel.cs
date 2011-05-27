@@ -28,6 +28,7 @@ namespace SportsLinkWeb.Models
             var acceptUsers = from a in accepts
                               join tu in tennisUsers
                               on a.FacebookId equals tu.FacebookId
+                              where a.Accepted
                               select tu;
 
 

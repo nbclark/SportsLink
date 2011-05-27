@@ -50,7 +50,18 @@ namespace SportsLinkScript.Controls
 
         private void RejectMatch(jQueryEvent e)
         {
-            Script.Alert("reject");
+            jQueryObject button = jQuery.FromElement(e.CurrentTarget);
+            string offerId = button.Siblings("input").GetValue();
+
+            jQueryObject parentRow = button.Parents(".offer");
+            parentRow.Attribute("disabled", "disabled").AddClass("ui-state-disabled");
+
+            jQuery.Post("/services/RejectOffer?signed_request=" + Utility.GetSignedRequest(), Json.Stringify(new JsonObject("id", offerId)), (AjaxRequestCallback<object>)delegate(object data, string textStatus, jQueryXmlHttpRequest<object> request)
+            {
+                parentRow.Hide();
+
+                Utility.ProcessResponse((Dictionary)data);
+            });
         }
     }
 }

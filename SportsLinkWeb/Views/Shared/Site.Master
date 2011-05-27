@@ -34,7 +34,7 @@
     <div class="page">
         <table id="header" class="ui-widget-header ui-corner-all">
             <tr>
-                <td>TennisLink</td>
+                <td>TennisLoop</td>
                 <td class="cal">
                     <a href="http://www.facebook.com/dialog/apprequests?app_id=<%= Facebook.FacebookApplication.Current.AppId%>&redirect_uri=<%= HttpUtility.UrlEncode(Facebook.FacebookApplication.Current.ReturnUrlPath) %>&message=<%=HttpUtility.UrlEncode(ConfigurationManager.AppSettings["InviteUserMessage"]) %>" target="_top">Invite Your Friends</a>
                     |
@@ -44,7 +44,7 @@
         <div id="main">
             <asp:ContentPlaceHolder ID="MainContent" runat="server" />
             <div id="footer">
-                <a href="mailto:tennislinkfb@gmail.com">Contact Us</a>
+                <a href="mailto:tennisloopfb@gmail.com">Contact Us</a>
             </div>
         </div>
         <div style="text-align:center; width:100%">

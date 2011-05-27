@@ -4,11 +4,11 @@
 <div class="module">
     <div class="ui-widget-content ui-corner-all">
         <h3 class="ui-widget-header ui-corner-all">
-            Welcome to TennisLink
+            Welcome to TennisLoop
         </h3>
         <div class="data">
             <p>
-                Welcome to TennisLink. We want to make it easy for you to find competitive matches
+                Welcome to TennisLoop. We want to make it easy for you to find competitive matches
                 in your area.
             </p>
             <p>

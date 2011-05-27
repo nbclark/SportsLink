@@ -42,7 +42,9 @@ namespace SportsLinkWeb.Models
                             into tempCourt
                          from court in tempCourt.DefaultIfEmpty()
 
-                         where user.Gender == u1.Gender && u1.CurrentAvailability
+                         where
+                            user.Gender == u1.Gender && u1.CurrentAvailability
+                            && !acceptedUsers.Any(au => !au.Accepted && au.FacebookId == user.FacebookId)
 
                          select new OfferModel()
                          {

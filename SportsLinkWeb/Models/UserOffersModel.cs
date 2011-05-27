@@ -27,8 +27,7 @@ namespace SportsLinkWeb.Models
             // BUGBUG: what about offers which were not confirmed and where the offer time is past - we need to eliminate those from the db
             this.UserOffers = ModelUtils.GetOffers(db, tennisUser)
                                         .Where(o => o.ConfirmedUser == null)
-                                        .Where(o => o.RequestUser.FacebookId == tennisUser.FacebookId 
-                                                    && o.MatchDateUtc > DateTime.UtcNow)
+                                        .Where(o => o.RequestUser.FacebookId == tennisUser.FacebookId  && o.MatchDateUtc > DateTime.UtcNow)
                                         .OrderBy(o => o.MatchDateUtc);
         }
 

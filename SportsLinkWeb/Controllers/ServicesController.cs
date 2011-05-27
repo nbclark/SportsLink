@@ -202,14 +202,117 @@ namespace SportsLinkWeb.Controllers
                             Accept accept = new Accept();
                             accept.FacebookId = fbContext.UserId;
                             accept.OfferId = offer.OfferId;
+                            accept.Accepted = true;
 
                             this.DB.Accept.InsertOnSubmit(accept);
                             this.DB.SubmitChanges();
 
-                            string subject = string.Format("TennisLink: <fb:name uid='{0}' capitalize='true'></fb:name> Interested in Match", tennisUser.FacebookId);
+                            string subject = string.Format("TennisLoop: <fb:name uid='{0}' capitalize='true'></fb:name> Interested in Match", tennisUser.FacebookId);
                             string template = Server.MapPath("/content/matchacceptoffer.htm");
 
                             SendMessage(new long[] { offer.FacebookId }, subject, template, offer, tennisUser);
+                            message = "Match requestor notified.  You will be contacted if he/she accepts...";
+                        }
+                        else
+                        {
+                            message = "You have accepted this offer already - please wait for confirmation from match requestor. Redirecting you to homepage.";
+                        }
+                    }
+
+                    // BUGBUG: when will it not be an ajax request?
+                    if (!Request.IsAjaxRequest())
+                    {
+                        ViewData.Model = message;
+                        return View("Redirect");
+                    }
+
+                    return Json
+                    (
+                        new
+                        {
+                            PotentialOffers = RenderPartialViewToString("PotentialOffers", ModelUtils.GetModel<PotentialOffersModel>(FacebookWebContext.Current.UserId, this.DB)),
+                            ConfirmedMatches = RenderPartialViewToString("ConfirmedMatches", ModelUtils.GetModel<ConfirmedMatchesModel>(FacebookWebContext.Current.UserId, this.DB))
+                        }
+                     );
+                }
+                else
+                {
+                    // BUGBUG: return message that the offer might have already been taken or might have been revoked
+                    ViewData.Model = "Invalid offer - the offer might have been revoked or no longer exists";
+                    return View("Redirect");
+                }
+            }
+            else // Unparseable offer id
+            {
+                if (!Request.IsAjaxRequest())
+                {
+                    ViewData.Model = "This offer is not valid. Please submit feedback if you keep getting this message.";
+                    return View("Redirect");
+                }
+
+                return Json("");
+            }
+        }
+
+        /// <summary>
+        /// This method is called from the client (or from an email link) to accept an offer
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="uid"></param>
+        /// <returns></returns>
+        public ActionResult RejectOffer(string id, long? uid)
+        {
+            Guid offerGuid;
+
+            if (Guid.TryParse(id, out offerGuid))
+            {
+                // Select this offer id if not confirmed yet
+                Offer offer = this.DB.Offer.Where(o => o.OfferId == offerGuid && null == o.AcceptedById).FirstOrDefault();
+
+                if (null != offer)
+                {
+                    var fbContext = FacebookWebContext.Current;
+
+                    if (null != uid && fbContext.UserId != uid.Value)
+                    {
+                        ViewData.Model = "Wrong User Account...";
+                        return View("Redirect");
+                    }
+
+                    TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
+                    string message = "Unknown Error";
+
+                    // Check if this was an offer for a specific opponent
+                    if (offer.SpecificOpponentId != null)
+                    {
+                        // Confirm it is the specific opponent who is accepting
+                        if (fbContext.UserId == offer.SpecificOpponentId)
+                        {
+                            offer.AcceptedById = offer.SpecificOpponentId;
+                            SendMatchCancellation(offer);
+
+                            this.DB.Offer.DeleteOnSubmit(offer);
+                            this.DB.SubmitChanges();
+                        }
+                        else
+                        {
+                            // Unexpected since this offer id was meant for a different opponent
+                            message = "This offer is not valid. Please submit feedback if you keep getting this message.";
+                        }
+                    }
+                    else
+                    {
+                        if (!DB.Accept.Any(a => a.FacebookId == fbContext.UserId && a.OfferId == offer.OfferId))
+                        {
+                            // Create an accept entry and add to the accept table
+                            Accept accept = new Accept();
+                            accept.FacebookId = fbContext.UserId;
+                            accept.OfferId = offer.OfferId;
+                            accept.Accepted = false;
+
+                            this.DB.Accept.InsertOnSubmit(accept);
+                            this.DB.SubmitChanges();
+
                             message = "Match requestor notified.  You will be contacted if he/she accepts...";
                         }
                         else
@@ -363,7 +466,7 @@ namespace SportsLinkWeb.Controllers
             tokens.Add("Comments", offer.Message);
             tokens.Add("OfferId", offer.OfferId.ToString());
 
-            string subject = string.Format("TennisLink: Match Scheduled and Confirmed");
+            string subject = string.Format("TennisLoop: Match Scheduled and Confirmed");
             string template = Server.MapPath("/content/matchaccepted.htm");
 
             SendMessage(new long[] { tennisUser1.FacebookId, tennisUser2.FacebookId }, subject, template, tokens);
@@ -395,7 +498,7 @@ namespace SportsLinkWeb.Controllers
             tokens.Add("Comments", offer.Message);
             tokens.Add("OfferId", offer.OfferId.ToString());
 
-            string subject = string.Format("TennisLink: Match Cancelled");
+            string subject = string.Format("TennisLoop: Match Cancelled");
             string template = Server.MapPath("/content/matchcancelled.htm");
 
             SendMessage(new long[] { tennisUser1.FacebookId, tennisUser2.FacebookId }, subject, template, tokens);
@@ -424,7 +527,7 @@ namespace SportsLinkWeb.Controllers
                     {
                         //var fbContext = FacebookWebContext.Current;
                         //TennisUserModel tennisUser = ModelUtils.GetTennisUsers(this.DB).Where(u => u.FacebookId == fbContext.UserId).FirstOrDefault();
-                        //string subject = "TennisLink: Match Cancelled";
+                        //string subject = "TennisLoop: Match Cancelled";
                         //string template = Server.MapPath("/content/matchcancelled.htm");
                         //SendMessage(new long[] { offer.FacebookId, offer.AcceptedById.Value }, subject, template, offer, tennisUser);
                         SendMatchCancellation(offer);
@@ -590,7 +693,7 @@ namespace SportsLinkWeb.Controllers
                 this.DB.SubmitChanges();
 
                 string template = Server.MapPath("/content/matchrequest.htm");
-                string subject = string.Format("TennisLink: Match Requested from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId);
+                string subject = string.Format("TennisLoop: Match Requested from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId);
                 SendMessage(pushIds, subject, template, offer, tennisUser);
 
                 // Send out messages to all matching users
@@ -622,7 +725,7 @@ namespace SportsLinkWeb.Controllers
                 tokens.Add("From.Rating", IndexModel.FormatRating(tennisUser.Rating));
                 tokens.Add("Message", comments);
 
-                SendMessage(new long[] { userId }, string.Format("TennisLink: Message from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId), template, tokens);
+                SendMessage(new long[] { userId }, string.Format("TennisLoop: Message from <fb:name uid='{0}' capitalize='true'></fb:name>", tennisUser.FacebookId), template, tokens);
             }
 
             return Json("");

@@ -15,7 +15,7 @@
             <a class="name" href="javascript:SportsLinkScript.Shared.Utility.showPlayerDetails('playerDetailsCard', '<%=opponent.Name %>', '<%=opponent.FacebookId %>');"><%=opponent.Name%></a>
             <div class="location"><%=o.GetLocationLink()%></div>
         </td>
-        <td><div class="rating"><%=IndexModel.FormatRating(opponent.Rating)%></div><div>ntrp</div></td>
+        <td class="rate"><div class="rating"><%=IndexModel.FormatRating(opponent.Rating)%></div><div>ntrp</div></td>
         <td><div class="age"><%=IndexModel.FormatAge(opponent.Birthday)%></div><div class="years">years</td>
         <td class="accept" align="right">
         
@@ -34,6 +34,7 @@
                 <div class="pending" style='display:<%=o.UserPending ? "" : "none" %>'>Pending Confirmation<br /><%=IndexModel.FormatDate(o.MatchDateUtc, user.TimeZoneOffset).Replace(",", " ")%></div>
                 <input type="hidden" name="offerid" value="<%=o.OfferId %>" />
                 <a style='display:<%=!o.UserPending ? "" : "none" %>' class="acceptMatch" href="#"><%=IndexModel.FormatDate(o.MatchDateUtc, user.TimeZoneOffset).Replace(",", "<br />")%></a>
+                <a style='display:<%=!o.UserPending ? "" : "none" %>' class="rejectMatch" href="#" data-offerId='<%=o.OfferId %>'>Cancel</a>
             <% } %>
         </td>
     </tr>

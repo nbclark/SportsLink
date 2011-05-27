@@ -30,7 +30,7 @@ namespace SportsLinkWeb.Models
                 .Where(o => o.MatchDateUtc >= this.StartDate)
                 .Where(o => o.MatchDateUtc < this.EndDate)
                 .Where(o => o.MatchDateUtc >= DateTime.UtcNow || null != o.ConfirmedUser)
-                .OrderBy(o => o.MatchDateUtc);
+                .OrderBy(o => o.MatchDateUtc).ToList();
         }
 
         public DateTime UserStartDate { get; private set; }

@@ -6,7 +6,7 @@
     <div id="userdetails" class="module" data-type="UserDetails">
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">
-                Your Details
+                <div>Your Details</div>
                 <a href="#" class="edit ui-icon ui-icon-pencil" style="display: inline; float:right" title="Edit"></a>
                 <a href="#" class="save ui-icon ui-icon-disk" style="display: none; float:right" title="Save"></a>
             </h3>

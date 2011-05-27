@@ -22,7 +22,7 @@
                             <%=request.GetLocationLink()%>
                         </td>
                         <td class="confirm">
-                            <a class="confirmOffers" href="#" data-offerId='<%=request.OfferId %>'><%=(request.AcceptedUsers != null) ? request.AcceptedUsers.Count() : 0 %> Offers</a>
+                            <a class="confirmOffers" href="#" data-offerId='<%=request.OfferId %>'><%=(request.AcceptedUsers != null) ? request.AcceptedUsers.Where(u => u.Accepted).Count() : 0 %> Offers</a>
                         </td>
                     </tr>
                 <% } %>

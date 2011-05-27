@@ -1,7 +1,7 @@
-﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" Title="Register for TennisLink" %>
+﻿<%@ Page Language="C#" MasterPageFile="~/Views/Shared/Site.Master" Inherits="System.Web.Mvc.ViewPage" Title="Register for TennisLoop" %>
 <%@ Import Namespace="Facebook.Web" %>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <h2>Sign up for TennisLink</h2>
+    <h2>Sign up for TennisLoop</h2>
     <p style="max-height:500px;">
         <fb:registration fields="[
 {'name':'name'}, {'name':'email'}, {'name':'birthday'}, {'name':'gender'},

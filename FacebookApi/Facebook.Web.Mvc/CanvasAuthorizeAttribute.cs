@@ -19,6 +19,8 @@ namespace Facebook.Web.Mvc
 
     public class CanvasAuthorizeAttribute : FacebookAuthorizeAttributeBase
     {
+        private static List<long> AuthorizedUsers = new List<long>();
+
         public string LoginDisplayMode { get; set; }
 
         public string CancelUrlPath { get; set; }
@@ -33,10 +35,22 @@ namespace Facebook.Web.Mvc
             {
                 throw new ArgumentException("Permissions cannot contain whitespace.");
             }
+            
+            long? userId = (null != FacebookWebContext.Current.Session) ? (long?)FacebookWebContext.Current.Session.UserId : null;
 
-            if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
+            if (null == userId || !AuthorizedUsers.Contains(userId.Value))
             {
-                this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
+                if (!authorizer.IsAuthorized(ToArrayString(Permissions)))
+                {
+                    this.HandleUnauthorizedRequest(filterContext, FacebookApplication.Current);
+                }
+                else
+                {
+                    if (!AuthorizedUsers.Contains(FacebookWebContext.Current.Session.UserId))
+                    {
+                        AuthorizedUsers.Add(FacebookWebContext.Current.Session.UserId);
+                    }
+                }
             }
         }
 

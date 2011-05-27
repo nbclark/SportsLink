@@ -27,6 +27,17 @@ body
 */ 
 }
 
+h3
+{
+    height: 1.25em;
+}
+
+h3 div
+{
+    zoom: 1;
+    float: left;
+}
+
 #footer
 {
     margin-top: 10px;
@@ -282,8 +293,20 @@ body
 
 .offer .acceptMatch, #players .requestMatch
 {
-    width: 90px;
+    max-height: 40px;
+    width: 95px;
     margin-bottom: 2px;
+}
+
+.offer .accept, .offer .rate
+{
+    white-space: nowrap;
+}
+
+.offer .rejectMatch
+{
+    height: 40px;
+    vertical-align:top;
 }
 
 .ui-button-text-icon-secondary .ui-button-text

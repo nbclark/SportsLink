@@ -9,7 +9,7 @@
     <div class="module" data-type="PotentialOffers" style='display:<%=potentialOffers.PotentialOffers.Count() > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">
-                Match Requests
+                <div>Match Requests</div>
                 <a href="#" class="more" style="display: inline; float:right; white-space:nowrap" title="View More"><span style="float:left">All</span> <span class="ui-icon ui-icon-grid" style="display: inline; float:right;"></span></a>
             </h3>
             <div class="data">

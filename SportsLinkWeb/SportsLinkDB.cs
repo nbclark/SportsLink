@@ -151,6 +151,8 @@ namespace SportsLink
 		
 		private long _FacebookId;
 		
+		private bool _Accepted;
+		
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -159,6 +161,8 @@ namespace SportsLink
     partial void OnOfferIdChanged();
     partial void OnFacebookIdChanging(long value);
     partial void OnFacebookIdChanged();
+    partial void OnAcceptedChanging(bool value);
+    partial void OnAcceptedChanged();
     #endregion
 		
 		public Accept()
@@ -202,6 +206,26 @@ namespace SportsLink
 					this._FacebookId = value;
 					this.SendPropertyChanged("FacebookId");
 					this.OnFacebookIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Accepted", DbType="Bit NOT NULL")]
+		public bool Accepted
+		{
+			get
+			{
+				return this._Accepted;
+			}
+			set
+			{
+				if ((this._Accepted != value))
+				{
+					this.OnAcceptedChanging(value);
+					this.SendPropertyChanging();
+					this._Accepted = value;
+					this.SendPropertyChanged("Accepted");
+					this.OnAcceptedChanged();
 				}
 			}
 		}
