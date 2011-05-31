@@ -83,6 +83,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MobileCapableWebFormViewEngine.cs" />
     <Compile Include="Models\CalendarModel.cs" />
     <Compile Include="Models\ConfirmedMatchesModel.cs" />
     <Compile Include="Models\AcceptPlayersDataGridModel.cs" />
@@ -247,6 +248,10 @@
       <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
       <Name>Facebook</Name>
     </ProjectReference>
+    <ProjectReference Include="..\LinqKit\LinqKit.csproj">
+      <Project>{AEC98F52-83F5-488D-99EF-8AFFE7C9F6E6}</Project>
+      <Name>LinqKit</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
@@ -265,8 +270,9 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>57157</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>
-          </IISUrl>
+          <IISUrl>http://localhost/SportsLinkWeb</IISUrl>
+          <OverrideIISAppRootUrl>True</OverrideIISAppRootUrl>
+          <IISAppRootUrl>http://localhost</IISAppRootUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

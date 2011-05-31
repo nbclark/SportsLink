@@ -11,19 +11,36 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
-    public class PageModel
+    public interface IPageModel
     {
-        public static PageModel Create(int page, int perPage, int total)
+
+        int Page { get; }
+        int ItemsPerPage { get; }
+        int Total { get; }
+        bool HasNext { get; }
+        bool HasPrev { get; }
+    }
+
+    public class PageModel<T> : IPageModel
+    {
+        public static PageModel<T> Create(int page, int perPage, IEnumerable<T> items)
         {
-            return new PageModel(page, perPage, total);
+            return new PageModel<T>(page, perPage, items);
         }
 
-        protected PageModel(int page, int perPage, int total)
+        protected PageModel(int page, int perPage, IEnumerable<T> items)
         {
             this.Page = page;
             this.ItemsPerPage = perPage;
-            this.Total = total;
+
+            var oneExtra = items.Skip(this.Skip).Take(this.ItemsPerPage + 1).ToList();
+            this.Items = oneExtra.Take(this.ItemsPerPage).ToList();
+
+            this.HasNext = (oneExtra.Count > this.ItemsPerPage);
+            this.Total = this.Items.Count;
         }
+
+        public List<T> Items { get; private set; }
 
         public int Page { get; private set; }
         public int ItemsPerPage { get; private set; }
@@ -39,10 +56,8 @@ namespace SportsLinkWeb.Models
 
         public virtual bool HasNext
         {
-            get
-            {
-                return (this.Page + 1) * this.ItemsPerPage < this.Total;
-            }
+            get;
+            private set;
         }
 
         public virtual bool HasPrev

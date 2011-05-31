@@ -212,7 +212,7 @@ namespace SportsLinkScript.Shared
             }
 
             // Fade the element out and update with the new HTML
-            content.FadeOut(500, delegate()
+            content.FadeOut(250, delegate()
             {
                 // Unload the module
                 // BUGBUG: when can this be NULL
@@ -224,7 +224,7 @@ namespace SportsLinkScript.Shared
                 // Update the content
                 content.Html(value);
 
-                content.FadeIn(500);
+                content.FadeIn(250);
 
                 // Check if it has any child modules to be loaded
                 dataTypes = content.Children("*[data-type]");

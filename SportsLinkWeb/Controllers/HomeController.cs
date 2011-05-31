@@ -53,7 +53,7 @@ namespace SportsLinkWeb.Controllers
         }
 
 
-        [CanvasAuthorize(Permissions = "user_birthday,user_location,publish_stream,email")]
+        [FacebookAuthorize(Permissions = "user_birthday,user_location,publish_stream,email", LoginUrl="/home/login")]
         public ActionResult Index()
         {
             var app = new FacebookWebClient();

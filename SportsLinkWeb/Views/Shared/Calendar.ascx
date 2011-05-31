@@ -2,12 +2,12 @@
 <%@ Import Namespace="SportsLink" %>
 <% var model = (CalendarModel)ViewData.Model; %>
 <% ViewData["TennisUser"] = model.TennisUser; %>
-<% var pageModel = WeekPageModel.Create((int)ViewData["page"]); %>
+<% var pageModel = WeekPageModel.Create((int)ViewData["page"], model.Offers); %>
 
 <div class="module" data-type="Calendar">
 <table class="calendar" cellpadding="0" cellspacing="0">
     <% for (int i = 0; i < 7; ++i) { %>
-        <% var dayOffers = model.GetOffers(i); %>
+        <% var dayOffers = model.GetOffers(i, pageModel.Items); %>
 
         <tr>
             <th colspan="5" class="ui-widget-header">

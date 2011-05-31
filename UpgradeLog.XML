@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="SportsLink">
+</Property><Property Name="Solution File" Value="C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\SportsLink.sln">
+</Property><Property Name="Date" Value="Monday, May 30, 2011">
+</Property><Property Name="Time" Value="15:19:01 PM">
+</Property></Properties><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\LinqKit.csproj" Description="Project file successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\LinqKit.csproj">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\ExpandableQuery.cs" Description="File successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\ExpandableQuery.cs">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\ExpressionExpander.cs" Description="File successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\ExpressionExpander.cs">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\ExpressionVisitor.cs" Description="File successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\ExpressionVisitor.cs">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\Extensions.cs" Description="File successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\Extensions.cs">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\Linq.cs" Description="File successfully backed up as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\Linq.cs">
+</Event><Event ErrorLevel="2" Project="LinqKit" Source="LinqKit\PredicateBuilder.cs" Description="Failed to backup file as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\PredicateBuilder.cs">
+</Event><Event ErrorLevel="2" Project="LinqKit" Source="LinqKit\Properties\AssemblyInfo.cs" Description="Failed to backup file as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\Properties\AssemblyInfo.cs">
+</Event><Event ErrorLevel="2" Project="LinqKit" Source="LinqKit\LinqKit.snk" Description="Failed to backup file as C:\Users\nclark\Documents\Visual Studio 2010\Projects\SportsLink\Backup\LinqKit.snk">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\LinqKit.csproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="LinqKit" Source="LinqKit\LinqKit.csproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="LinqKit" Source="LinqKit\LinqKit.csproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

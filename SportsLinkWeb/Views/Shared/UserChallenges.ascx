@@ -3,14 +3,14 @@
 
     <% var userOffersModel = (UserOffersModel)Model; %>
     <% var perPage = 5; %>
-    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, userOffersModel.UserOffers.Count()); %>
+    <% var pageModel = PageModel<OfferModel>.Create((int)ViewData["page"], perPage, userOffersModel.UserOffers); %>
 
-    <div id="userChallenges" class="module" data-type="UserChallenges" style='display:<%=userOffersModel.UserOffers.Count() > 0 ? "" : "none" %>'>
+    <div id="userChallenges" class="module" data-type="UserChallenges" style='display:<%=pageModel.Items.Count() > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Your Match Requests</h3>
             <div class="data">
                 <table>
-                <% foreach (var request in userOffersModel.UserOffers.Skip(pageModel.Skip).Take(perPage)) { %>
+                <% foreach (var request in pageModel.Items) { %>
                     <tr>
                         <td class="cancel">
                             <a class="cancelMatch" href="#" data-offerId='<%=request.OfferId %>'>Cancel</a>

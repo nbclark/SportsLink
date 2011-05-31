@@ -1,6 +1,6 @@
 ﻿<%@ Control Language="C#" Inherits="System.Web.Mvc.ViewUserControl" %>
 <%@ Import Namespace="SportsLink" %>
-<% var pageModel = (PageModel)Model; %>
+<% var pageModel = (IPageModel)Model; %>
 <input type="hidden" class="page" value="<%=pageModel.Page %>" />
 <div style="text-align: right">
     <% if (pageModel.HasPrev)

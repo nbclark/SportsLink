@@ -4,9 +4,9 @@
     <% var potentialOffers = (PotentialOffersModel)Model; %>
     <% ViewData["TennisUser"] = potentialOffers.TennisUser; %>
     <% var perPage = 5; %>
-    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, potentialOffers.PotentialOffers.Count()); %>
+    <% var pageModel = PageModel<OfferModel>.Create((int)ViewData["page"], perPage, potentialOffers.PotentialOffers); %>
 
-    <div class="module" data-type="PotentialOffers" style='display:<%=potentialOffers.PotentialOffers.Count() > 0 ? "" : "none" %>'>
+    <div class="module" data-type="PotentialOffers" style='display:<%=pageModel.Items.Count() > 0 ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">
                 <div>Match Requests</div>
@@ -14,7 +14,7 @@
             </h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">
-                <% foreach (OfferModel o in potentialOffers.PotentialOffers.Skip(pageModel.Skip).Take(perPage)) { %>
+                <% foreach (OfferModel o in pageModel.Items) { %>
                 <% Html.RenderPartial("Offer", o); %>
                 <% } %>
                 </table>

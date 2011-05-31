@@ -345,7 +345,7 @@ namespace Facebook
             FacebookSignedRequest signedRequest;
             if (items[HttpContextKey] == null)
             {
-                signedRequest = httpRequest.Params.AllKeys.Contains(SignedRequestKey) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
+                signedRequest = (httpRequest.Params.AllKeys.Contains(SignedRequestKey) && !string.IsNullOrEmpty(httpRequest.Params[SignedRequestKey])) ? FacebookSignedRequest.Parse(appSecret, httpRequest.Params[SignedRequestKey]) : null;
                 items[HttpContextKey] = signedRequest;
             }
             else

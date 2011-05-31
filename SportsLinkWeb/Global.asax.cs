@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Web.Mvc;
+using Microsoft.Web.MobileCapableViewEngine;
 
 namespace SportsLinkWeb
 {
@@ -25,12 +26,26 @@ namespace SportsLinkWeb
 
         }
 
+        public static void RegisterViewEngines(ViewEngineCollection engines)
+        {
+            var engine = new MobileCapableWebFormViewEngine();
+            engine.DeviceFolders.Clear();
+            engine.DeviceFolders.Add("Mozilla", "iPhone");
+            engine.DeviceFolders.Add("Safari", "iPhone");
+            engine.DeviceFolders.Add("Chrome", "iPhone");
+
+            engines.Clear();
+            engines.Add(engine);
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
 
             RegisterRoutes(RouteTable.Routes);
             ValueProviderFactories.Factories.Add(new JsonValueProviderFactory());
+
+            RegisterViewEngines(ViewEngines.Engines);
         }
     }
 }

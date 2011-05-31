@@ -4,7 +4,7 @@
     <link href="/Content/Site.css" rel="stylesheet" type="text/css" />
 <% var gridModel = (DataGridModel)Model; %>
 <% var perPage = 20; %>
-<% var pageModel = PageModel.Create((int)ViewData["page"], perPage, gridModel.Rows.Count()); %>
+<% var pageModel = PageModel<object>.Create((int)ViewData["page"], perPage, gridModel.Rows); %>
 
 <div class="grid">
     <table>
@@ -26,7 +26,7 @@
                 <% } %>
             </tr>
         <% } %>
-        <% foreach (var row in gridModel.Rows.Skip(pageModel.Skip).Take(pageModel.ItemsPerPage)) { %>
+        <% foreach (var row in pageModel.Items) { %>
             <tr>
                 <% foreach (var column in gridModel.Columns) { %>
                     <td>

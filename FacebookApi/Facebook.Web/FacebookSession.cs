@@ -16,6 +16,7 @@ namespace Facebook
     using System.Linq;
     using System.Runtime.CompilerServices;
     using System.Text;
+    using System.Text.RegularExpressions;
     using System.Web;
 
     /// <summary>
@@ -170,9 +171,9 @@ namespace Facebook
                 if (!string.IsNullOrEmpty(idPart))
                 {
                     var idParts = idPart.Split('-');
-                    if (idParts.Length == 2 && !string.IsNullOrEmpty(idParts[1]))
+                    if (idParts.Length >= 2 && !string.IsNullOrEmpty(idParts[idParts.Length - 1]))
                     {
-                        return idParts[1];
+                        return idParts[idParts.Length - 1];
                     }
                 }
             }
@@ -283,6 +284,16 @@ namespace Facebook
                 if (signedRequest != null)
                 {
                     facebookSession = FacebookSession.Create(appSecret, signedRequest);
+
+                    httpContext.Session[HttpContextKey] = facebookSession;
+                }
+                else if (null != httpContext.Session[HttpContextKey])
+                {
+                    facebookSession = httpContext.Session[HttpContextKey] as FacebookSession;
+                }
+                else if (!string.IsNullOrEmpty(httpContext.Request["code"]))
+                {
+                    facebookSession = FacebookSession.Create(appSecret, httpContext.Request["code"]);
                 }
 
                 if (readSessionFromCookie && facebookSession == null)
@@ -298,6 +309,7 @@ namespace Facebook
                 if (facebookSession != null)
                 {
                     items.Add(HttpContextKey, facebookSession);
+                    httpContext.Session[HttpContextKey] = facebookSession;
                 }
             }
             else
@@ -337,11 +349,43 @@ namespace Facebook
             {
                 dictionary["expires"] = 0;
             }
-            else if(signedRequest.Expires != DateTime.MinValue)
+            else if (signedRequest.Expires != DateTime.MinValue)
             {
                 dictionary["expires"] = DateTimeConvertor.ToUnixTime(signedRequest.Expires);
             }
 
+            dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
+
+            return new FacebookSession(dictionary);
+        }
+
+        /// <summary>
+        /// Creates a facebook session from a signed request.
+        /// </summary>
+        /// <param name="appSecret">
+        /// The app secret.
+        /// </param>
+        /// <param name="signedRequest">
+        /// The signed request.
+        /// </param>
+        /// <returns>
+        /// The facebook session.
+        /// </returns>
+        internal static FacebookSession Create(string appSecret, string code)
+        {
+            FacebookOAuthClient client = new FacebookOAuthClient(FacebookApplication.Current);
+            client.RedirectUri = new Uri(FacebookApplication.Current.CanvasUrl);
+            dynamic response = client.ExchangeCodeForAccessToken(code);
+
+            string accessToken = response.access_token;
+            double expires = Convert.ToDouble(response.expires);
+
+            var dictionary = new JsonObject
+            {
+                { "access_token", accessToken }
+            };
+
+            dictionary["expires"] = DateTimeConvertor.ToUnixTime(DateTime.Now.AddSeconds(expires));
             dictionary["sig"] = GenerateSessionSignature(appSecret, dictionary);
 
             return new FacebookSession(dictionary);

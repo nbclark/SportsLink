@@ -3,9 +3,9 @@
 
     <% var playerModel = (PlayersModel)Model; %>
     <% var perPage = 3; %>
-    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, playerModel.Players.Count()); %>
+    <% var pageModel = PageModel<TennisUserModel>.Create((int)ViewData["page"], perPage, playerModel.Players); %>
 
-    <div class="module" id="players" data-type="Players" style='display:<%=(playerModel.Players.Count() > 0) ? "" : "none" %>'>
+    <div class="module" id="players" data-type="Players" style='display:<%=(pageModel.Items.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">
                 <div>Similar Players</div>
@@ -13,7 +13,7 @@
             </h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">
-                <%foreach (TennisUserModel user in playerModel.Players.Skip(pageModel.Skip).Take(perPage)) { %>
+                <%foreach (TennisUserModel user in pageModel.Items ) { %>
                     <tr>
                         <td class="image">
                             <img src="http://graph.facebook.com/<%=user.FacebookId %>/picture" />

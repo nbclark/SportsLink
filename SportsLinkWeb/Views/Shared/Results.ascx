@@ -3,14 +3,14 @@
 
     <% var results = (ResultsModel)Model; %>
     <% var perPage = 10; %>
-    <% var pageModel = PageModel.Create((int)ViewData["page"], perPage, results.UserResults.Count()); %>
+    <% var pageModel = PageModel<OfferModel>.Create((int)ViewData["page"], perPage, results.UserResults); %>
     
-    <div class="module" id="results" data-type="Results" style='display:<%=(results.UserResults.Count() > 0) ? "" : "none" %>'>
+    <div class="module" id="results" data-type="Results" style='display:<%=(pageModel.Items.Count() > 0) ? "" : "none" %>'>
         <div class="ui-widget-content ui-corner-all">
             <h3 class="ui-widget-header ui-corner-all">Previous Results</h3>
             <div class="data">
                 <table width="100%" cellpadding="0" cellspacing="0">
-                <% foreach (OfferModel o in results.UserResults.Skip(pageModel.Skip).Take(perPage)) { %>
+                <% foreach (OfferModel o in pageModel.Items) { %>
                     <% var isRequestor = (o.RequestUser.FacebookId == results.TennisUser.FacebookId); %>
                     <% var opponent = (!isRequestor) ? o.RequestUser : o.ConfirmedUser; %>
                     <% var inFuture = o.MatchDateUtc > DateTime.UtcNow; %>

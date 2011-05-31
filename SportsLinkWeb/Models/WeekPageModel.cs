@@ -11,15 +11,15 @@ using SportsLink;
 
 namespace SportsLinkWeb.Models
 {
-    public class WeekPageModel : PageModel
+    public class WeekPageModel : PageModel<OfferModel>
     {
-        public static WeekPageModel Create(int page)
+        public static WeekPageModel Create(int page, IEnumerable<OfferModel> offers)
         {
-            return new WeekPageModel(page);
+            return new WeekPageModel(page, offers);
         }
 
-        protected WeekPageModel(int page)
-            : base(page, 1, 1)
+        protected WeekPageModel(int page, IEnumerable<OfferModel> offers)
+            : base(page, Int32.MaxValue-1, offers)
         {
         }
 
